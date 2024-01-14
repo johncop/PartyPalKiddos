@@ -17,7 +17,7 @@ namespace BusinessObject.Models
         public int? CategoryId { get; set; }
         public int? UserId { get; set; }
         public int? PackageCategoryId { get; set; }
-        public string Status { get; set; } = null!;
+        public int Status { get; set; }
 
         public virtual OrderDrink? OrderDrink { get; set; }
         public virtual OrderFood? OrderFood { get; set; }
