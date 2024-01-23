@@ -8,6 +8,7 @@ namespace BusinessObject.Models
         public Service()
         {
             OrderServices = new HashSet<OrderService>();
+            ServiceImgs = new HashSet<ServiceImg>();
         }
 
         public int Id { get; set; }
@@ -21,5 +22,6 @@ namespace BusinessObject.Models
         public virtual ServiceCategory? ServiceCategory { get; set; }
         public virtual ServiceOption? ServiceOption { get; set; }
         public virtual ICollection<OrderService> OrderServices { get; set; }
+        public virtual ICollection<ServiceImg> ServiceImgs { get; set; }
     }
 }

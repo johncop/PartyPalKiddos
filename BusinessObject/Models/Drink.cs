@@ -7,6 +7,7 @@ namespace BusinessObject.Models
     {
         public Drink()
         {
+            DrinkImgs = new HashSet<DrinkImg>();
             OrderDrinks = new HashSet<OrderDrink>();
         }
 
@@ -18,6 +19,7 @@ namespace BusinessObject.Models
         public string? ImgUrl { get; set; }
 
         public virtual DrinkCategory? DrinkCategory { get; set; }
+        public virtual ICollection<DrinkImg> DrinkImgs { get; set; }
         public virtual ICollection<OrderDrink> OrderDrinks { get; set; }
     }
 }

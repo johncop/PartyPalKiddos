@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace BusinessObject.Models
 {
@@ -18,10 +19,15 @@ namespace BusinessObject.Models
 
         public virtual DbSet<Coupon> Coupons { get; set; } = null!;
         public virtual DbSet<CouponBank> CouponBanks { get; set; } = null!;
+        public virtual DbSet<District> Districts { get; set; } = null!;
         public virtual DbSet<Drink> Drinks { get; set; } = null!;
         public virtual DbSet<DrinkCategory> DrinkCategories { get; set; } = null!;
+        public virtual DbSet<DrinkImg> DrinkImgs { get; set; } = null!;
         public virtual DbSet<Food> Foods { get; set; } = null!;
         public virtual DbSet<FoodCategory> FoodCategories { get; set; } = null!;
+        public virtual DbSet<FoodImg> FoodImgs { get; set; } = null!;
+        public virtual DbSet<Location> Locations { get; set; } = null!;
+        public virtual DbSet<LocationImg> LocationImgs { get; set; } = null!;
         public virtual DbSet<Minigame> Minigames { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDrink> OrderDrinks { get; set; } = null!;
@@ -33,16 +39,17 @@ namespace BusinessObject.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
         public virtual DbSet<ServiceCategory> ServiceCategories { get; set; } = null!;
+        public virtual DbSet<ServiceImg> ServiceImgs { get; set; } = null!;
         public virtual DbSet<ServiceOption> ServiceOptions { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(local);Database=PartyPalKiddos;Uid=sa;Pwd=1234567890;");
-            }
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,9 +58,7 @@ namespace BusinessObject.Models
             {
                 entity.HasIndex(e => e.UserId, "idx_coupons_user");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CouponName)
                     .HasMaxLength(255)
@@ -80,9 +85,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("CouponBank");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CouponId).HasColumnName("coupon_id");
 
@@ -99,15 +102,24 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK__CouponBan__minig__628FA481");
             });
 
+            modelBuilder.Entity<District>(entity =>
+            {
+                entity.ToTable("District");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Address).HasMaxLength(100);
+
+                entity.Property(e => e.Description).HasMaxLength(100);
+            });
+
             modelBuilder.Entity<Drink>(entity =>
             {
                 entity.ToTable("Drink");
 
                 entity.HasIndex(e => e.DrinkCategoryId, "idx_drink_category");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
@@ -138,9 +150,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("DrinkCategory");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CategoryName)
                     .HasMaxLength(255)
@@ -150,15 +160,31 @@ namespace BusinessObject.Models
                 entity.Property(e => e.Description).HasColumnType("text");
             });
 
+            modelBuilder.Entity<DrinkImg>(entity =>
+            {
+                entity.ToTable("DrinkImg");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.DrinkId).HasColumnName("drink_id");
+
+                entity.Property(e => e.ImgUrl)
+                    .HasMaxLength(100)
+                    .HasColumnName("Img_url");
+
+                entity.HasOne(d => d.Drink)
+                    .WithMany(p => p.DrinkImgs)
+                    .HasForeignKey(d => d.DrinkId)
+                    .HasConstraintName("FK_DrinkImg_Drink");
+            });
+
             modelBuilder.Entity<Food>(entity =>
             {
                 entity.ToTable("Food");
 
                 entity.HasIndex(e => e.FoodCategoryId, "idx_food_category");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
@@ -189,9 +215,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("FoodCategory");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CategoryName)
                     .HasMaxLength(255)
@@ -201,11 +225,71 @@ namespace BusinessObject.Models
                 entity.Property(e => e.Description).HasColumnType("text");
             });
 
+            modelBuilder.Entity<FoodImg>(entity =>
+            {
+                entity.ToTable("FoodImg");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.FoodId).HasColumnName("food_Id");
+
+                entity.Property(e => e.ImgUrl)
+                    .HasMaxLength(100)
+                    .HasColumnName("img_url");
+
+                entity.HasOne(d => d.Food)
+                    .WithMany(p => p.FoodImgs)
+                    .HasForeignKey(d => d.FoodId)
+                    .HasConstraintName("FK_FoodImg_Food");
+            });
+
+            modelBuilder.Entity<Location>(entity =>
+            {
+                entity.ToTable("Location");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Address).HasMaxLength(100);
+
+                entity.Property(e => e.Description).HasMaxLength(100);
+
+                entity.Property(e => e.DistrictId).HasColumnName("District_id");
+
+                entity.Property(e => e.ImgUrl)
+                    .HasMaxLength(200)
+                    .HasColumnName("img_url");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("price");
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.Locations)
+                    .HasForeignKey(d => d.DistrictId)
+                    .HasConstraintName("FK_Location_District");
+            });
+
+            modelBuilder.Entity<LocationImg>(entity =>
+            {
+                entity.ToTable("LocationImg");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.ImgUrl)
+                    .HasMaxLength(100)
+                    .HasColumnName("Img_url");
+
+                entity.Property(e => e.LocationId).HasColumnName("location_id");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.LocationImgs)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK_LocationImg_Location");
+            });
+
             modelBuilder.Entity<Minigame>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
@@ -221,9 +305,7 @@ namespace BusinessObject.Models
             {
                 entity.HasIndex(e => e.UserId, "idx_order_user");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CouponId).HasColumnName("coupon_id");
 
@@ -263,9 +345,7 @@ namespace BusinessObject.Models
 
                 entity.HasIndex(e => e.DrinkId, "idx_order_drink");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.HasOne(d => d.Drink)
                     .WithMany(p => p.OrderDrinks)
@@ -279,9 +359,7 @@ namespace BusinessObject.Models
 
                 entity.HasIndex(e => e.FoodId, "idx_order_food");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.HasOne(d => d.Food)
                     .WithMany(p => p.OrderFoods)
@@ -295,9 +373,7 @@ namespace BusinessObject.Models
 
                 entity.HasIndex(e => e.ServiceId, "idx_order_service");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ServiceId).HasColumnName("Service_id");
 
@@ -313,11 +389,9 @@ namespace BusinessObject.Models
 
                 entity.HasIndex(e => e.UserId, "idx_package_user");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CategoryId).HasColumnName("category_id");
+                entity.Property(e => e.LocationId).HasColumnName("location_id");
 
                 entity.Property(e => e.OrderDrinkId).HasColumnName("orderDrink_id");
 
@@ -327,12 +401,22 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.PackageCategoryId).HasColumnName("packageCategory_id");
 
-                entity.Property(e => e.Status)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("status");
+                entity.Property(e => e.PackageName)
+                    .HasMaxLength(50)
+                    .HasColumnName("package_name");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("price");
+
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.Packages)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK_Package_Location");
 
                 entity.HasOne(d => d.OrderDrink)
                     .WithMany(p => p.Packages)
@@ -352,7 +436,7 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.PackageCategory)
                     .WithMany(p => p.Packages)
                     .HasForeignKey(d => d.PackageCategoryId)
-                    .HasConstraintName("FK_Package_PackageCategory");
+                    .HasConstraintName("FK_Package_PackageCategory1");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Packages)
@@ -364,9 +448,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("PackageCategory");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CategoryName)
                     .HasMaxLength(255)
@@ -380,9 +462,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Payment");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Amount)
                     .HasColumnType("decimal(10, 2)")
@@ -398,10 +478,7 @@ namespace BusinessObject.Models
                     .HasColumnType("text")
                     .HasColumnName("payment_url");
 
-                entity.Property(e => e.Status)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("status");
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -415,19 +492,14 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Role");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.RoleName)
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("role_name");
 
-                entity.Property(e => e.Status)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("status");
+                entity.Property(e => e.Status).HasColumnName("status");
             });
 
             modelBuilder.Entity<Service>(entity =>
@@ -436,9 +508,7 @@ namespace BusinessObject.Models
 
                 entity.HasIndex(e => e.ServiceCategoryId, "idx_service_category");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
@@ -476,9 +546,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("ServiceCategory");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CategoryName)
                     .HasMaxLength(255)
@@ -488,11 +556,27 @@ namespace BusinessObject.Models
                 entity.Property(e => e.Description).HasColumnType("text");
             });
 
+            modelBuilder.Entity<ServiceImg>(entity =>
+            {
+                entity.ToTable("ServiceImg");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.ImgUrl)
+                    .HasMaxLength(100)
+                    .HasColumnName("Img_url");
+
+                entity.Property(e => e.ServiceId).HasColumnName("service_id");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.ServiceImgs)
+                    .HasForeignKey(d => d.ServiceId)
+                    .HasConstraintName("FK_ServiceImg_Service");
+            });
+
             modelBuilder.Entity<ServiceOption>(entity =>
             {
                 entity.ToTable("ServiceOption");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description).HasMaxLength(500);
 
@@ -510,9 +594,7 @@ namespace BusinessObject.Models
 
                 entity.HasIndex(e => e.RoleId, "idx_user_role");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address)
                     .HasColumnType("text")
@@ -545,10 +627,7 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.RoleId).HasColumnName("role_id");
 
-                entity.Property(e => e.Status)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("status");
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)

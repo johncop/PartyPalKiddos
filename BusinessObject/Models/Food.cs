@@ -7,6 +7,7 @@ namespace BusinessObject.Models
     {
         public Food()
         {
+            FoodImgs = new HashSet<FoodImg>();
             OrderFoods = new HashSet<OrderFood>();
         }
 
@@ -18,6 +19,7 @@ namespace BusinessObject.Models
         public string? ImgUrl { get; set; }
 
         public virtual FoodCategory? FoodCategory { get; set; }
+        public virtual ICollection<FoodImg> FoodImgs { get; set; }
         public virtual ICollection<OrderFood> OrderFoods { get; set; }
     }
 }

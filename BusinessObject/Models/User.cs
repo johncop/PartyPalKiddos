@@ -20,7 +20,7 @@ namespace BusinessObject.Models
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
         public int? RoleId { get; set; }
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         public virtual Role? Role { get; set; }
         public virtual ICollection<Coupon> Coupons { get; set; }
