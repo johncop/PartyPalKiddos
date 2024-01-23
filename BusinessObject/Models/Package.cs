@@ -14,7 +14,6 @@ namespace BusinessObject.Models
         public int? OrderFoodId { get; set; }
         public int? OrderDrinkId { get; set; }
         public int? OrderServiceId { get; set; }
-        public int? CategoryId { get; set; }
         public int? UserId { get; set; }
         public int? PackageCategoryId { get; set; }
         public int Status { get; set; }
