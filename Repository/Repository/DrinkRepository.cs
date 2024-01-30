@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess;
 using Repository.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,16 @@ namespace Repository.Repository
 {
     public class DrinkRepository : IDrinkRepository
     {
-        public void addDrink(Drink d)
-        {
-            throw new NotImplementedException();
-        }
+        public void addDrink(Drink d) => DrinkDAO.SaveDrink(d);
 
-        public List<Drink> GetAllDrinks()
-        {
-            throw new NotImplementedException();
-        }
+        public List<Drink> GetAllDrinks() => DrinkDAO.GetDrinks();
 
-        public Drink GetDrinkById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Drink GetDrinkById(int id) => DrinkDAO.findDrinkById(id);
 
-        public List<Drink> GetDrinkByName(string DrinkName)
-        {
-            throw new NotImplementedException();
-        }
+        public List<Drink> GetDrinkByName(string DrinkName) => DrinkDAO.findDrinkByName(DrinkName);
 
-        public void removeDrink(Drink d)
-        {
-            throw new NotImplementedException();
-        }
+        public void removeDrink(Drink d) => DrinkDAO.DeleteDrink(d);
 
-        public void UpdateDrink(Drink d)
-        {
-            throw new NotImplementedException();
-        }
+        public void UpdateDrink(Drink d) => DrinkDAO.UpdateDrink(d);
     }
 }
