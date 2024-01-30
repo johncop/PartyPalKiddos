@@ -7,7 +7,7 @@ namespace BusinessObject.Models
     {
         public Location()
         {
-            LocationImgs = new HashSet<LocationImg>();
+            LocationImages = new HashSet<LocationImage>();
             Packages = new HashSet<Package>();
         }
 
@@ -16,10 +16,9 @@ namespace BusinessObject.Models
         public int? DistrictId { get; set; }
         public string? Description { get; set; }
         public decimal? Price { get; set; }
-        public string? ImgUrl { get; set; }
 
         public virtual District? District { get; set; }
-        public virtual ICollection<LocationImg> LocationImgs { get; set; }
+        public virtual ICollection<LocationImage> LocationImages { get; set; }
         public virtual ICollection<Package> Packages { get; set; }
     }
 }

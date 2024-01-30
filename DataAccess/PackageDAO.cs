@@ -23,8 +23,9 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    UserId = package.UserId,
                     PackageCategoryId = package.PackageCategoryId,
+                    UserId = package.UserId,
+                    LocationId= package.LocationId,
                     Status = package.Status               
                 }).ToList();
                 }
@@ -46,15 +47,13 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosContext())
                 {
                     p = context.Packages
-                .Include(p => p.OrderFood)
-                .Include(p => p.OrderDrink)
-                .Include(p => p.OrderService)
                 .Select(package => new Package
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    UserId = package.UserId,
                     PackageCategoryId = package.PackageCategoryId,
+                    UserId = package.UserId,
+                    LocationId = package.LocationId,
                     Status = package.Status
                 }).SingleOrDefault(x => x.Id == id);
                 }
@@ -74,16 +73,13 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosContext())
                 {
                     p = context.Packages
-                .Include(p => p.OrderFood)
-                .Include(p => p.OrderDrink)
-                .Include(p => p.OrderService)
-                .Where(p => p.PackageName.Contains(packgaeName))
                 .Select(package => new Package
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    UserId = package.UserId,
                     PackageCategoryId = package.PackageCategoryId,
+                    UserId = package.UserId,
+                    LocationId = package.LocationId,
                     Status = package.Status
                 }).ToList();
                 }

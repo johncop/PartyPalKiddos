@@ -10,48 +10,36 @@ namespace BusinessObject.Models
             Orders = new HashSet<Order>();
         }
 
-        public Package(string? packageName, int? orderFoodId, int? orderDrinkId, int? orderServiceId, int? userId, int? packageCategoryId, int? status, decimal? price, int? locationId)
+        public Package(string? packageName, int? packageCategoryId, int? userId, int? locationId, decimal? price, int? status)
         {
             PackageName = packageName;
-            OrderFoodId = orderFoodId;
-            OrderDrinkId = orderDrinkId;
-            OrderServiceId = orderServiceId;
-            UserId = userId;
             PackageCategoryId = packageCategoryId;
-            Status = status;
-            Price = price;
+            UserId = userId;
             LocationId = locationId;
+            Price = price;
+            Status = status;
         }
 
-        public Package(int id, string? packageName, int? orderFoodId, int? orderDrinkId, int? orderServiceId, int? userId, int? packageCategoryId, int? status, decimal? price, int? locationId)
+        public Package(int id, string? packageName, int? packageCategoryId, int? userId, int? locationId, decimal? price, int? status)
         {
             Id = id;
             PackageName = packageName;
-            OrderFoodId = orderFoodId;
-            OrderDrinkId = orderDrinkId;
-            OrderServiceId = orderServiceId;
-            UserId = userId;
             PackageCategoryId = packageCategoryId;
-            Status = status;
-            Price = price;
+            UserId = userId;
             LocationId = locationId;
+            Price = price;
+            Status = status;
         }
 
         public int Id { get; set; }
         public string? PackageName { get; set; }
-        public int? OrderFoodId { get; set; }
-        public int? OrderDrinkId { get; set; }
-        public int? OrderServiceId { get; set; }
-        public int? UserId { get; set; }
         public int? PackageCategoryId { get; set; }
-        public int? Status { get; set; }
-        public decimal? Price { get; set; }
+        public int? UserId { get; set; }
         public int? LocationId { get; set; }
+        public decimal? Price { get; set; }
+        public int? Status { get; set; }
 
         public virtual Location? Location { get; set; }
-        public virtual OrderDrink? OrderDrink { get; set; }
-        public virtual OrderFood? OrderFood { get; set; }
-        public virtual OrderService? OrderService { get; set; }
         public virtual PackageCategory? PackageCategory { get; set; }
         public virtual User? User { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

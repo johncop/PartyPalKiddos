@@ -7,8 +7,7 @@ namespace BusinessObject.Models
     {
         public Drink()
         {
-            DrinkImgs = new HashSet<DrinkImg>();
-            OrderDrinks = new HashSet<OrderDrink>();
+            DrinkImages = new HashSet<DrinkImage>();
         }
 
         public int Id { get; set; }
@@ -16,10 +15,8 @@ namespace BusinessObject.Models
         public string? Description { get; set; }
         public int? DrinkCategoryId { get; set; }
         public decimal Price { get; set; }
-        public string? ImgUrl { get; set; }
 
         public virtual DrinkCategory? DrinkCategory { get; set; }
-        public virtual ICollection<DrinkImg> DrinkImgs { get; set; }
-        public virtual ICollection<OrderDrink> OrderDrinks { get; set; }
+        public virtual ICollection<DrinkImage> DrinkImages { get; set; }
     }
 }

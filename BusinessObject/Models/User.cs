@@ -7,7 +7,6 @@ namespace BusinessObject.Models
     {
         public User()
         {
-            Coupons = new HashSet<Coupon>();
             Orders = new HashSet<Order>();
             Packages = new HashSet<Package>();
         }
@@ -23,7 +22,6 @@ namespace BusinessObject.Models
         public int? Status { get; set; }
 
         public virtual Role? Role { get; set; }
-        public virtual ICollection<Coupon> Coupons { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Package> Packages { get; set; }
     }
