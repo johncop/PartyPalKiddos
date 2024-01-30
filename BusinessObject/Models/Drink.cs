@@ -10,6 +10,23 @@ namespace BusinessObject.Models
             DrinkImages = new HashSet<DrinkImage>();
         }
 
+        public Drink(string drinkName, string? description, int? drinkCategoryId, decimal price)
+        {
+            DrinkName = drinkName;
+            Description = description;
+            DrinkCategoryId = drinkCategoryId;
+            Price = price;
+        }
+
+        public Drink(int id, string drinkName, string? description, int? drinkCategoryId, decimal price)
+        {
+            Id = id;
+            DrinkName = drinkName;
+            Description = description;
+            DrinkCategoryId = drinkCategoryId;
+            Price = price;
+        }
+
         public int Id { get; set; }
         public string DrinkName { get; set; } = null!;
         public string? Description { get; set; }

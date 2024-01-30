@@ -11,6 +11,23 @@ namespace BusinessObject.Models
             ServiceOptions = new HashSet<ServiceOption>();
         }
 
+        public Service(string serviceName, string? description, int? serviceCategoryId, decimal price)
+        {
+            ServiceName = serviceName;
+            Description = description;
+            ServiceCategoryId = serviceCategoryId;
+            Price = price;
+        }
+
+        public Service(int id, string serviceName, string? description, int? serviceCategoryId, decimal price)
+        {
+            Id = id;
+            ServiceName = serviceName;
+            Description = description;
+            ServiceCategoryId = serviceCategoryId;
+            Price = price;
+        }
+
         public int Id { get; set; }
         public string ServiceName { get; set; } = null!;
         public string? Description { get; set; }
