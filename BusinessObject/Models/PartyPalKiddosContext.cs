@@ -33,6 +33,7 @@ namespace BusinessObject.Models
         public virtual DbSet<OrderService> OrderServices { get; set; } = null!;
         public virtual DbSet<Package> Packages { get; set; } = null!;
         public virtual DbSet<PackageCategory> PackageCategories { get; set; } = null!;
+        public virtual DbSet<PackageTag> PackageTags { get; set; } = null!;
         public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
@@ -365,9 +366,13 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.EndTime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("end_time");
+
                 entity.Property(e => e.LocationId).HasColumnName("location_id");
 
-                entity.Property(e => e.PackageCategoryId).HasColumnName("packageCategory_id");
+                entity.Property(e => e.NumberOfKid).HasColumnName("number_of_kid");
 
                 entity.Property(e => e.PackageName)
                     .HasMaxLength(50)
@@ -377,6 +382,10 @@ namespace BusinessObject.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("price");
 
+                entity.Property(e => e.StartTime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("start_time");
+
                 entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -385,11 +394,6 @@ namespace BusinessObject.Models
                     .WithMany(p => p.Packages)
                     .HasForeignKey(d => d.LocationId)
                     .HasConstraintName("FK_Package_Location");
-
-                entity.HasOne(d => d.PackageCategory)
-                    .WithMany(p => p.Packages)
-                    .HasForeignKey(d => d.PackageCategoryId)
-                    .HasConstraintName("FK_Package_PackageCategory1");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Packages)
@@ -409,6 +413,31 @@ namespace BusinessObject.Models
                     .HasColumnName("category_name");
 
                 entity.Property(e => e.Description).HasColumnType("text");
+            });
+
+            modelBuilder.Entity<PackageTag>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PackageTag");
+
+                entity.Property(e => e.CategoryId).HasColumnName("Category_id");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.PackageId).HasColumnName("Package_Id");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany()
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("FK_PackageTag_PackageCategory");
+
+                entity.HasOne(d => d.Package)
+                    .WithMany()
+                    .HasForeignKey(d => d.PackageId)
+                    .HasConstraintName("FK_PackageTag_Package");
             });
 
             modelBuilder.Entity<Payment>(entity =>

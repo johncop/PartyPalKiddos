@@ -10,37 +10,42 @@ namespace BusinessObject.Models
             Orders = new HashSet<Order>();
         }
 
-        public Package(string? packageName, int? packageCategoryId, int? userId, int? locationId, decimal? price, int? status)
+        public Package(string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             PackageName = packageName;
-            PackageCategoryId = packageCategoryId;
+            NumberOfKid = numberOfKid;
             UserId = userId;
             LocationId = locationId;
+            StartTime = startTime;
+            EndTime = endTime;
             Price = price;
             Status = status;
         }
 
-        public Package(int id, string? packageName, int? packageCategoryId, int? userId, int? locationId, decimal? price, int? status)
+        public Package(int id, string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             Id = id;
             PackageName = packageName;
-            PackageCategoryId = packageCategoryId;
+            NumberOfKid = numberOfKid;
             UserId = userId;
             LocationId = locationId;
+            StartTime = startTime;
+            EndTime = endTime;
             Price = price;
             Status = status;
         }
 
         public int Id { get; set; }
         public string? PackageName { get; set; }
-        public int? PackageCategoryId { get; set; }
+        public int? NumberOfKid { get; set; }
         public int? UserId { get; set; }
         public int? LocationId { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public decimal? Price { get; set; }
         public int? Status { get; set; }
 
         public virtual Location? Location { get; set; }
-        public virtual PackageCategory? PackageCategory { get; set; }
         public virtual User? User { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }

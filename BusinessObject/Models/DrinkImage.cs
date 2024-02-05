@@ -5,13 +5,14 @@ namespace BusinessObject.Models
 {
     public partial class DrinkImage
     {
+        
         public DrinkImage(string? imgUrl, int? drinkId)
         {
             ImgUrl = imgUrl;
             DrinkId = drinkId;
         }
 
-        public DrinkImage()
+        public DrinkImage() 
         {
         }
 
