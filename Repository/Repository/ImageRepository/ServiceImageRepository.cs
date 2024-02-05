@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.ImageDAO;
 using Repository.Interface.Image;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,14 @@ namespace Repository.Repository.ImageRepository
 {
     public class ServiceImageRepository : IServiceImageRepository
     {
-        public void addServiceImage(ServiceImage si)
-        {
-            throw new NotImplementedException();
-        }
+        public void addServiceImage(ServiceImage si) => ServiceImageDAO.SaveServiceImage(si);
 
-        public List<ServiceImage> GetAllServiceImages()
-        {
-            throw new NotImplementedException();
-        }
+        public List<ServiceImage> GetAllServiceImages() => ServiceImageDAO.GetServiceImages();
 
-        public ServiceImage GetServiceImageById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public ServiceImage GetServiceImageById(int id) => ServiceImageDAO.findServiceImageById(id);
 
-        public void removeServiceImage(ServiceImage si)
-        {
-            throw new NotImplementedException();
-        }
+        public void removeServiceImage(ServiceImage si) => ServiceImageDAO.DeleteServiceImage(si);
 
-        public void UpdateServiceImage(ServiceImage si)
-        {
-            throw new NotImplementedException();
-        }
+        public void UpdateServiceImage(ServiceImage si) => ServiceImageDAO.UpdateServiceImage(si);
     }
 }
