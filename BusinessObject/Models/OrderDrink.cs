@@ -12,6 +12,8 @@ namespace BusinessObject.Models
             Quantity = quantity;
         }
 
+        public OrderDrink() { }
+
         public int? PackageId { get; set; }
         public int? DrinkId { get; set; }
         public int? Quantity { get; set; }

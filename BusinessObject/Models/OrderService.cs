@@ -13,6 +13,8 @@ namespace BusinessObject.Models
             Quantity = quantity;
         }
 
+        public OrderService() { }
+
         public int? PackageId { get; set; }
         public int? ServiceId { get; set; }
         public int? ServiceOptionId { get; set; }
