@@ -15,6 +15,8 @@ namespace Repository.Interface
         List<Package> GetAllPackage();
         Package GetPackageById(int id);
         List<Package> GetPackagetByName(string packgakeName);
-        
+        List<Package> GetPackagetByUserId(int userId);
+
+
     }
 }

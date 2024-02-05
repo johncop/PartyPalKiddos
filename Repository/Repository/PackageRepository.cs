@@ -18,6 +18,7 @@ namespace Repository.Repository
         public Package GetPackageById(int id) => PackageDAO.findPackageById(id);
 
         public List<Package> GetPackagetByName(string packgakeName) => PackageDAO.findPackageByName(packgakeName);
+        public List<Package> GetPackagetByUserId(int userId) => PackageDAO.findPackageByUserId(userId);
 
         public void removePackage(Package p) => PackageDAO.DeletePackage(p);
 

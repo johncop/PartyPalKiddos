@@ -26,7 +26,7 @@ namespace DataAccess
                     PackageCategoryId = package.PackageCategoryId,
                     UserId = package.UserId,
                     LocationId= package.LocationId,
-                    Status = package.Status               
+                    Status = package.Status,
                 }).ToList();
                 }
             }
@@ -65,7 +65,7 @@ namespace DataAccess
             return p;
         }
 
-        public static List<Package> findPackageByName(string packgaeName)
+        public static List<Package> findPackageByName(string packageName)
         {
             List<Package> p = new List<Package>();
             try
@@ -73,6 +73,33 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosContext())
                 {
                     p = context.Packages
+                .Where(package => package.PackageName.Contains(packageName))
+                .Select(package => new Package
+                {
+                    Id = package.Id,
+                    PackageName = package.PackageName,
+                    PackageCategoryId = package.PackageCategoryId,
+                    UserId = package.UserId,
+                    LocationId = package.LocationId,
+                    Status = package.Status
+                }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return p;
+        }
+        public static List<Package> findPackageByUserId(int id)
+        {
+            List<Package> p = new List<Package>();
+            try
+            {
+                using (var context = new PartyPalKiddosContext())
+                {
+                    p = context.Packages
+                .Where(package => package.UserId == id)
                 .Select(package => new Package
                 {
                     Id = package.Id,
