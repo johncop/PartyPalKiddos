@@ -13,21 +13,21 @@ namespace PartyPalKiddosAPI.Controllers
         private IPackageRepository repository = new PackageRepository();
 
         [HttpPost("AddPackage")]
-        public IActionResult PostPackage(string? packageName, int? packageCategoryId, int? userId, int? locationId, decimal? price, int? status)
+        public IActionResult PostPackage(string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
-            Package p = new Package(packageName, packageCategoryId, userId, locationId, price, status);
+            Package p = new Package(packageName, numberOfKid, userId, locationId, startTime, endTime, price, status);
             repository.addPackage(p);
             return NoContent();
         }
         [HttpPut("UpdatePackage")]
-        public IActionResult UpdatePackage(int id,string? packageName, int? packageCategoryId, int? userId, int? locationId, decimal? price, int? status)
+        public IActionResult UpdatePackage(int id,string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             var package = repository.GetPackageById(id);
             if(package == null)
             {
                 return NotFound();
             }
-            Package p = new Package(id, packageName, packageCategoryId, userId, locationId, price, status);
+            Package p = new Package(packageName, numberOfKid, userId, locationId, startTime, endTime, price, status);
             repository.UpdatePackage(p);
             return NoContent();
         }
