@@ -5,17 +5,16 @@ namespace BusinessObject.Models
 {
     public partial class OrderService
     {
-        public OrderService(int packageId, int? serviceId, int? serviceOptionId, int? quantity)
+        public OrderService(int? packageId, int? serviceId, int? serviceOptionId, int? quantity)
         {
             PackageId = packageId;
             ServiceId = serviceId;
             ServiceOptionId = serviceOptionId;
             Quantity = quantity;
         }
-        public OrderService()
-        {
 
-        }
+        public OrderService() { }
+
         public int? PackageId { get; set; }
         public int? ServiceId { get; set; }
         public int? ServiceOptionId { get; set; }
