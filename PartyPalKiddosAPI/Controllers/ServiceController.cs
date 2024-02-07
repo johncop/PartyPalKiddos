@@ -12,19 +12,19 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IServiceRepository repository = new ServiceRepository();
 
-        [HttpGet("GetService")]
+        [HttpGet("services")]
         public ActionResult<IEnumerable<Service>> getService()
             => repository.GetAllService();
 
-        [HttpGet("getServiceById/{serivceId}")]
+        [HttpGet("services/{serivceId}")]
         public ActionResult<Service> getPackageById(int serivceId) =>
             repository.GetServiceById(serivceId);
 
-        [HttpGet("GetServiceByName/{serviceName}")]
+        [HttpGet("services/by-mame")]
         public ActionResult<List<Service>> GetServiceByName(string serviceName) =>
             repository.GetServiceByName(serviceName);
 
-        [HttpPost("CreateService")]
+        [HttpPost("services")]
         public ActionResult<Service> CreateService(string serviceName, string? description, int? serviceCategoryId, decimal price)
         {
             Service s = new Service(serviceName, description, serviceCategoryId, price);
@@ -32,7 +32,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("DeleteService/id")]
+        [HttpDelete("services/{id}")]
         public IActionResult DeleteService(int id)
         {
             var f = repository.GetServiceById(id);
@@ -44,7 +44,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("UpdateService")]
+        [HttpPut("services/{id}")]
         public IActionResult UpdateService(int id, string serviceName, string? description, int? serviceCategoryId, decimal price)
         {
             Service service = repository.GetServiceById(id);

@@ -12,27 +12,27 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private ILocationRepository repository = new LocationRepository();
 
-        [HttpGet("GetLocation")]
+        [HttpGet("locations")]
         public ActionResult<IEnumerable<Location>> getLocation()
             => repository.GetAllLocation();
 
-        [HttpGet("getFoodById/{foodId}")]
-        public ActionResult<Location> getLocationById(int foodId) =>
-            repository.GetLocationById(foodId);
+        [HttpGet("locations/{locationId}")]
+        public ActionResult<Location> getLocationById(int locationId) =>
+            repository.GetLocationById(locationId);
 
-        [HttpGet("GetLocationByAddress/{address}")]
-        public ActionResult<List<Location>> GetFoodtByName(string address) =>
+        [HttpGet("locations/by-name")]
+        public ActionResult<List<Location>> GetLocationByName(string address) =>
             repository.GetLocationByName(address);
 
-        [HttpPost("createLocation")]
-        public ActionResult<Food> CreateFood(string? address, int? districtId, string? description, decimal? price)
+        [HttpPost("locations")]
+        public ActionResult<Location> createLocation(string? address, int? districtId, string? description, decimal? price)
         {
             Location l = new Location(address, districtId, description, price);
             repository.addLocation(l);
             return NoContent();
         }
 
-        [HttpDelete("DeleteFood/id")]
+        [HttpDelete("locations/{id}")]
         public IActionResult Delete(int id)
         {
             var f = repository.GetLocationById(id);
@@ -44,7 +44,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("UpdateFood")]
+        [HttpPut("locations/{id}")]
         public IActionResult UpdateProduct(int id, string? address, int? districtId, string? description, decimal? price)
         {
             Location location = repository.GetLocationById(id);

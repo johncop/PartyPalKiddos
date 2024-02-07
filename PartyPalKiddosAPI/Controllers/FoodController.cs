@@ -12,19 +12,19 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IFoodReposiroty repository = new FoodRepository();
 
-        [HttpGet("GetFood")]
+        [HttpGet("foods")]
         public ActionResult<IEnumerable<Food>> getFood()
             => repository.GetAllFoods();
 
-        [HttpGet("getFoodById/{foodId}")]
-        public ActionResult<Food> getPackageById(int foodId) =>
+        [HttpGet("foods/{foodId}")]
+        public ActionResult<Food> getFoodById(int foodId) =>
             repository.GetFoodById(foodId);
 
-        [HttpGet("GetFoodByName/{foodName}")]
+        [HttpGet("foods/by-name")]
         public ActionResult<List<Food>> GetFoodtByName(string foodName) =>
             repository.GetFoodByName(foodName);
 
-        [HttpPost("CreateFood")]
+        [HttpPost("foods")]
         public ActionResult<Food> CreateFood(string foodName, string? description, int? foodCategoryId, decimal price)
         {
             Food f = new Food(foodName, description, foodCategoryId, price);
@@ -32,7 +32,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("DeleteFood/id")]
+        [HttpDelete("foods/{id}")]
         public IActionResult Delete(int id)
         {
             var f = repository.GetFoodById(id);
@@ -44,7 +44,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("UpdateFood")]
+        [HttpPut("foods/{id}")]
         public IActionResult UpdateProduct(int id, string foodName, string? description, int? foodCategoryId, decimal price)
         {
             Food food = repository.GetFoodById(id);

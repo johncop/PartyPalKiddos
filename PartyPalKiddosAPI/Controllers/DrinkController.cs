@@ -12,19 +12,19 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IDrinkRepository repository = new DrinkRepository();
 
-        [HttpGet("GetDrink")]
+        [HttpGet("drinks")]
         public ActionResult<IEnumerable<Drink>> getDrink()
             => repository.GetAllDrinks();
 
-        [HttpGet("getDrinkById/{drinkId}")]
+        [HttpGet("drinks/{drinkId}")]
         public ActionResult<Drink> getPackageById(int drinkId) =>
             repository.GetDrinkById(drinkId);
 
-        [HttpGet("GetDrinkByName/{foodName}")]
+        [HttpGet("drinks/by-name")]
         public ActionResult<List<Drink>> GetDrinkByName(string drinkName) =>
             repository.GetDrinkByName(drinkName);
 
-        [HttpPost("CreateFood")]
+        [HttpPost("drinks")]
         public ActionResult<Drink> CreateDrink(string drinkName, string? description, int? drinkCategoryId, decimal price)
         {
             Drink f = new Drink(drinkName, description, drinkCategoryId, price);
@@ -32,7 +32,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("DeleteDrink/id")]
+        [HttpDelete("drinks/{id}")]
         public IActionResult Delete(int id)
         {
             var f = repository.GetDrinkById(id);
@@ -44,7 +44,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("UpdateDrink")]
+        [HttpPut("drinks/{id}")]
         public IActionResult UpdateProduct(int id, string drinkName, string? description, int? drinkCategoryId, decimal price)
         {
             Drink drink = repository.GetDrinkById(id);
