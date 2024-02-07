@@ -23,7 +23,9 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    PackageCategoryId = package.PackageCategoryId,
+                    NumberOfKid = package.NumberOfKid,
+                    StartTime = package.StartTime,
+                    EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId= package.LocationId,
                     Status = package.Status,
@@ -51,10 +53,12 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    PackageCategoryId = package.PackageCategoryId,
+                    NumberOfKid = package.NumberOfKid,
+                    StartTime = package.StartTime,
+                    EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
-                    Status = package.Status
+                    Status = package.Status,
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -78,10 +82,12 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    PackageCategoryId = package.PackageCategoryId,
+                    NumberOfKid = package.NumberOfKid,
+                    StartTime = package.StartTime,
+                    EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
-                    Status = package.Status
+                    Status = package.Status,
                 }).ToList();
                 }
             }
@@ -104,10 +110,12 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    PackageCategoryId = package.PackageCategoryId,
+                    NumberOfKid = package.NumberOfKid,
+                    StartTime = package.StartTime,
+                    EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
-                    Status = package.Status
+                    Status = package.Status,
                 }).ToList();
                 }
             }
