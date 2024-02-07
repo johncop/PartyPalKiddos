@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository.ImageRepository
 {
-    internal class DrinkImageRepository : IDrinkImageRepository
+    public class DrinkImageRepository : IDrinkImageRepository
     {
         public void addDrinkImage(DrinkImage di) => DrinkImageDAO.SaveDrinkImage(di);
 
