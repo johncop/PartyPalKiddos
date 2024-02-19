@@ -5,6 +5,7 @@ namespace BusinessObject.Models
 {
     public partial class PackageCategory
     {
+        public PackageCategory() { }
         public PackageCategory(string categoryName, string? description)
         {
             CategoryName = categoryName;
