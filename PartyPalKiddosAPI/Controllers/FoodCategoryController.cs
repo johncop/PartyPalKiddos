@@ -21,7 +21,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetFoodCategoryById(id);
 
         [HttpGet("food-categories/by-name")]
-        public ActionResult<List<FoodCategory>> GetDrinkByName(string foodCateName) =>
+        public ActionResult<List<FoodCategory>> GetFoodCateByName(string foodCateName) =>
             repository.GetFoodByName(foodCateName);
 
         [HttpPost("food-categories")]
