@@ -12,14 +12,14 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private ICouponRepository repository = new CouponRepository();
 
-        [HttpPost("AddCoupon")]
+        [HttpPost("coupons")]
         public IActionResult PostCoupon(string couponName, decimal discountAmount, string? description)
         {
             Coupon p = new Coupon(couponName, discountAmount, description);
             repository.addRole(p);
             return NoContent();
         }
-        [HttpPut("UpdateCoupon")]
+        [HttpPut("coupons")]
         public IActionResult UpdateCoupon(int id, string couponName, decimal discountAmount, string? description)
         {
             var user = repository.GetCouponById(id);
@@ -31,7 +31,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdateCoupon(p);
             return NoContent();
         }
-        [HttpDelete("DeleteCoupon")]
+        [HttpDelete("coupons")]
         public IActionResult DeleteCoupon(int id)
         {
             var user = repository.GetCouponById(id);
@@ -42,11 +42,11 @@ namespace PartyPalKiddosAPI.Controllers
             repository.removeCoupon(user);
             return NoContent();
         }
-        [HttpGet("GetAllCoupons")]
+        [HttpGet("coupons")]
         public ActionResult<IEnumerable<Coupon>> getAllCoupons()
             => repository.GetAllCoupons();
 
-        [HttpGet("GetCouponById")]
+        [HttpGet("coupons/{id}")]
         public ActionResult<Coupon> getCouponById(int id) =>
             repository.GetCouponById(id);
 

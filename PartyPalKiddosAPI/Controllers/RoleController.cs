@@ -10,45 +10,45 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
-        private ICouponRepository repository = new RoleRepository();
+        private IRoleRepository repository = new RoleRepository();
 
-        [HttpPost("AddCoupon")]
-        public IActionResult PostCoupon(string couponName, decimal discountAmount, string? description)
+        [HttpPost("roles")]
+        public IActionResult PostCoupon(string roleName, int status)
         {
-            Coupon p = new Coupon(couponName, discountAmount, description);
+            Role p = new Role(roleName, status);
             repository.addRole(p);
             return NoContent();
         }
-        [HttpPut("UpdateCoupon")]
-        public IActionResult UpdateCoupon(int id, string couponName, decimal discountAmount, string? description)
+        [HttpPut("roles")]
+        public IActionResult UpdateCoupon(int id, string roleName, int status)
         {
-            var user = repository.GetCouponById(id);
+            var user = repository.GetRoleById(id);
             if(user == null)
             {
                 return NotFound();
             }
-            Coupon p = new Coupon(id, couponName, discountAmount, description);
-            repository.UpdateCoupon(p);
+            Role p = new Role(id, roleName, status);
+            repository.UpdateRole(p);
             return NoContent();
         }
-        [HttpDelete("DeleteCoupon")]
+        [HttpDelete("roles")]
         public IActionResult DeleteCoupon(int id)
         {
-            var user = repository.GetCouponById(id);
-            if (user == null)
+            var roles = repository.GetRoleById(id);
+            if (roles == null)
             {
                 return NotFound();
             }
-            repository.removeCoupon(user);
+            repository.removeRole(roles);
             return NoContent();
         }
-        [HttpGet("GetAllCoupons")]
-        public ActionResult<IEnumerable<Coupon>> getAllCoupons()
-            => repository.GetAllCoupons();
+        [HttpGet("roles")]
+        public ActionResult<IEnumerable<Role>> getAllCoupons()
+            => repository.GetAllRoles();
 
-        [HttpGet("GetCouponById")]
-        public ActionResult<Coupon> getCouponById(int id) =>
-            repository.GetCouponById(id);
+        [HttpGet("roles/{id}")]
+        public ActionResult<Role> getCouponById(int id) =>
+            repository.GetRoleById(id);
 
     }
 }

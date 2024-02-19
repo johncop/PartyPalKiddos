@@ -11,14 +11,14 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IOrderDrinkRepository repository = new OrderDrinkRepository();
 
-        [HttpPost("AddOrderDrink")]
+        [HttpPost("order-drinks")]
         public IActionResult PostOrderDrink(int packageId, int? drinkId, int? quantity)
         {
             OrderDrink oDrink = new OrderDrink(packageId, drinkId, quantity);
             repository.addOrderDrink(oDrink);
             return NoContent();
         }
-        [HttpPut("UpdateOrderDrink")]
+        [HttpPut("order-drinks")]
         public IActionResult UpdateOrderDrink(int packageId, int? drinkId, int? quantity)
         {
             var orderDrink = repository.GetOrderDrinkByPackageId(packageId);
@@ -30,7 +30,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdateOrderDrink(oDrink);
             return NoContent();
         }
-        [HttpDelete("DeleteOrderDrink")]
+        [HttpDelete("order-drinks")]
         public IActionResult DeleteOrderDrink(int id)
         {
             var orderDrink = repository.GetOrderDrinkByPackageId(id);
@@ -41,11 +41,11 @@ namespace PartyPalKiddosAPI.Controllers
             repository.removeOrderDrink(orderDrink);
             return NoContent();
         }
-        [HttpGet("GetAllOrderDrink")]
+        [HttpGet("order-drinks")]
         public ActionResult<IEnumerable<OrderDrink>> getOrderDrink()
             => repository.GetOrderDrink();
 
-        [HttpGet("GetOrderDrinkByPackageId")]
+        [HttpGet("order-drinks/{packageId}")]
         public ActionResult<OrderDrink> getOrderDrinkByPackageId(int packageId) =>
             repository.GetOrderDrinkByPackageId(packageId);
     }

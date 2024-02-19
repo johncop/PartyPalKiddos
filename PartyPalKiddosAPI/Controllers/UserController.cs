@@ -12,14 +12,14 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IUserRepository repository = new UserRepository();
 
-        [HttpPost("AddUser")]
+        [HttpPost("users")]
         public IActionResult PostUser(string firstName, string lastName, string email, string password, string address, string phoneNumber, int? roleId, int? status)
         {
             User p = new User(firstName, lastName, email, password, address, phoneNumber, roleId, status);
             repository.addUser(p);
             return NoContent();
         }
-        [HttpPut("UpdateUser")]
+        [HttpPut("users")]
         public IActionResult UpdateUser(int id,string firstName, string lastName, string email, string password, string address, string phoneNumber, int? roleId, int? status)
         {
             var user = repository.GetUserById(id);
@@ -31,7 +31,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdateUser(p);
             return NoContent();
         }
-        [HttpDelete("DeleteUser")]
+        [HttpDelete("users")]
         public IActionResult DeleteUser(int id)
         {
             var user = repository.GetUserById(id);
@@ -42,11 +42,11 @@ namespace PartyPalKiddosAPI.Controllers
             repository.removeUser(user);
             return NoContent();
         }
-        [HttpGet("GetAllUsers")]
+        [HttpGet("users")]
         public ActionResult<IEnumerable<User>> getAllUsers()
             => repository.GetAllUsers();
 
-        [HttpGet("GetUserById")]
+        [HttpGet("users/{id}")]
         public ActionResult<User> getUserById(int id) =>
             repository.GetUserById(id);
 

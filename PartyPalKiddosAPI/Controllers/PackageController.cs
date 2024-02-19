@@ -12,14 +12,14 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IPackageRepository repository = new PackageRepository();
 
-        [HttpPost("AddPackage")]
+        [HttpPost("packages")]
         public IActionResult PostPackage(string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             Package p = new Package(packageName, numberOfKid, userId, locationId, startTime, endTime, price, status);
             repository.addPackage(p);
             return NoContent();
         }
-        [HttpPut("UpdatePackage")]
+        [HttpPut("packages")]
         public IActionResult UpdatePackage(int id,string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             var package = repository.GetPackageById(id);
@@ -31,7 +31,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdatePackage(p);
             return NoContent();
         }
-        [HttpDelete("DeletePackage")]
+        [HttpDelete("packages")]
         public IActionResult DeletePackage(int id)
         {
             var package = repository.GetPackageById(id);
@@ -42,19 +42,19 @@ namespace PartyPalKiddosAPI.Controllers
             repository.removePackage(package);
             return NoContent();
         }
-        [HttpGet("GetAllPackage")]
+        [HttpGet("packages")]
         public ActionResult<IEnumerable<Package>> getPackage()
             => repository.GetAllPackage();
 
-        [HttpGet("GetPackageById")]
+        [HttpGet("packages/{packageId}")]
         public ActionResult<Package> getPackageById(int packageId) =>
             repository.GetPackageById(packageId);
 
-        [HttpGet("GetPackageByPackageName")]
+        [HttpGet("packages/by-name")]
         public ActionResult<IEnumerable<Package>> getPackageByName(string packageName) =>
             repository.GetPackagetByName(packageName);
 
-        [HttpGet("GetPackageByUserId")]
+        [HttpGet("packages/by-user/{userId}")]
         public ActionResult<IEnumerable<Package>> getPackageByUserId(int userId) =>
             repository.GetPackagetByUserId(userId);
     }
