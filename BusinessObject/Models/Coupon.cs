@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace BusinessObject.Models
 {
@@ -8,6 +9,21 @@ namespace BusinessObject.Models
         public Coupon()
         {
             Orders = new HashSet<Order>();
+        }
+
+        public Coupon(int id, string couponName, decimal discountAmount, string? description)
+        {
+            Id = id;
+            CouponName = couponName;
+            DiscountAmount = discountAmount;
+            Description = description;
+        }
+
+        public Coupon(string couponName, decimal discountAmount, string? description)
+        {
+            CouponName = couponName;
+            DiscountAmount = discountAmount;
+            Description = description;
         }
 
         public int Id { get; set; }
