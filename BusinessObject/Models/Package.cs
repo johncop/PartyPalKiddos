@@ -5,6 +5,7 @@ namespace BusinessObject.Models
 {
     public partial class Package
     {
+        public Package() { }
         public Package(string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             PackageName = packageName;
