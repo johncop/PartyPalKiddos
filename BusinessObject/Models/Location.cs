@@ -11,30 +11,16 @@ namespace BusinessObject.Models
             Packages = new HashSet<Package>();
         }
 
-        public Location(string? address, int? districtId, string? description, decimal? price)
-        {
-            Address = address;
-            DistrictId = districtId;
-            Description = description;
-            Price = price;
-        }
-
-        public Location(int id, string? address, int? districtId, string? description, decimal? price)
-        {
-            Id = id;
-            Address = address;
-            DistrictId = districtId;
-            Description = description;
-            Price = price;
-        }
-
         public int Id { get; set; }
         public string? Address { get; set; }
         public int? DistrictId { get; set; }
+        public int? TypeId { get; set; }
         public string? Description { get; set; }
         public decimal? Price { get; set; }
+        public string? Status { get; set; }
 
         public virtual District? District { get; set; }
+        public virtual LocationType? Type { get; set; }
         public virtual ICollection<LocationImage> LocationImages { get; set; }
         public virtual ICollection<Package> Packages { get; set; }
     }

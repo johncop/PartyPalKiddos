@@ -19,7 +19,6 @@ namespace BusinessObject.Models
         public int? PackageId { get; set; }
 
         public virtual Coupon? Coupon { get; set; }
-        public virtual Package? Package { get; set; }
         public virtual User? User { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }

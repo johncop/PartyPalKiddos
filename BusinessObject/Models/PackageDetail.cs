@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace BusinessObject.Models
 {
-    public partial class ServiceImage
+    public partial class PackageDetail
     {
-        public int Id { get; set; }
-        public string? ImgUrl { get; set; }
+        public int? PackageId { get; set; }
         public int? ServiceId { get; set; }
+        public int? Quantity { get; set; }
 
+        public virtual Package? Package { get; set; }
         public virtual Service? Service { get; set; }
     }
 }

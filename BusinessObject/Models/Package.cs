@@ -5,36 +5,6 @@ namespace BusinessObject.Models
 {
     public partial class Package
     {
-        public Package()
-        {
-            Orders = new HashSet<Order>();
-        }
-
-        public Package(string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
-        {
-            PackageName = packageName;
-            NumberOfKid = numberOfKid;
-            UserId = userId;
-            LocationId = locationId;
-            StartTime = startTime;
-            EndTime = endTime;
-            Price = price;
-            Status = status;
-        }
-
-        public Package(int id, string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
-        {
-            Id = id;
-            PackageName = packageName;
-            NumberOfKid = numberOfKid;
-            UserId = userId;
-            LocationId = locationId;
-            StartTime = startTime;
-            EndTime = endTime;
-            Price = price;
-            Status = status;
-        }
-
         public int Id { get; set; }
         public string? PackageName { get; set; }
         public int? NumberOfKid { get; set; }
@@ -47,6 +17,5 @@ namespace BusinessObject.Models
 
         public virtual Location? Location { get; set; }
         public virtual User? User { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

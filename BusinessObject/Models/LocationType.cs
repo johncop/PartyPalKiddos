@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace BusinessObject.Models
 {
-    public partial class District
+    public partial class LocationType
     {
-        public District()
+        public LocationType()
         {
             Locations = new HashSet<Location>();
         }
