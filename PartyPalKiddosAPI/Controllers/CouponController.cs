@@ -16,7 +16,7 @@ namespace PartyPalKiddosAPI.Controllers
         public IActionResult PostCoupon(string couponName, decimal discountAmount, string? description)
         {
             Coupon p = new Coupon(couponName, discountAmount, description);
-            repository.addRole(p);
+            repository.addCoupon(p);
             return NoContent();
         }
         [HttpPut("coupons")]

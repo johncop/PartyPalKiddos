@@ -9,7 +9,7 @@ namespace Repository.Interface
 {
     public interface ICouponRepository
     {
-        void addRole(Coupon d);
+        void addCoupon(Coupon d);
         void removeCoupon(Coupon d);
         void UpdateCoupon(Coupon d);
         List<Coupon> GetAllCoupons();
