@@ -28,6 +28,7 @@ namespace DataAccess
                     EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId= package.LocationId,
+                    Price = package.Price,
                     Status = package.Status,
                 }).ToList();
                 }
@@ -58,6 +59,7 @@ namespace DataAccess
                     EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
+                    Price = package.Price,
                     Status = package.Status,
                 }).SingleOrDefault(x => x.Id == id);
                 }
@@ -87,6 +89,7 @@ namespace DataAccess
                     EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
+                    Price = package.Price,
                     Status = package.Status,
                 }).ToList();
                 }
@@ -115,6 +118,7 @@ namespace DataAccess
                     EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
+                    Price = package.Price,
                     Status = package.Status,
                 }).ToList();
                 }
@@ -180,5 +184,18 @@ namespace DataAccess
             }
         }
         #endregion
+
+        public static bool IsTimeSlotAvailable(int locationId, DateTime startTime, DateTime endTime)
+        {
+            using (var context = new PartyPalKiddosContext())
+            {
+                return !context.Packages.Any(p =>
+                p.LocationId == locationId &&
+                ((startTime >= p.StartTime && startTime < p.EndTime) ||
+                (endTime > p.StartTime && endTime <= p.EndTime) ||
+                (startTime <= p.StartTime && endTime >= p.EndTime)));
+            }           
+        }
+
     }
 }

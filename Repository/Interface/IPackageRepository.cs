@@ -16,7 +16,6 @@ namespace Repository.Interface
         Package GetPackageById(int id);
         List<Package> GetPackagetByName(string packgakeName);
         List<Package> GetPackagetByUserId(int userId);
-
-
+        bool isTimeSlotAvaiable(int locationId, DateTime startTime, DateTime endTime);
     }
 }
