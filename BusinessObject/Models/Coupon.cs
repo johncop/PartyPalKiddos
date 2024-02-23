@@ -10,6 +10,31 @@ namespace BusinessObject.Models
             Orders = new HashSet<Order>();
         }
 
+        public Coupon(string? couponName, decimal? discountAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
+        {
+            CouponName = couponName;
+            DiscountAmount = discountAmount;
+            Description = description;
+            TypeId = typeId;
+            Quantity = quantity;
+            CreatedDate = createdDate;
+            ExpiredDate = expiredDate;
+            Status = status;
+        }
+
+        public Coupon(int id, string? couponName, decimal? discountAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
+        {
+            Id = id;
+            CouponName = couponName;
+            DiscountAmount = discountAmount;
+            Description = description;
+            TypeId = typeId;
+            Quantity = quantity;
+            CreatedDate = createdDate;
+            ExpiredDate = expiredDate;
+            Status = status;
+        }
+
         public int Id { get; set; }
         public string? CouponName { get; set; }
         public decimal? DiscountAmount { get; set; }

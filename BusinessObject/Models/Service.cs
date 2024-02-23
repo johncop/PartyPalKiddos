@@ -10,6 +10,25 @@ namespace BusinessObject.Models
             ServiceImages = new HashSet<ServiceImage>();
         }
 
+        public Service(string? serviceName, string? description, int? serviceCategoryId, int? typeId, decimal? price)
+        {
+            ServiceName = serviceName;
+            Description = description;
+            ServiceCategoryId = serviceCategoryId;
+            TypeId = typeId;
+            Price = price;
+        }
+
+        public Service(int id, string? serviceName, string? description, int? serviceCategoryId, int? typeId, decimal? price)
+        {
+            Id = id;
+            ServiceName = serviceName;
+            Description = description;
+            ServiceCategoryId = serviceCategoryId;
+            TypeId = typeId;
+            Price = price;
+        }
+
         public int Id { get; set; }
         public string? ServiceName { get; set; }
         public string? Description { get; set; }

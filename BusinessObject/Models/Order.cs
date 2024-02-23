@@ -10,6 +10,27 @@ namespace BusinessObject.Models
             Payments = new HashSet<Payment>();
         }
 
+        public Order(DateTime orderDate, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
+        {
+            OrderDate = orderDate;
+            TotalAmount = totalAmount;
+            UserId = userId;
+            PaymentId = paymentId;
+            CouponId = couponId;
+            PackageId = packageId;
+        }
+
+        public Order(int id, DateTime orderDate, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
+        {
+            Id = id;
+            OrderDate = orderDate;
+            TotalAmount = totalAmount;
+            UserId = userId;
+            PaymentId = paymentId;
+            CouponId = couponId;
+            PackageId = packageId;
+        }
+
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
