@@ -7,67 +7,70 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class DistrictDAO
+    public class PackageDetailDAO
     {
         #region query
-        public static List<District> GetDistricts()
+        public static List<PackageDetail> GetPackageDetails()
         {
-            var listDistricts = new List<District>();
+            var listOrder = new List<PackageDetail>();
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    listDistricts = context.Districts
-                .Select(District => new District
+                    listOrder = context.PackageDetails
+                .Select(pd => new PackageDetail
                 {
-                    Id = District.Id,
-                    Description = District.Description
+                    PackageId = pd.PackageId,
+                    ServiceId = pd.ServiceId,
+                    Quantity = pd.Quantity,
                 }).ToList();
                 }
             }
-            catch (Exception)
-            {
 
-                throw;
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
-            return listDistricts;
+            return listOrder;
         }
 
-        public static District findDistrictById(int id)
+        public static PackageDetail findPackageDetailByPackageId(int id)
         {
-            District d = new District();
+            PackageDetail p = new PackageDetail();
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    d = context.Districts
-                .Select(District => new District
+                    p = context.PackageDetails
+                .Select(pd => new PackageDetail
                 {
-                    Id = District.Id,
-                    Description = District.Description
-                }).SingleOrDefault(x => x.Id == id);
+                    PackageId = pd.PackageId,
+                    ServiceId = pd.ServiceId,
+                    Quantity = pd.Quantity,
+                }).SingleOrDefault(x => x.PackageId == id);
                 }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return d;
+            return p;
         }
 
-        public static List<District> findDistrictByName(string description)
+        public static List<PackageDetail> findServiceByPackageId(int packageId)
         {
-            List<District> d = new List<District>();
+            List<PackageDetail> pt = new List<PackageDetail>();
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    d = context.Districts
-                     .Where(District => District.Description.Contains(description))
-                .Select(District => new District
+                    pt = context.PackageDetails
+                .Where(PackageDetail => PackageDetail.PackageId == packageId)
+                .Select(pd => new PackageDetail
                 {
-                    Id = District.Id,
-                    Description = District.Description
+                    PackageId = pd.PackageId,
+                    ServiceId = pd.ServiceId,
+                    Quantity = pd.Quantity,
                 }).ToList();
                 }
             }
@@ -75,20 +78,18 @@ namespace DataAccess
             {
                 throw new Exception(e.Message);
             }
-            return d;
+            return pt;
         }
         #endregion
 
-
-
         #region command
-        public static void SaveDistrict(District d)
+        public static void SavePackageDetail(PackageDetail pd)
         {
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    context.Districts.Add(d);
+                    context.PackageDetails.Add(pd);
                     context.SaveChanges();
                 }
             }
@@ -97,15 +98,14 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-
-        public static void DeleteDistrict(District d)
+        public static void DeletePackageDetail(PackageDetail pd)
         {
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    var p1 = context.Districts.SingleOrDefault(x => x.Id == d.Id);
-                    context.Districts.Remove(p1);
+                    var p1 = context.PackageDetails.SingleOrDefault(x => x.PackageId == pd.PackageId);
+                    context.PackageDetails.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -115,14 +115,13 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-
-        public static void UpdateDistrict(District d)
+        public static void UpdatePackageDetail(PackageDetail pd)
         {
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    context.Entry<District>(d).State =
+                    context.Entry<PackageDetail>(pd).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
@@ -133,6 +132,6 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        #endregion 
+        #endregion
     }
 }

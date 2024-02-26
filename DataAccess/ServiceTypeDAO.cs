@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,44 +8,49 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class DistrictDAO
+    public class ServiceTypeDAO
     {
         #region query
-        public static List<District> GetDistricts()
+        public static List<ServiceType> GetServiceTypes()
         {
-            var listDistricts = new List<District>();
+            var listOrder = new List<ServiceType>();
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    listDistricts = context.Districts
-                .Select(District => new District
+                    listOrder = context.ServiceTypes
+                        .Include(st => st.Services)
+                .Select(st => new ServiceType
                 {
-                    Id = District.Id,
-                    Description = District.Description
+                    Id = st.Id,
+                    TypeName = st.TypeName,
+                    Description = st.Description,
+                    Services= st.Services
                 }).ToList();
                 }
             }
-            catch (Exception)
-            {
 
-                throw;
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
-            return listDistricts;
+            return listOrder;
         }
 
-        public static District findDistrictById(int id)
+        public static ServiceType findServiceTypeById(int id)
         {
-            District d = new District();
+            ServiceType p = new ServiceType();
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    d = context.Districts
-                .Select(District => new District
+                    p = context.ServiceTypes
+                .Select(st => new ServiceType
                 {
-                    Id = District.Id,
-                    Description = District.Description
+                    Id = st.Id,
+                    TypeName = st.TypeName,
+                    Description = st.Description,
+                    Services = st.Services
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -52,22 +58,24 @@ namespace DataAccess
             {
                 throw new Exception(e.Message);
             }
-            return d;
+            return p;
         }
 
-        public static List<District> findDistrictByName(string description)
+        public static List<ServiceType> findServiceTypeByName(string serviceTypeName)
         {
-            List<District> d = new List<District>();
+            List<ServiceType> pt = new List<ServiceType>();
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    d = context.Districts
-                     .Where(District => District.Description.Contains(description))
-                .Select(District => new District
+                    pt = context.ServiceTypes
+                .Where(ServiceType => ServiceType.TypeName == serviceTypeName)
+                .Select(st => new ServiceType
                 {
-                    Id = District.Id,
-                    Description = District.Description
+                    Id = st.Id,
+                    TypeName = st.TypeName,
+                    Description = st.Description,
+                    Services = st.Services
                 }).ToList();
                 }
             }
@@ -75,20 +83,18 @@ namespace DataAccess
             {
                 throw new Exception(e.Message);
             }
-            return d;
+            return pt;
         }
         #endregion
 
-
-
         #region command
-        public static void SaveDistrict(District d)
+        public static void SaveServiceType(ServiceType st)
         {
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    context.Districts.Add(d);
+                    context.ServiceTypes.Add(st);
                     context.SaveChanges();
                 }
             }
@@ -97,15 +103,14 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-
-        public static void DeleteDistrict(District d)
+        public static void DeleteServiceType(ServiceType st)
         {
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    var p1 = context.Districts.SingleOrDefault(x => x.Id == d.Id);
-                    context.Districts.Remove(p1);
+                    var p1 = context.ServiceTypes.SingleOrDefault(x => x.Id == st.Id);
+                    context.ServiceTypes.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -115,14 +120,13 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-
-        public static void UpdateDistrict(District d)
+        public static void UpdateServiceType(ServiceType st)
         {
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    context.Entry<District>(d).State =
+                    context.Entry<ServiceType>(st).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
@@ -133,6 +137,6 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        #endregion 
+        #endregion
     }
 }
