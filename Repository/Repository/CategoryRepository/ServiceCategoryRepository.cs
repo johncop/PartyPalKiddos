@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.CategoryDAO;
 using Repository.Interface.ICategoryRepository;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,16 @@ namespace Repository.Repository.CategoryRepository
 {
     public class ServiceCategoryRepository : IServiceCategoryRepository
     {
-        public void addServiceCategory(ServiceCategory sc)
-        {
-            throw new NotImplementedException();
-        }
+        public void addServiceCategory(ServiceCategory sc) => ServiceCategoryDAO.SaveServiceCategory(sc);
 
-        public List<ServiceCategory> GetAllServiceCategory()
-        {
-            throw new NotImplementedException();
-        }
+        public List<ServiceCategory> GetAllServiceCategory() => ServiceCategoryDAO.GetServiceCategorys();
 
-        public ServiceCategory GetServiceCategoryById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public ServiceCategory GetServiceCategoryById(int id) => ServiceCategoryDAO.findServiceCategoryById(id);
 
-        public List<ServiceCategory> GetServiceCategoryByName(string ServiceCategoryName)
-        {
-            throw new NotImplementedException();
-        }
+        public List<ServiceCategory> GetServiceCategoryByName(string ServiceCategoryName) => ServiceCategoryDAO.findServiceCategoryByName(ServiceCategoryName);
 
-        public void removeServiceCategory(ServiceCategory sc)
-        {
-            throw new NotImplementedException();
-        }
+        public void removeServiceCategory(ServiceCategory sc) => ServiceCategoryDAO.DeleteServiceCategory(sc);
 
-        public void UpdateServiceCategory(ServiceCategory sc)
-        {
-            throw new NotImplementedException();
-        }
+        public void UpdateServiceCategory(ServiceCategory sc) => ServiceCategoryDAO.UpdateServiceCategory(sc);
     }
 }

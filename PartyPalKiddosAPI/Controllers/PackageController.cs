@@ -27,6 +27,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.addPackage(p);
             return NoContent();
         }
+
         [HttpPut("packages")]
         public IActionResult UpdatePackage(int id,string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
@@ -39,6 +40,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdatePackage(p);
             return NoContent();
         }
+
         [HttpDelete("packages")]
         public IActionResult DeletePackage(int id)
         {
@@ -50,6 +52,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.removePackage(package);
             return NoContent();
         }
+
         [HttpGet("packages")]
         public ActionResult<IEnumerable<Package>> getPackage()
             => repository.GetAllPackage();
