@@ -13,21 +13,21 @@ namespace PartyPalKiddosAPI.Controllers
         private ICouponRepository repository = new CouponRepository();
 
         [HttpPost("coupons")]
-        public IActionResult PostCoupon(string couponName, decimal discountAmount, string? description)
+        public IActionResult PostCoupon(string? couponName, decimal? discountAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
         {
-            Coupon p = new Coupon(couponName, discountAmount, description);
+            Coupon p = new Coupon(couponName, discountAmount, description, typeId, quantity, createdDate, expiredDate, status);
             repository.addCoupon(p);
             return NoContent();
         }
         [HttpPut("coupons")]
-        public IActionResult UpdateCoupon(int id, string couponName, decimal discountAmount, string? description)
+        public IActionResult UpdateCoupon(int id, string? couponName, decimal? discountAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
         {
             var user = repository.GetCouponById(id);
             if(user == null)
             {
                 return NotFound();
             }
-            Coupon p = new Coupon(id, couponName, discountAmount, description);
+            Coupon p = new Coupon(id, couponName, discountAmount, description, typeId, quantity, createdDate, expiredDate, status);
             repository.UpdateCoupon(p);
             return NoContent();
         }
