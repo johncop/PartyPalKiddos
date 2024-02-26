@@ -10,7 +10,7 @@ namespace DataAccess.CategoryDAO
 {
     public class FoodCategoryDAO
     {
-        #region query
+        /*#region query
         public static List<FoodCategory> GetFoodCategorys()
         {
             var listFoodCategorys = new List<FoodCategory>();
@@ -19,13 +19,13 @@ namespace DataAccess.CategoryDAO
                 using (var context = new PartyPalKiddosContext())
                 {
                     listFoodCategorys = context.FoodCategories
-                        .Include(f=>f.Foods)
+                        .Include(f => f.Foods)
                 .Select(FoodCategory => new FoodCategory
                 {
                     Id = FoodCategory.Id,
-                    CategoryName= FoodCategory.CategoryName,
-                    Description= FoodCategory.Description,
-                    Foods= FoodCategory.Foods,
+                    CategoryName = FoodCategory.CategoryName,
+                    Description = FoodCategory.Description,
+                    Foods = FoodCategory.Foods,
                 }).ToList();
                 }
             }
@@ -45,7 +45,7 @@ namespace DataAccess.CategoryDAO
                 using (var context = new PartyPalKiddosContext())
                 {
                     d = context.FoodCategories
-                        .Include(f=>f.Foods)
+                        .Include(f => f.Foods)
                 .Select(FoodCategory => new FoodCategory
                 {
                     Id = FoodCategory.Id,
@@ -71,7 +71,7 @@ namespace DataAccess.CategoryDAO
                 {
                     d = context.FoodCategories
                      .Where(FoodCategory => FoodCategory.CategoryName.Contains(FoodCategoryName))
-                     .Include(f=>f.Foods)
+                     .Include(f => f.Foods)
                 .Select(FoodCategory => new FoodCategory
                 {
                     Id = FoodCategory.Id,
@@ -143,6 +143,6 @@ namespace DataAccess.CategoryDAO
                 throw new Exception(e.Message);
             }
         }
-        #endregion
+        #endregion*/
     }
 }

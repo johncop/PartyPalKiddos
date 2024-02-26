@@ -9,7 +9,7 @@ namespace DataAccess
 {
     public class OrderServiceDAO
     {
-        public static List<OrderService> GetOrderServices()
+        /*public static List<OrderService> GetOrderServices()
         {
             var listOrder = new List<OrderService>();
             try
@@ -104,6 +104,6 @@ namespace DataAccess
 
                 throw new Exception(e.Message);
             }
-        }
+        }*/
     }
 }

@@ -9,7 +9,7 @@ namespace DataAccess
 {
     public class OrderDrinkDAO
     {
-        public static List<OrderDrink> GetOrderDrinks()
+        /*public static List<OrderDrink> GetOrderDrinks()
         {
             var listOrder = new List<OrderDrink>();
             try
@@ -102,6 +102,6 @@ namespace DataAccess
 
                 throw new Exception(e.Message);
             }
-        }
+        }*/
     }
 }

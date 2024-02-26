@@ -9,7 +9,7 @@ namespace DataAccess.ImageDAO
 {
     public class FoodImageDAO
     {
-        #region query
+        /*#region query
         public static List<FoodImage> GetFoodImages()
         {
             var listFoodImages = new List<FoodImage>();
@@ -113,6 +113,6 @@ namespace DataAccess.ImageDAO
                 throw new Exception(e.Message);
             }
         }
-        #endregion
+        #endregion*/
     }
 }

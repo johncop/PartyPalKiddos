@@ -10,7 +10,7 @@ namespace DataAccess
 {
     public class FoodDAO
     {
-        #region query
+        /*#region query
         public static List<Food> GetFoods()
         {
             var listFoods = new List<Food>();
@@ -149,6 +149,6 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        #endregion
+        #endregion*/
     }
 }

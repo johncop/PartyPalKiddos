@@ -10,7 +10,7 @@ namespace DataAccess
 {
     public class DrinkDAO
     {
-        #region query
+        /*#region query
         public static List<Drink> GetDrinks()
         {
             var listDrinks = new List<Drink>();
@@ -149,6 +149,6 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        #endregion
+        #endregion*/
     }
 }

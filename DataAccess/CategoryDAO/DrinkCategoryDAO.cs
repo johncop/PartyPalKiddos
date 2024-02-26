@@ -10,7 +10,7 @@ namespace DataAccess.CategoryDAO
 {
     public class DrinkCategoryDAO
     {
-        #region query
+        /*#region query
         public static List<DrinkCategory> GetDrinkCategorys()
         {
             var listDrinkCategorys = new List<DrinkCategory>();
@@ -19,13 +19,13 @@ namespace DataAccess.CategoryDAO
                 using (var context = new PartyPalKiddosContext())
                 {
                     listDrinkCategorys = context.DrinkCategories
-                        .Include(d=> d.Drinks)
+                        .Include(d => d.Drinks)
                 .Select(DrinkCategory => new DrinkCategory
                 {
                     Id = DrinkCategory.Id,
                     CategoryName = DrinkCategory.CategoryName,
                     Description = DrinkCategory.Description,
-                    Drinks= DrinkCategory.Drinks,
+                    Drinks = DrinkCategory.Drinks,
                 }).ToList();
                 }
             }
@@ -45,7 +45,7 @@ namespace DataAccess.CategoryDAO
                 using (var context = new PartyPalKiddosContext())
                 {
                     d = context.DrinkCategories
-                        .Include(d=>d.Drinks)
+                        .Include(d => d.Drinks)
                 .Select(DrinkCategory => new DrinkCategory
                 {
                     Id = DrinkCategory.Id,
@@ -71,7 +71,7 @@ namespace DataAccess.CategoryDAO
                 {
                     d = context.DrinkCategories
                      .Where(DrinkCategory => DrinkCategory.CategoryName.Contains(DrinkCategoryName))
-                     .Include(d=>d.Drinks)
+                     .Include(d => d.Drinks)
                 .Select(DrinkCategory => new DrinkCategory
                 {
                     Id = DrinkCategory.Id,
@@ -143,6 +143,6 @@ namespace DataAccess.CategoryDAO
                 throw new Exception(e.Message);
             }
         }
-        #endregion
+        #endregion*/
     }
 }
