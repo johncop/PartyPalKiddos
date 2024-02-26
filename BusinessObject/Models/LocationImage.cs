@@ -5,6 +5,7 @@ namespace BusinessObject.Models
 {
     public partial class LocationImage
     {
+        public LocationImage() { }  
         public LocationImage(string? imgUrl, int? locationId)
         {
             ImgUrl = imgUrl;

@@ -5,6 +5,7 @@ namespace BusinessObject.Models
 {
     public partial class PackageTag
     {
+        public PackageTag() { }
         public PackageTag(int? packageId, int? categoryId, string? description)
         {
             PackageId = packageId;

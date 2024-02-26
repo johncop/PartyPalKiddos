@@ -5,6 +5,7 @@ namespace BusinessObject.Models
 {
     public partial class ServiceImage
     {
+        public ServiceImage() { }
         public ServiceImage(string? imgUrl, int? serviceId)
         {
             ImgUrl = imgUrl;
