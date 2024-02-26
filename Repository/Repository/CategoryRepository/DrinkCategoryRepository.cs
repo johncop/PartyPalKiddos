@@ -11,7 +11,7 @@ namespace Repository.Repository.CategoryRepository
 {
     public class DrinkCategoryRepository : IDrinkCategoryRepository
     {
-        public void addDrinkCategory(DrinkCategory dc) => DrinkCategoryDAO.SaveDrinkCategory(dc);
+        /*public void addDrinkCategory(DrinkCategory dc) => DrinkCategoryDAO.SaveDrinkCategory(dc);
 
         public List<DrinkCategory> GetAllDrinkCategory() => DrinkCategoryDAO.GetDrinkCategorys();
 
@@ -21,6 +21,6 @@ namespace Repository.Repository.CategoryRepository
 
         public void removeDrinkCategory(DrinkCategory dc) => DrinkCategoryDAO.DeleteDrinkCategory(dc);
 
-        public void UpdateDrinkCategory(DrinkCategory dc) => DrinkCategoryDAO.UpdateDrinkCategory(dc);
+        public void UpdateDrinkCategory(DrinkCategory dc) => DrinkCategoryDAO.UpdateDrinkCategory(dc);*/
     }
 }

@@ -11,7 +11,7 @@ namespace Repository.Repository
 {
     public class OrderFoodRepository : IOrderFoodRepository
     {
-        public void addOrderFood(OrderFood oFood)=> OrderFoodDAO.SaveOrderFood(oFood);
+        /*public void addOrderFood(OrderFood oFood)=> OrderFoodDAO.SaveOrderFood(oFood);
 
         public List<OrderFood> GetOrderFood() => OrderFoodDAO.GetOrderFoods();
 
@@ -19,6 +19,6 @@ namespace Repository.Repository
 
         public void removeOrderFood(OrderFood oFood) => OrderFoodDAO.DeleteOrderFood(oFood);
 
-        public void UpdateOrderFood(OrderFood oFood) => OrderFoodDAO.UpdateOrderFood(oFood);
+        public void UpdateOrderFood(OrderFood oFood) => OrderFoodDAO.UpdateOrderFood(oFood);*/
     }
 }

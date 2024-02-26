@@ -10,7 +10,7 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class FoodController : ControllerBase
     {
-        private IFoodReposiroty repository = new FoodRepository();
+        /*private IFoodReposiroty repository = new FoodRepository();
 
         [HttpGet("foods")]
         public ActionResult<IEnumerable<Food>> getFood()
@@ -55,6 +55,6 @@ namespace PartyPalKiddosAPI.Controllers
             food = new Food(id, foodName, description, foodCategoryId, price);
             repository.UpdateFood(food);
             return NoContent();
-        }
+        }*/
     }
 }

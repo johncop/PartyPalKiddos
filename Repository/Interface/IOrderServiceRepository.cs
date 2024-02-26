@@ -9,10 +9,10 @@ namespace Repository.Interface
 {
     public interface IOrderServiceRepository
     {
-        void addOrderService(OrderService oService);
+        /*void addOrderService(OrderService oService);
         void removeOrderService(OrderService oService);
         void UpdateOrderService(OrderService oService);
         OrderService GetOrderServiceByPackageId(int id);
-        List<OrderService> GetOrderService();
+        List<OrderService> GetOrderService();*/
     }
 }

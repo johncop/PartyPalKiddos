@@ -11,7 +11,7 @@ namespace Repository.Repository.CategoryRepository
 {
     public class FoodCategoryRepository : IFoodCategoryRepository
     {
-        public void addFood(FoodCategory fc) => FoodCategoryDAO.SaveFoodCategory(fc);
+        /*public void addFood(FoodCategory fc) => FoodCategoryDAO.SaveFoodCategory(fc);
 
         public List<FoodCategory> GetAllFoodCategories() => FoodCategoryDAO.GetFoodCategorys();
 
@@ -21,6 +21,6 @@ namespace Repository.Repository.CategoryRepository
 
         public void removeFoodCategory(FoodCategory fc) => FoodCategoryDAO.DeleteFoodCategory(fc);
 
-        public void UpdateFoodCategory(FoodCategory fc) => FoodCategoryDAO.UpdateFoodCategory(fc);
+        public void UpdateFoodCategory(FoodCategory fc) => FoodCategoryDAO.UpdateFoodCategory(fc);*/
     }
 }

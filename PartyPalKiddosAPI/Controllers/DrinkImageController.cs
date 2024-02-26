@@ -12,7 +12,7 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class DrinkImageController : ControllerBase
     {
-        private IDrinkImageRepository repository = new DrinkImageRepository();
+        /*private IDrinkImageRepository repository = new DrinkImageRepository();
 
         [HttpGet("drink-image")]
         public ActionResult<IEnumerable<DrinkImage>> getDrinkImage()
@@ -53,6 +53,6 @@ namespace PartyPalKiddosAPI.Controllers
             DrinkImage = new DrinkImage(id, imgUrl, drinkId);
             repository.UpdateDrinkImage(DrinkImage);
             return NoContent();
-        }
+        }*/
     }
 }

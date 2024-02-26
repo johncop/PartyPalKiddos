@@ -9,7 +9,7 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class OrderDrinkController : ControllerBase
     {
-        private IOrderDrinkRepository repository = new OrderDrinkRepository();
+        /*private IOrderDrinkRepository repository = new OrderDrinkRepository();
 
         [HttpPost("order-drinks")]
         public IActionResult PostOrderDrink(int packageId, int? drinkId, int? quantity)
@@ -47,6 +47,6 @@ namespace PartyPalKiddosAPI.Controllers
 
         [HttpGet("order-drinks/{packageId}")]
         public ActionResult<OrderDrink> getOrderDrinkByPackageId(int packageId) =>
-            repository.GetOrderDrinkByPackageId(packageId);
+            repository.GetOrderDrinkByPackageId(packageId);*/
     }
 }

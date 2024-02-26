@@ -9,11 +9,11 @@ namespace Repository.Interface.ICategoryRepository
 {
     public interface IDrinkCategoryRepository
     {
-        void addDrinkCategory(DrinkCategory dc);
+        /*void addDrinkCategory(DrinkCategory dc);
         void removeDrinkCategory(DrinkCategory dc);
         void UpdateDrinkCategory(DrinkCategory dc);
         DrinkCategory GetDrinkCategoryById(int id);
         List<DrinkCategory> GetDrinkCategoryByName(string DrinkCategoryName);
-        List<DrinkCategory> GetAllDrinkCategory();
+        List<DrinkCategory> GetAllDrinkCategory();*/
     }
 }

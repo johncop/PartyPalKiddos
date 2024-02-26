@@ -10,7 +10,7 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class DrinkController : ControllerBase
     {
-        private IDrinkRepository repository = new DrinkRepository();
+        /*private IDrinkRepository repository = new DrinkRepository();
 
         [HttpGet("drinks")]
         public ActionResult<IEnumerable<Drink>> getDrink()
@@ -55,6 +55,6 @@ namespace PartyPalKiddosAPI.Controllers
             drink = new Drink(id, drinkName, description, drinkCategoryId, price);
             repository.UpdateDrink(drink);
             return NoContent();
-        }
+        }*/
     }
 }

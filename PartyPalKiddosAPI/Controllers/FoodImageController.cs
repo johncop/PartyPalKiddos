@@ -10,7 +10,7 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class FoodImageController : ControllerBase
     {
-        private IFoodImageRepository repository = new FoodImageRepository();
+        /*private IFoodImageRepository repository = new FoodImageRepository();
 
         [HttpGet("food-image")]
         public ActionResult<IEnumerable<FoodImage>> getFoodImage()
@@ -51,6 +51,6 @@ namespace PartyPalKiddosAPI.Controllers
             FoodImage = new FoodImage(id, imgUrl, drinkId);
             repository.UpdateFoodImage(FoodImage);
             return NoContent();
-        }
+        }*/
     }
 }

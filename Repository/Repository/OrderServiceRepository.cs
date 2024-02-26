@@ -11,7 +11,7 @@ namespace Repository.Repository
 {
     public class OrderServiceRepository : IOrderServiceRepository
     {
-        public void addOrderService(OrderService oService) => OrderServiceDAO.SaveOrderService(oService);
+        /*public void addOrderService(OrderService oService) => OrderServiceDAO.SaveOrderService(oService);
 
         public List<OrderService> GetOrderService() => OrderServiceDAO.GetOrderServices();
 
@@ -19,6 +19,6 @@ namespace Repository.Repository
 
         public void removeOrderService(OrderService oService) => OrderServiceDAO.DeleteOrderService(oService);
 
-        public void UpdateOrderService(OrderService oService) => OrderServiceDAO.UpdateOrderService(oService);
+        public void UpdateOrderService(OrderService oService) => OrderServiceDAO.UpdateOrderService(oService);*/
     }
 }

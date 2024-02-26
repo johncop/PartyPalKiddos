@@ -9,10 +9,10 @@ namespace Repository.Interface
 {
     public interface IOrderFoodRepository
     {
-        void addOrderFood(OrderFood oFood);
+        /*void addOrderFood(OrderFood oFood);
         void removeOrderFood(OrderFood oFood);
         void UpdateOrderFood(OrderFood oFood);
         OrderFood GetOrderFoodByPackageId(int id);
-        List<OrderFood> GetOrderFood();
+        List<OrderFood> GetOrderFood();*/
     }
 }

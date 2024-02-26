@@ -9,11 +9,11 @@ namespace Repository.Interface.ICategoryRepository
 {
     public interface IFoodCategoryRepository
     {
-        void addFood(FoodCategory fc);
+        /*void addFood(FoodCategory fc);
         void removeFoodCategory(FoodCategory fc);
         void UpdateFoodCategory(FoodCategory fc);
         FoodCategory GetFoodCategoryById(int id);
         List<FoodCategory> GetFoodByName(string FoodName);
-        List<FoodCategory> GetAllFoodCategories();
+        List<FoodCategory> GetAllFoodCategories();*/
     }
 }

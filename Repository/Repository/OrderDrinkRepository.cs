@@ -11,7 +11,7 @@ namespace Repository.Repository
 {
     public class OrderDrinkRepository : IOrderDrinkRepository
     {
-        public void addOrderDrink(OrderDrink oDrink) => OrderDrinkDAO.SaveOrderDrink(oDrink);
+        /*public void addOrderDrink(OrderDrink oDrink) => OrderDrinkDAO.SaveOrderDrink(oDrink);
 
         public List<OrderDrink> GetOrderDrink() => OrderDrinkDAO.GetOrderDrinks();
 
@@ -19,6 +19,6 @@ namespace Repository.Repository
 
         public void removeOrderDrink(OrderDrink oDrink) => OrderDrinkDAO.DeleteOrderDrink(oDrink);
 
-        public void UpdateOrderDrink(OrderDrink oDrink) => OrderDrinkDAO.UpdateOrderDrink(oDrink);
+        public void UpdateOrderDrink(OrderDrink oDrink) => OrderDrinkDAO.UpdateOrderDrink(oDrink);*/
     }
 }

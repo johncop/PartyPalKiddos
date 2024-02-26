@@ -9,7 +9,7 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class OrderServiceController : ControllerBase
     {
-        private IOrderServiceRepository repository = new OrderServiceRepository();
+        /*private IOrderServiceRepository repository = new OrderServiceRepository();
 
         [HttpPost("order-services")]
         public IActionResult PostOrderService(int packageId, int? serviceId, int? serviceOptionId, int? quantity)
@@ -47,6 +47,6 @@ namespace PartyPalKiddosAPI.Controllers
 
         [HttpGet("order-services/{packageId}")]
         public ActionResult<OrderService> getOrderServiceByPackageId(int packageId) =>
-            repository.GetOrderServiceByPackageId(packageId);
+            repository.GetOrderServiceByPackageId(packageId);*/
     }
 }
