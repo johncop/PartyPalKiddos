@@ -12,10 +12,11 @@ namespace Repository.Interface
         void addPackage(Package p);
         void removePackage(Package p);
         void UpdatePackage(Package p);
+        void ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? userId, int locationId ,DateTime? startTime, DateTime? endTime, decimal? price);
         List<Package> GetAllPackage();
         Package GetPackageById(int id);
         List<Package> GetPackagetByName(string packgakeName);
         List<Package> GetPackagetByUserId(int userId);
-        bool isTimeSlotAvaiable(int locationId, DateTime startTime, DateTime endTime);
+        bool isTimeSlotAvaiable(int? locationId, DateTime? startTime, DateTime? endTime);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface;
@@ -29,7 +30,7 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("packages")]
-        public IActionResult UpdatePackage(int id,string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
+        public IActionResult UpdatePackage(int id,string? packageName, int? numberOfKid, int? userId, int locationId, DateTime startTime, DateTime endTime, decimal? price, int? status)
         {
             var package = repository.GetPackageById(id);
             if(package == null)
@@ -40,6 +41,31 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdatePackage(p);
             return NoContent();
         }
+
+        [HttpPut("packages/for-user/{id}")]
+        public IActionResult UpdatePackage(int id, string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
+        {
+            var existingPackage = repository.GetPackageById(id);
+            if (existingPackage == null)
+            {
+                return NotFound("The package does not exist.");
+            }
+
+            // Check if the time slot is available for the new package
+            if (!repository.isTimeSlotAvaiable(locationId ?? existingPackage.LocationId, startTime ?? existingPackage.StartTime, endTime ?? existingPackage.EndTime))
+            {
+                return Conflict("The selected time slot is not available for this location.");
+            }
+
+            // Clone the package with new customizations
+            Package newPackage = PackageDAO.ClonePackage(existingPackage, packageName, numberOfKid, userId, locationId, startTime, endTime, price);
+
+            // Add the new package as a new entity in the database
+            repository.addPackage(newPackage);
+
+            return NoContent();
+        }
+
 
         [HttpDelete("packages")]
         public IActionResult DeletePackage(int id)

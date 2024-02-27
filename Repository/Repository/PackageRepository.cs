@@ -13,6 +13,9 @@ namespace Repository.Repository
     {
         public void addPackage(Package p) => PackageDAO.SavePackage(p);
 
+        public void ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? userId, int locationId,DateTime? startTime, DateTime? endTime, decimal? price)
+            => PackageDAO.ClonePackage(existingPackage, packageName, numberOfKid, userId, locationId ,startTime, endTime, price);
+
         public List<Package> GetAllPackage() => PackageDAO.GetPackages();
 
         public Package GetPackageById(int id) => PackageDAO.findPackageById(id);
@@ -20,7 +23,7 @@ namespace Repository.Repository
         public List<Package> GetPackagetByName(string packgakeName) => PackageDAO.findPackageByName(packgakeName);
         public List<Package> GetPackagetByUserId(int userId) => PackageDAO.findPackageByUserId(userId);
 
-        public bool isTimeSlotAvaiable(int locationId, DateTime startTime, DateTime endTime) 
+        public bool isTimeSlotAvaiable(int? locationId, DateTime? startTime, DateTime? endTime) 
             => PackageDAO.IsTimeSlotAvailable(locationId, startTime, endTime);
 
         public void removePackage(Package p) => PackageDAO.DeletePackage(p);
