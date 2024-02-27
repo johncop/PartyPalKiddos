@@ -25,9 +25,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetLocationByName(address);
 
         [HttpPost("locations")]
-        public ActionResult<Location> createLocation(string? address, int? districtId, string? description, decimal? price)
+        public ActionResult<Location> createLocation(string? address, int? districtId, int? typeId, string? description, decimal? price, string? status)
         {
-            Location l = new Location(address, districtId, description, price);
+            Location l = new Location(address, districtId, typeId,description, price, status);
             repository.addLocation(l);
             return NoContent();
         }
@@ -45,14 +45,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("locations/{id}")]
-        public IActionResult UpdateProduct(int id, string? address, int? districtId, string? description, decimal? price)
+        public IActionResult UpdateProduct(int id, string? address, int? districtId, int? typeId,string? description, decimal? price, string? status)
         {
             Location location = repository.GetLocationById(id);
             if (location == null)
             {
                 return NotFound();
             }
-            location = new Location(id, address, districtId, description, price);
+            location = new Location(id, address, districtId, typeId, description, price, status);
             repository.UpdateLocation(location);
             return NoContent();
         }

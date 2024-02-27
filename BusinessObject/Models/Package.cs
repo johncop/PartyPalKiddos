@@ -43,5 +43,6 @@ namespace BusinessObject.Models
 
         public virtual Location? Location { get; set; }
         public virtual User? User { get; set; }
+        public virtual ICollection<PackageDetail> PackageDetails { get; set; }
     }
 }
