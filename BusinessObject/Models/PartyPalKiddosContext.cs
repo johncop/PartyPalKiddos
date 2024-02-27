@@ -261,6 +261,9 @@ namespace BusinessObject.Models
                     .WithMany(p => p.Packages)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK__Package__user_id__71D1E811");
+                entity.HasMany(p => p.PackageDetails)
+                .WithOne()
+                .HasForeignKey(pd => pd.PackageId);
             });
 
             modelBuilder.Entity<PackageCategory>(entity =>
@@ -287,8 +290,11 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.ServiceId).HasColumnName("Service_Id");
 
+                // Define a composite key for PackageDetail
+                entity.HasKey(pd => new { pd.PackageId, pd.ServiceId });
+
                 entity.HasOne(d => d.Package)
-                    .WithMany()
+                    .WithMany(p => p.PackageDetails)
                     .HasForeignKey(d => d.PackageId)
                     .HasConstraintName("FK_PackageDetail_Package");
 
