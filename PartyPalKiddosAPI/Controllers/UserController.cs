@@ -13,21 +13,21 @@ namespace PartyPalKiddosAPI.Controllers
         private IUserRepository repository = new UserRepository();
 
         [HttpPost("users")]
-        public IActionResult PostUser(string firstName, string lastName, string email, string password, string address, string phoneNumber, int? roleId, int? status)
+        public IActionResult PostUser(string fullName, string email, string password, string address, string phoneNumber, int? roleId, int? status)
         {
-            User p = new User(firstName, lastName, email, password, address, phoneNumber, roleId, status);
+            User p = new User(fullName, email, password, address, phoneNumber, roleId, status);
             repository.addUser(p);
             return NoContent();
         }
         [HttpPut("users")]
-        public IActionResult UpdateUser(int id,string firstName, string lastName, string email, string password, string address, string phoneNumber, int? roleId, int? status)
+        public IActionResult UpdateUser(int id,string fullName, string email, string password, string address, string phoneNumber, int? roleId, int? status)
         {
             var user = repository.GetUserById(id);
             if(user == null)
             {
                 return NotFound();
             }
-            User p = new User(id, firstName, lastName, email, password, address, phoneNumber, roleId, status);
+            User p = new User(id, fullName, email, password, address, phoneNumber, roleId, status);
             repository.UpdateUser(p);
             return NoContent();
         }

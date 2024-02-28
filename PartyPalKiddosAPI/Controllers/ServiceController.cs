@@ -25,9 +25,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetServiceByName(serviceName);
 
         [HttpPost("services")]
-        public ActionResult<Service> CreateService(string? serviceName, string? description, int? serviceCategoryId, int? typeId, decimal? price)
+        public ActionResult<Service> CreateService(string? serviceName, string? description, int? serviceCategoryId, decimal? price)
         {
-            Service s = new Service(serviceName, description, serviceCategoryId, typeId,price);
+            Service s = new Service(serviceName, description, serviceCategoryId,price);
             repository.addService(s);
             return NoContent();
         }
@@ -45,14 +45,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("services/{id}")]
-        public IActionResult UpdateService(int id, string serviceName, string? description, int? serviceCategoryId, int? typeId,decimal price)
+        public IActionResult UpdateService(int id, string serviceName, string? description, int? serviceCategoryId, decimal price)
         {
             Service service = repository.GetServiceById(id);
             if (service == null)
             {
                 return NotFound();
             }
-            service = new Service(id, serviceName, description, serviceCategoryId, typeId ,price);
+            service = new Service(id, serviceName, description, serviceCategoryId ,price);
             repository.UpdateService(service);
             return NoContent();
         }
