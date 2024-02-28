@@ -20,7 +20,6 @@ namespace DataAccess
                 {
                     listService = context.Services
                         .Include(service => service.ServiceImages)
-                        .Include(service => service.Type)
                 .Select(service => new Service
                 {
                     Id = service.Id,
@@ -28,9 +27,7 @@ namespace DataAccess
                     Description = service.Description,
                     ServiceCategoryId = service.ServiceCategoryId,
                     Price = service.Price,
-                    TypeId = service.TypeId,
                     ServiceImages = service.ServiceImages,
-                    Type= service.Type,
                 }).ToList();
                 }
             }
@@ -58,9 +55,7 @@ namespace DataAccess
                     Description = service.Description,
                     ServiceCategoryId = service.ServiceCategoryId,
                     Price = service.Price,
-                    TypeId = service.TypeId,
                     ServiceImages = service.ServiceImages,
-                    Type = service.Type,
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -88,9 +83,7 @@ namespace DataAccess
                     Description = service.Description,
                     ServiceCategoryId = service.ServiceCategoryId,
                     Price = service.Price,
-                    TypeId = service.TypeId,
                     ServiceImages = service.ServiceImages,
-                    Type = service.Type,
                 }).ToList();
                 }
             }

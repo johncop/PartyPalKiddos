@@ -19,13 +19,13 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosContext())
                 {
                     listOrder = context.ServiceTypes
-                        .Include(st => st.Services)
+                        .Include(st => st.ServiceCategories)
                 .Select(st => new ServiceType
                 {
                     Id = st.Id,
                     TypeName = st.TypeName,
                     Description = st.Description,
-                    Services= st.Services
+                    ServiceCategories = st.ServiceCategories
                 }).ToList();
                 }
             }
@@ -50,7 +50,7 @@ namespace DataAccess
                     Id = st.Id,
                     TypeName = st.TypeName,
                     Description = st.Description,
-                    Services = st.Services
+                    ServiceCategories = st.ServiceCategories
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -75,7 +75,7 @@ namespace DataAccess
                     Id = st.Id,
                     TypeName = st.TypeName,
                     Description = st.Description,
-                    Services = st.Services
+                    ServiceCategories = st.ServiceCategories
                 }).ToList();
                 }
             }

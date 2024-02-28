@@ -25,7 +25,8 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    NumberOfKid = package.NumberOfKid,
+                    NumberOfKids = package.NumberOfKids,
+                    NumberOfAdults= package.NumberOfAdults,
                     StartTime = package.StartTime,
                     EndTime = package.EndTime,
                     UserId = package.UserId,
@@ -69,13 +70,27 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    NumberOfKid = package.NumberOfKid,
+                    NumberOfKids = package.NumberOfKids,
+                    NumberOfAdults = package.NumberOfAdults,
                     StartTime = package.StartTime,
                     EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
                     Price = package.Price,
                     Status = package.Status,
+                    PackageDetails = package.PackageDetails.Select(pd => new PackageDetail
+                    {
+                        // Assuming PackageDetail has a ServiceId and a Quantity property
+                        ServiceId = pd.ServiceId,
+                        Quantity = pd.Quantity,
+                        // Map the Service properties you need
+                        Service = new Service
+                        {
+                            Id = pd.Service.Id,
+                            ServiceName = pd.Service.ServiceName,
+                            // ... include other properties as needed
+                        }
+                    }).ToList()
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -99,13 +114,27 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    NumberOfKid = package.NumberOfKid,
+                    NumberOfKids = package.NumberOfKids,
+                    NumberOfAdults = package.NumberOfAdults,
                     StartTime = package.StartTime,
                     EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
                     Price = package.Price,
                     Status = package.Status,
+                    PackageDetails = package.PackageDetails.Select(pd => new PackageDetail
+                    {
+                        // Assuming PackageDetail has a ServiceId and a Quantity property
+                        ServiceId = pd.ServiceId,
+                        Quantity = pd.Quantity,
+                        // Map the Service properties you need
+                        Service = new Service
+                        {
+                            Id = pd.Service.Id,
+                            ServiceName = pd.Service.ServiceName,
+                            // ... include other properties as needed
+                        }
+                    }).ToList()
                 }).ToList();
                 }
             }
@@ -128,13 +157,27 @@ namespace DataAccess
                 {
                     Id = package.Id,
                     PackageName = package.PackageName,
-                    NumberOfKid = package.NumberOfKid,
+                    NumberOfKids = package.NumberOfKids,
+                    NumberOfAdults = package.NumberOfAdults,
                     StartTime = package.StartTime,
                     EndTime = package.EndTime,
                     UserId = package.UserId,
                     LocationId = package.LocationId,
                     Price = package.Price,
                     Status = package.Status,
+                    PackageDetails = package.PackageDetails.Select(pd => new PackageDetail
+                    {
+                        // Assuming PackageDetail has a ServiceId and a Quantity property
+                        ServiceId = pd.ServiceId,
+                        Quantity = pd.Quantity,
+                        // Map the Service properties you need
+                        Service = new Service
+                        {
+                            Id = pd.Service.Id,
+                            ServiceName = pd.Service.ServiceName,
+                            // ... include other properties as needed
+                        }
+                    }).ToList()
                 }).ToList();
                 }
             }
@@ -199,24 +242,26 @@ namespace DataAccess
             }
         }
 
-        public static Package ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
+        public static Package ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? numberOfAdult, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
         {
             // Create a new package with the customized details
             Package newPackage = new Package()
             {
                 PackageName = packageName ?? existingPackage.PackageName,
-                NumberOfKid = numberOfKid ?? existingPackage.NumberOfKid,
+                NumberOfKids = numberOfKid ?? existingPackage.NumberOfKids,
+                NumberOfAdults = numberOfAdult ?? existingPackage.NumberOfAdults,
                 UserId = userId ?? existingPackage.UserId,
                 LocationId = locationId ?? existingPackage.LocationId,
                 StartTime = startTime ?? existingPackage.StartTime,
                 EndTime = endTime ?? existingPackage.EndTime,
                 Price = price ?? existingPackage.Price,
-                Status = 2 // Status set to 2 for user-created packages
+                Status = 2 
             };
             return newPackage;
         }
         #endregion
 
+        #region validation
         public static bool IsTimeSlotAvailable(int? locationId, DateTime? startTime, DateTime? endTime)
         {
             using (var context = new PartyPalKiddosContext())
@@ -228,8 +273,6 @@ namespace DataAccess
                 (startTime <= p.StartTime && endTime >= p.EndTime)));
             }           
         }
-
-        
-
+        #endregion
     }
 }

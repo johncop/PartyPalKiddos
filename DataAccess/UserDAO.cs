@@ -20,8 +20,7 @@ namespace DataAccess
                 .Select(user => new User
                 {
                     Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    FullName = user.FullName,
                     Email = user.Email,
                     Password = user.Password,
                     Address = user.Address,
@@ -49,8 +48,7 @@ namespace DataAccess
                 .Select(user => new User
                 {
                     Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    FullName = user.FullName,
                     Email = user.Email,
                     Password = user.Password,
                     Address = user.Address,
