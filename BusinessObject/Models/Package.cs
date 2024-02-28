@@ -5,11 +5,16 @@ namespace BusinessObject.Models
 {
     public partial class Package
     {
-        public Package() { }
-        public Package(string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
+        public Package()
+        {
+            PackageImages = new HashSet<PackageImage>();
+        }
+
+        public Package(string? packageName, int? numberOfKids, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             PackageName = packageName;
-            NumberOfKid = numberOfKid;
+            NumberOfKids = numberOfKids;
+            NumberOfAdults = numberOfAdults;
             UserId = userId;
             LocationId = locationId;
             StartTime = startTime;
@@ -18,11 +23,12 @@ namespace BusinessObject.Models
             Status = status;
         }
 
-        public Package(int id, string? packageName, int? numberOfKid, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
+        public Package(int id, string? packageName, int? numberOfKids, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
             Id = id;
             PackageName = packageName;
-            NumberOfKid = numberOfKid;
+            NumberOfKids = numberOfKids;
+            NumberOfAdults = numberOfAdults;
             UserId = userId;
             LocationId = locationId;
             StartTime = startTime;
@@ -33,7 +39,8 @@ namespace BusinessObject.Models
 
         public int Id { get; set; }
         public string? PackageName { get; set; }
-        public int? NumberOfKid { get; set; }
+        public int? NumberOfKids { get; set; }
+        public int? NumberOfAdults { get; set; }
         public int? UserId { get; set; }
         public int? LocationId { get; set; }
         public DateTime? StartTime { get; set; }
@@ -43,6 +50,7 @@ namespace BusinessObject.Models
 
         public virtual Location? Location { get; set; }
         public virtual User? User { get; set; }
+        public virtual ICollection<PackageImage> PackageImages { get; set; }
         public virtual ICollection<PackageDetail> PackageDetails { get; set; }
     }
 }

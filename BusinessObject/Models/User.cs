@@ -11,10 +11,9 @@ namespace BusinessObject.Models
             Packages = new HashSet<Package>();
         }
 
-        public User(string firstName, string lastName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
+        public User(string fullName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
         {
-            FirstName = firstName;
-            LastName = lastName;
+            FullName = fullName;
             Email = email;
             Password = password;
             Address = address;
@@ -23,11 +22,10 @@ namespace BusinessObject.Models
             Status = status;
         }
 
-        public User(int id, string firstName, string lastName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
+        public User(int id, string fullName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
         {
             Id = id;
-            FirstName = firstName;
-            LastName = lastName;
+            FullName = fullName;
             Email = email;
             Password = password;
             Address = address;
@@ -37,8 +35,7 @@ namespace BusinessObject.Models
         }
 
         public int Id { get; set; }
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
+        public string FullName { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string? Address { get; set; }

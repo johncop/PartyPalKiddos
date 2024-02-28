@@ -7,7 +7,7 @@ namespace BusinessObject.Models
     {
         public ServiceType()
         {
-            Services = new HashSet<Service>();
+            ServiceCategories = new HashSet<ServiceCategory>();
         }
 
         public ServiceType(string? typeName, string? description)
@@ -27,6 +27,6 @@ namespace BusinessObject.Models
         public string? TypeName { get; set; }
         public string? Description { get; set; }
 
-        public virtual ICollection<Service> Services { get; set; }
+        public virtual ICollection<ServiceCategory> ServiceCategories { get; set; }
     }
 }

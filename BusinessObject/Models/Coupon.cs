@@ -10,10 +10,11 @@ namespace BusinessObject.Models
             Orders = new HashSet<Order>();
         }
 
-        public Coupon(string? couponName, decimal? discountAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
+        public Coupon(string? couponName, decimal? discountAmount, decimal? conditionAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
         {
             CouponName = couponName;
             DiscountAmount = discountAmount;
+            ConditionAmount = conditionAmount;
             Description = description;
             TypeId = typeId;
             Quantity = quantity;
@@ -22,11 +23,12 @@ namespace BusinessObject.Models
             Status = status;
         }
 
-        public Coupon(int id, string? couponName, decimal? discountAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
+        public Coupon(int id, string? couponName, decimal? discountAmount, decimal? conditionAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
         {
             Id = id;
             CouponName = couponName;
             DiscountAmount = discountAmount;
+            ConditionAmount = conditionAmount;
             Description = description;
             TypeId = typeId;
             Quantity = quantity;
@@ -38,6 +40,7 @@ namespace BusinessObject.Models
         public int Id { get; set; }
         public string? CouponName { get; set; }
         public decimal? DiscountAmount { get; set; }
+        public decimal? ConditionAmount { get; set; }
         public string? Description { get; set; }
         public int? TypeId { get; set; }
         public int? Quantity { get; set; }
