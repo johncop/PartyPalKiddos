@@ -21,9 +21,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetServiceImageById(id);
 
         [HttpPost("service-image")]
-        public ActionResult<ServiceImage> CreateServiceImage(string? imgUrl, int? drinkId)
+        public ActionResult<ServiceImage> CreateServiceImage(string? imgUrl, int? serviceId)
         {
-            ServiceImage f = new ServiceImage(imgUrl, drinkId);
+            ServiceImage f = new ServiceImage(imgUrl, serviceId);
             repository.addServiceImage(f);
             return NoContent();
         }
@@ -41,14 +41,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("service-image/{id}")]
-        public IActionResult UpdateProduct(int id, string? imgUrl, int? drinkId)
+        public IActionResult UpdateProduct(int id, string? imgUrl, int? serviceId)
         {
             ServiceImage ServiceImage = repository.GetServiceImageById(id);
             if (ServiceImage == null)
             {
                 return NotFound();
             }
-            ServiceImage = new ServiceImage(id, imgUrl, drinkId);
+            ServiceImage = new ServiceImage(id, imgUrl, serviceId);
             repository.UpdateServiceImage(ServiceImage);
             return NoContent();
         }
