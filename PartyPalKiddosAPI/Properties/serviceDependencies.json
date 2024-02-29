@@ -2,7 +2,7 @@
   "dependencies": {
     "mssql2": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:PartyPalKiddo"
+      "connectionId": "ConnectionStrings"
     }
   }
 }
