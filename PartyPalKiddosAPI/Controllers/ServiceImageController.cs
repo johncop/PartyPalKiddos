@@ -21,7 +21,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetServiceImageById(id);
 
         [HttpPost("service-image")]
-        public ActionResult<ServiceImage> CreateServiceImage(string? imgUrl, int? serviceId)
+        public IActionResult CreateServiceImage(string? imgUrl, int? serviceId)
         {
             ServiceImage f = new ServiceImage(imgUrl, serviceId);
             repository.addServiceImage(f);
