@@ -9,9 +9,9 @@ namespace Repository.Interface.IImageRepository
 {
     public interface IPackageImageRepository
     {
-        void addPackageImage(PackageImage si);
-        void removePackageImage(PackageImage si);
-        void UpdatePackageImage(PackageImage si);
+        void addPackageImage(PackageImage pi);
+        void removePackageImage(PackageImage pi);
+        void UpdatePackageImage(PackageImage pi);
         List<PackageImage> GetAllPackageImages();
         PackageImage GetPackageImageById(int id);
     }

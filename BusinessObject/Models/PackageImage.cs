@@ -5,6 +5,7 @@ namespace BusinessObject.Models
 {
     public partial class PackageImage
     {
+        public PackageImage() { }
         public PackageImage(string? imgUrl, int? packageId)
         {
             ImgUrl = imgUrl;
