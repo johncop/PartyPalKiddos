@@ -21,6 +21,7 @@ namespace DataAccess
                     listPackage = context.Packages
                         .Include(p => p.PackageDetails)
                         .ThenInclude(pd => pd.Service)
+                        .Include(p => p.PackageImages)
                 .Select(package => new Package
                 {
                     Id = package.Id,
@@ -33,6 +34,7 @@ namespace DataAccess
                     LocationId= package.LocationId,
                     Price = package.Price,
                     Status = package.Status,
+                    PackageImages = package.PackageImages,
                     PackageDetails = package.PackageDetails.Select(pd => new PackageDetail
                     {
                         // Assuming PackageDetail has a ServiceId and a Quantity property
