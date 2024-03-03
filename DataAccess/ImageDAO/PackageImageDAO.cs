@@ -62,13 +62,13 @@ namespace DataAccess.ImageDAO
 
 
         #region command
-        public static void SavePackageImage(PackageImage li)
+        public static void SavePackageImage(PackageImage pi)
         {
             try
             {
                 using (var context = new PartyPalKiddosContext())
                 {
-                    context.PackageImages.Add(li);
+                    context.PackageImages.Add(pi);
                     context.SaveChanges();
                 }
             }

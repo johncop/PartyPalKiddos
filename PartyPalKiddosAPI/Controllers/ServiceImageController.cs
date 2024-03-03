@@ -23,8 +23,8 @@ namespace PartyPalKiddosAPI.Controllers
         [HttpPost("service-image")]
         public IActionResult CreateServiceImage(string? imgUrl, int? serviceId)
         {
-            ServiceImage f = new ServiceImage(imgUrl, serviceId);
-            repository.addServiceImage(f);
+            ServiceImage si = new ServiceImage(imgUrl, serviceId);
+            repository.addServiceImage(si);
             return NoContent();
         }
 

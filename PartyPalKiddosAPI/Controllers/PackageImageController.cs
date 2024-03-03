@@ -22,10 +22,10 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetPackageImageById(id);
 
         [HttpPost("package-image")]
-        public ActionResult<PackageImage> CreatePackageImage(string? imgUrl, int? packageId)
+        public IActionResult Post(string? imgUrl, int? packageId)
         {
-            PackageImage f = new PackageImage(imgUrl, packageId);
-            repository.addPackageImage(f);
+            PackageImage pi = new PackageImage(imgUrl, packageId);
+            repository.addPackageImage(pi);
             return NoContent();
         }
 
