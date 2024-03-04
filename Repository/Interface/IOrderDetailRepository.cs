@@ -13,5 +13,6 @@ namespace Repository.Interface
         void removeOrderDetail(OrderDetail od);
         void UpdateOrderDetail(OrderDetail od);
         List<OrderDetail> GetOrderDetail();
+        OrderDetail GetOrderDetailById(int id);
     }
 }

@@ -34,6 +34,28 @@ namespace DataAccess
             return listOrderDetails;
         }
 
+        public static OrderDetail findOrderDetailById(int id)
+        {
+            OrderDetail p = new OrderDetail();
+            try
+            {
+                using (var context = new PartyPalKiddosContext())
+                {
+                    p = context.OrderDetails
+                .Select(OrderDetail => new OrderDetail
+                {
+                    OrderId = OrderDetail.OrderId,
+                    PackageId = OrderDetail.PackageId,
+                }).SingleOrDefault(x => x.OrderId == id);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return p;
+        }
+
         #endregion
 
 
