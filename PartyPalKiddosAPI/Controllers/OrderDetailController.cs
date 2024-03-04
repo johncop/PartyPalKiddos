@@ -8,7 +8,7 @@ namespace PartyPalKiddosAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderDetailDetailController : ControllerBase
+    public class OrderDetailController : ControllerBase
     {
         private IOrderDetailRepository repository = new OrderDetailRepository();
 
