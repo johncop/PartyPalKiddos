@@ -27,6 +27,7 @@ namespace DataAccess
                     Description = service.Description,
                     ServiceCategoryId = service.ServiceCategoryId,
                     Price = service.Price,
+                    Discount= service.Discount,
                     ServiceImages = service.ServiceImages,
                 }).ToList();
                 }
@@ -55,6 +56,7 @@ namespace DataAccess
                     Description = service.Description,
                     ServiceCategoryId = service.ServiceCategoryId,
                     Price = service.Price,
+                    Discount = service.Discount,
                     ServiceImages = service.ServiceImages,
                 }).SingleOrDefault(x => x.Id == id);
                 }
@@ -83,6 +85,7 @@ namespace DataAccess
                     Description = service.Description,
                     ServiceCategoryId = service.ServiceCategoryId,
                     Price = service.Price,
+                    Discount = service.Discount,
                     ServiceImages = service.ServiceImages,
                 }).ToList();
                 }
