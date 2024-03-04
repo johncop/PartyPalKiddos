@@ -12,12 +12,16 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IOrderDetailRepository repository = new OrderDetailRepository();
 
-        [HttpGet("OrderDetails")]
+        [HttpGet("order-details")]
         public ActionResult<IEnumerable<OrderDetail>> getOrderDetail()
             => repository.GetOrderDetail();
 
+        [HttpGet("order-details/{id}")]
+        public ActionResult<OrderDetail> getOrderDetailById(int id)
+            => repository.GetOrderDetailById(id);
 
-        [HttpPost("OrderDetails")]
+
+        [HttpPost("order-details")]
         public ActionResult<OrderDetail> createOrderDetail(int? orderId, int? packageId)
         {
             OrderDetail od = new OrderDetail(orderId, packageId);
@@ -25,7 +29,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("OrderDetails/{id}")]
+        [HttpDelete("order-details/{id}")]
         public IActionResult Delete(int id)
         {
             var f = repository.GetOrderDetailById(id);
@@ -37,7 +41,7 @@ namespace PartyPalKiddosAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("OrderDetails/{id}")]
+        [HttpPut("order-details/{orderId}")]
         public IActionResult UpdateProduct(int orderId, int? packageId)
         {
             OrderDetail OrderDetail = repository.GetOrderDetailById(orderId);
