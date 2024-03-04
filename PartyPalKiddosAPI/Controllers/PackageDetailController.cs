@@ -25,7 +25,7 @@ namespace PartyPalKiddosAPI.Controllers
                 repository.addPackageDetail(pt);
             }
 
-            return NoContent();
+            return Ok(new { success = true, message = "PackageDetail Added successfully." });
         }
         [HttpGet("package-detail")]
         public ActionResult<IEnumerable<PackageDetail>> getPackageDetail()
@@ -50,7 +50,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             PackageDetail pt = new PackageDetail(packageId, serviceId, quantity);
             repository.UpdatePackageDetail(pt);
-            return NoContent();
+            return Ok(new { success = true, message = "PackageDetail updated successfully." });
         }
 
         /*[HttpPut("package-detail/{id}")]
@@ -87,7 +87,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removePackageDetail(PackageDetail);
-            return NoContent();
+            return Ok(new { success = true, message = "PackageDetail deleted successfully." });
         }
     }
 }

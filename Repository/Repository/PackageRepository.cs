@@ -13,8 +13,8 @@ namespace Repository.Repository
     {
         public void addPackage(Package p) => PackageDAO.SavePackage(p);
 
-        public void ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? numberOfAdult, int? userId, int? locationId,DateTime? startTime, DateTime? endTime, decimal? price)
-            => PackageDAO.ClonePackage(existingPackage, packageName, numberOfKid, numberOfAdult, userId, locationId ,startTime, endTime, price);
+    /*    public void ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? numberOfAdult, int? userId, int? locationId,DateTime? startTime, DateTime? endTime, decimal? price)
+            => PackageDAO.ClonePackage(existingPackage, packageName, numberOfKid, numberOfAdult, userId, locationId ,startTime, endTime, price);*/
 
         public List<Package> GetAllPackage() => PackageDAO.GetPackages();
 

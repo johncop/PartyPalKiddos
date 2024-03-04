@@ -29,7 +29,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             ServiceCategory f = new ServiceCategory(categoryName, description, typeId);
             repository.addServiceCategory(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Service category Added successfully." });
         }
 
         [HttpDelete("service-categories/{id}")]
@@ -41,7 +41,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeServiceCategory(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Service Category Deleted successfully." });
         }
 
         [HttpPut("service-categories/{id}")]
@@ -54,7 +54,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             food = new ServiceCategory(id, categoryName, description, typeId);
             repository.UpdateServiceCategory(food);
-            return NoContent();
+            return Ok(new { success = true, message = "Service cateogry Updated successfully." });
         }
     }
 }

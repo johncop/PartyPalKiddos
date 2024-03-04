@@ -17,7 +17,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             User p = new User(fullName, email, password, address, phoneNumber, roleId, status);
             repository.addUser(p);
-            return NoContent();
+            return Ok(new { success = true, message = "User Added successfully." });
         }
         [HttpPut("users")]
         public IActionResult UpdateUser(int id,string fullName, string email, string password, string address, string phoneNumber, int? roleId, int? status)
@@ -29,7 +29,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             User p = new User(id, fullName, email, password, address, phoneNumber, roleId, status);
             repository.UpdateUser(p);
-            return NoContent();
+            return Ok(new { success = true, message = "User Updated successfully." });
         }
         [HttpDelete("users")]
         public IActionResult DeleteUser(int id)
@@ -40,7 +40,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeUser(user);
-            return NoContent();
+            return Ok(new { success = true, message = "User Deleted successfully." });
         }
         [HttpGet("users")]
         public ActionResult<IEnumerable<User>> getAllUsers()

@@ -26,7 +26,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             ServiceType f = new ServiceType(typeName, description);
             repository.addServiceType(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Serivce type Added successfully." });
         }
 
         [HttpDelete("service-type/{id}")]
@@ -38,11 +38,11 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeServiceType(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Service type Added successfully." });
         }
 
         [HttpPut("service-type/{id}")]
-        public IActionResult UpdateProduct(int id, string? typeName, string? description)
+        public IActionResult Update(int id, string? typeName, string? description)
         {
             ServiceType st = repository.GetServiceTypeById(id);
             if (st == null)
@@ -51,7 +51,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             st = new ServiceType(id, typeName, description);
             repository.updateServiceType(st);
-            return NoContent();
+            return Ok(new { success = true, message = "Service Type Added successfully." });
         }
     }
 }

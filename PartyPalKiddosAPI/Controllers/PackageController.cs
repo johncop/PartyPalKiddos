@@ -26,7 +26,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             Package p = new Package(packageName, numberOfKid, numberOfAdults, userId, locationId, startTime, endTime, price, status);
             repository.addPackage(p);
-            return NoContent();
+            return Ok(new { success = true, message = "Package Added successfully." });
         }
 
         [HttpPut("packages")]
@@ -39,11 +39,11 @@ namespace PartyPalKiddosAPI.Controllers
             }
             Package p = new Package(packageName, numberOfKid, numberOfAdults,userId, locationId, startTime, endTime, price, status);
             repository.UpdatePackage(p);
-            return NoContent();
+            return Ok(new { success = true, message = "Package updated successfully." });
         }
 
-        [HttpPut("packages/for-user/{id}")]
-        public IActionResult UpdatePackage(int id, string? packageName, int? numberOfKid, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
+        [HttpPut("packages/clone-package/{id}")]
+        public IActionResult ClonePackage(int id, string? packageName, int? numberOfKid, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
         {
             var existingPackage = repository.GetPackageById(id);
             if (existingPackage == null)

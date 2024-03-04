@@ -26,7 +26,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             OrderDetail od = new OrderDetail(orderId, packageId);
             repository.addOrderDetail(od);
-            return NoContent();
+            return Ok(new { success = true, message = "OrderDetail Added successfully." });
         }
 
         [HttpDelete("order-details/{id}")]
@@ -38,7 +38,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeOrderDetail(f);
-            return NoContent();
+            return Ok(new { success = true, message = "OrderDetail deleted successfully." });
         }
 
         [HttpPut("order-details/{orderId}")]
@@ -51,7 +51,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             OrderDetail = new OrderDetail(orderId, packageId);
             repository.UpdateOrderDetail(OrderDetail);
-            return NoContent();
+            return Ok(new { success = true, message = "OrderDetail updated successfully." });
         }
     }
 }

@@ -25,7 +25,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             LocationImage f = new LocationImage(imgUrl, drinkId);
             repository.addLocationImage(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Location image Added successfully." });
         }
 
         [HttpDelete("location-image/{id}")]
@@ -37,7 +37,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeLocationImage(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Location image deleted successfully." });
         }
 
         [HttpPut("location-image/{id}")]
@@ -50,7 +50,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             LocationImage = new LocationImage(id, imgUrl, drinkId);
             repository.UpdateLocationImage(LocationImage);
-            return NoContent();
+            return Ok(new { success = true, message = "Location image updated successfully." });
         }
     }
 }

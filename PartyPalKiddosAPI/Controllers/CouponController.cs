@@ -17,7 +17,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             Coupon p = new Coupon(couponName, discountAmount, conditionAmount, description, typeId, quantity, createdDate, expiredDate, status);
             repository.addCoupon(p);
-            return NoContent();
+            return Ok(new { success = true, message = "Coupon Added successfully." });
         }
         [HttpPut("coupons")]
         public IActionResult UpdateCoupon(int id, string? couponName, decimal? discountAmount, decimal? conditionAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
@@ -29,7 +29,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             Coupon p = new Coupon(id, couponName, discountAmount, conditionAmount, description, typeId, quantity, createdDate, expiredDate, status);
             repository.UpdateCoupon(p);
-            return NoContent();
+            return Ok(new { success = true, message = "Coupon updated successfully." });
         }
         [HttpDelete("coupons")]
         public IActionResult DeleteCoupon(int id)
@@ -40,7 +40,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeCoupon(user);
-            return NoContent();
+            return Ok(new { success = true, message = "Coupon deleted successfully." });
         }
         [HttpGet("coupons")]
         public ActionResult<IEnumerable<Coupon>> getAllCoupons()

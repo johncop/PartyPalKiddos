@@ -29,7 +29,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             Location l = new Location(address, districtId, typeId,description, price, status);
             repository.addLocation(l);
-            return NoContent();
+            return Ok(new { success = true, message = "Location Added successfully." });
         }
 
         [HttpDelete("locations/{id}")]
@@ -41,7 +41,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeLocation(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Location deleted successfully." });
         }
 
         [HttpPut("locations/{id}")]
@@ -54,7 +54,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             location = new Location(id, address, districtId, typeId, description, price, status);
             repository.UpdateLocation(location);
-            return NoContent();
+            return Ok(new { success = true, message = "Location updated successfully." });
         }
     }
 }

@@ -26,7 +26,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             PackageImage pi = new PackageImage(imgUrl, packageId);
             repository.addPackageImage(pi);
-            return NoContent();
+            return Ok(new { success = true, message = "Package image Added successfully." });
         }
 
         [HttpDelete("package-image/{id}")]
@@ -38,7 +38,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removePackageImage(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Package Image Deleted successfully." });
         }
 
         [HttpPut("package-image/{id}")]
@@ -51,7 +51,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             PackageImage = new PackageImage(id, imgUrl, packageId);
             repository.UpdatePackageImage(PackageImage);
-            return NoContent();
+            return Ok(new { success = true, message = "Package Image Updated successfully." });
         }
     }
 }

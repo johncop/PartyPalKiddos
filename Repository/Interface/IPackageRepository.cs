@@ -12,7 +12,7 @@ namespace Repository.Interface
         void addPackage(Package p);
         void removePackage(Package p);
         void UpdatePackage(Package p);
-        void ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? numberOfAdult, int? userId, int? locationId ,DateTime? startTime, DateTime? endTime, decimal? price);
+        //void ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? numberOfAdult, int? userId, int? locationId ,DateTime? startTime, DateTime? endTime, decimal? price);
         List<Package> GetAllPackage();
         Package GetPackageById(int id);
         List<Package> GetPackagetByName(string packgakeName);

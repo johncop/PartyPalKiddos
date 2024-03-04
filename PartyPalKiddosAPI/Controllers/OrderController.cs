@@ -37,7 +37,7 @@ namespace PartyPalKiddosAPI.Controllers
                 PackageId = packageId
             };
             repository.addOrder(l);
-            return NoContent();
+            return Ok(new { success = true, message = "Order Added successfully." });
         }
 
         [HttpDelete("Orders/{id}")]
@@ -49,7 +49,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeOrder(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Order deleted successfully." });
         }
 
         [HttpPut("Orders/{id}")]
@@ -62,7 +62,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             Order = new Order(id, DateTime.Now, totalAmount, userId, paymentId, couponId, packageId);
             repository.UpdateOrder(Order);
-            return NoContent();
+            return Ok(new { success = true, message = "Order updated successfully." });
         }
     }
 }

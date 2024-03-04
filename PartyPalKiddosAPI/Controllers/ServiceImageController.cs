@@ -25,7 +25,7 @@ namespace PartyPalKiddosAPI.Controllers
         {
             ServiceImage si = new ServiceImage(imgUrl, serviceId);
             repository.addServiceImage(si);
-            return NoContent();
+            return Ok(new { success = true, message = "Service Image Added successfully." });
         }
 
         [HttpDelete("service-image/{id}")]
@@ -37,7 +37,7 @@ namespace PartyPalKiddosAPI.Controllers
                 return NotFound();
             }
             repository.removeServiceImage(f);
-            return NoContent();
+            return Ok(new { success = true, message = "Service Image Added successfully." });
         }
 
         [HttpPut("service-image/{id}")]
@@ -50,7 +50,7 @@ namespace PartyPalKiddosAPI.Controllers
             }
             ServiceImage = new ServiceImage(id, imgUrl, serviceId);
             repository.UpdateServiceImage(ServiceImage);
-            return NoContent();
+            return Ok(new { success = true, message = "Service Image Added successfully." });
         }
     }
 }
