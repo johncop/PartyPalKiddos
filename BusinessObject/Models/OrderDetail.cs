@@ -5,6 +5,7 @@ namespace BusinessObject.Models
 {
     public partial class OrderDetail
     {
+        public OrderDetail() { }
         public OrderDetail(int? packageId)
         {
             PackageId = packageId;
