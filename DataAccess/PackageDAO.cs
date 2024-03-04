@@ -246,6 +246,7 @@ namespace DataAccess
 
         public static Package ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? numberOfAdult, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
         {
+            var context = new PartyPalKiddosContext();
             // Create a new package with the customized details
             Package newPackage = new Package()
             {
@@ -257,8 +258,22 @@ namespace DataAccess
                 StartTime = startTime ?? existingPackage.StartTime,
                 EndTime = endTime ?? existingPackage.EndTime,
                 Price = price ?? existingPackage.Price,
-                Status = 2 
+                Status = 2,
+                PackageDetails = new List<PackageDetail>()
             };
+            var packageDetails = context.PackageDetails.Where(pd => pd.PackageId == existingPackage.Id);
+            foreach (var detail in packageDetails)
+            {
+                var clonedDetail = new PackageDetail()
+                {
+                    ServiceId = detail.ServiceId,
+                    Quantity = detail.Quantity,
+                    PackageId= detail.PackageId,
+                    // Clone additional fields if necessary
+                };
+                newPackage.PackageDetails.Add(clonedDetail); // Add the cloned details to the new package
+            }
+
             return newPackage;
         }
         #endregion
