@@ -269,7 +269,8 @@ namespace BusinessObject.Models
 
                 entity.HasMany(p => p.PackageDetails)
                 .WithOne()
-                .HasForeignKey(pd => pd.PackageId);
+                .HasForeignKey(pd => pd.PackageId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
 

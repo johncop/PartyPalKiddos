@@ -214,6 +214,9 @@ namespace DataAccess
             {
                 using (var context = new PartyPalKiddosContext())
                 {
+                    var packageDetails = context.PackageDetails.Where(pd => pd.PackageId == p.Id).ToList();
+                    context.PackageDetails.RemoveRange(packageDetails);
+
                     var p1 = context.Packages.SingleOrDefault(x => x.Id == p.Id);
                     context.Packages.Remove(p1);
                     context.SaveChanges();
