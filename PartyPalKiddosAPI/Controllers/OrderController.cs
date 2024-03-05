@@ -25,11 +25,12 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetOrderByUserId(userId);
 
         [HttpPost("Orders")]
-        public ActionResult<Order> createOrder(decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
+        public ActionResult<Order> createOrder(decimal initialPrice,decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
         {
             Order l = new Order()
             {
                 OrderDate = DateTime.Now,
+                InitialPrice = initialPrice,
                 TotalAmount = totalAmount,
                 UserId = userId,
                 PaymentId = paymentId,
@@ -53,14 +54,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("Orders/{id}")]
-        public IActionResult UpdateProduct(int id, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
+        public IActionResult UpdateProduct(int id,decimal initialPrice, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
         {
             Order Order = repository.GetOrderByOrderId(id);
             if (Order == null)
             {
                 return NotFound();
             }
-            Order = new Order(id, DateTime.Now, totalAmount, userId, paymentId, couponId, packageId);
+            Order = new Order(id, DateTime.Now,initialPrice, totalAmount, userId, paymentId, couponId, packageId);
             repository.UpdateOrder(Order);
             return Ok(new { success = true, message = "Order updated successfully." });
         }
