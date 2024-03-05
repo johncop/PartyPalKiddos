@@ -45,6 +45,7 @@ namespace BusinessObject.Models
         public int? TypeId { get; set; }
         public int? Quantity { get; set; }
         public DateTime? CreatedDate { get; set; }
+        public DateTime? AvailableDate { get; set; }
         public DateTime? ExpiredDate { get; set; }
         public string? Status { get; set; }
 

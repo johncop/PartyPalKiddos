@@ -74,6 +74,10 @@ namespace BusinessObject.Models
                     .HasColumnType("datetime")
                     .HasColumnName("expired_date");
 
+                entity.Property(e => e.AvailableDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("available_date");
+
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
                 entity.Property(e => e.Status)
