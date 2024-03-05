@@ -413,9 +413,6 @@ namespace BusinessObject.Models
                     .HasMaxLength(50)
                     .HasColumnName("service_name");
 
-                entity.Property(e => e.Discount)
-                     .HasColumnType("decimal(10, 2)")
-                     .HasColumnName("discount");
 
                 entity.HasOne(d => d.ServiceCategory)
                     .WithMany(p => p.Services)
