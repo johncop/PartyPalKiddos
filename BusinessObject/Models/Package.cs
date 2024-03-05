@@ -7,6 +7,7 @@ namespace BusinessObject.Models
     {
         public Package()
         {
+            Orders = new HashSet<Order>();
             PackageImages = new HashSet<PackageImage>();
         }
 
@@ -50,6 +51,7 @@ namespace BusinessObject.Models
 
         public virtual Location? Location { get; set; }
         public virtual User? User { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<PackageImage> PackageImages { get; set; }
         public virtual ICollection<PackageDetail> PackageDetails { get; set; }
     }

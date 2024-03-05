@@ -10,9 +10,10 @@ namespace BusinessObject.Models
             Payments = new HashSet<Payment>();
         }
 
-        public Order(DateTime orderDate, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
+        public Order(DateTime orderDate, decimal initialPrice, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
         {
             OrderDate = orderDate;
+            InitialPrice = initialPrice;
             TotalAmount = totalAmount;
             UserId = userId;
             PaymentId = paymentId;
@@ -20,10 +21,11 @@ namespace BusinessObject.Models
             PackageId = packageId;
         }
 
-        public Order(int id, DateTime orderDate, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
+        public Order(int id, DateTime orderDate, decimal initialPrice, decimal totalAmount, int? userId, int? paymentId, int? couponId, int? packageId)
         {
             Id = id;
             OrderDate = orderDate;
+            InitialPrice = initialPrice;
             TotalAmount = totalAmount;
             UserId = userId;
             PaymentId = paymentId;
@@ -33,6 +35,7 @@ namespace BusinessObject.Models
 
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
+        public decimal InitialPrice { get; set; }
         public decimal TotalAmount { get; set; }
         public int? UserId { get; set; }
         public int? PaymentId { get; set; }
@@ -40,6 +43,7 @@ namespace BusinessObject.Models
         public int? PackageId { get; set; }
 
         public virtual Coupon? Coupon { get; set; }
+        public virtual Package? Package { get; set; }
         public virtual User? User { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }

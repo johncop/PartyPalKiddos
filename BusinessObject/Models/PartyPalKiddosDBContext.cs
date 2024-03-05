@@ -6,13 +6,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace BusinessObject.Models
 {
-    public partial class PartyPalKiddosContext : DbContext
+    public partial class PartyPalKiddosDBContext : DbContext
     {
-        public PartyPalKiddosContext()
+        public PartyPalKiddosDBContext()
         {
         }
 
-        public PartyPalKiddosContext(DbContextOptions<PartyPalKiddosContext> options)
+        public PartyPalKiddosDBContext(DbContextOptions<PartyPalKiddosDBContext> options)
             : base(options)
         {
         }
@@ -24,7 +24,6 @@ namespace BusinessObject.Models
         public virtual DbSet<LocationImage> LocationImages { get; set; } = null!;
         public virtual DbSet<LocationType> LocationTypes { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<Package> Packages { get; set; } = null!;
         public virtual DbSet<PackageDetail> PackageDetails { get; set; } = null!;
         public virtual DbSet<PackageImage> PackageImages { get; set; } = null!;
@@ -38,11 +37,14 @@ namespace BusinessObject.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
+            if (!optionsBuilder.IsConfigured)
+            {
+                var builder = new ConfigurationBuilder()
+             .SetBasePath(Directory.GetCurrentDirectory())
+             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                IConfigurationRoot configuration = builder.Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -171,8 +173,6 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.HasIndex(e => e.UserId, "idx_order_user");
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CouponId).HasColumnName("coupon_id");
@@ -189,6 +189,10 @@ namespace BusinessObject.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("total_amount");
 
+                entity.Property(e => e.InitialPrice)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("initial_price");
+
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Coupon)
@@ -196,38 +200,20 @@ namespace BusinessObject.Models
                     .HasForeignKey(d => d.CouponId)
                     .HasConstraintName("FK__Orders__coupon_i__778AC167");
 
+                entity.HasOne(d => d.Package)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.PackageId)
+                    .HasConstraintName("FK_Orders_Package");
+
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK__Orders__user_id__76969D2E");
             });
 
-            modelBuilder.Entity<OrderDetail>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("OrderDetail");
-
-                entity.Property(e => e.OrderId).HasColumnName("Order_id");
-
-                entity.Property(e => e.PackageId).HasColumnName("Package_Id");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany()
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_OrderDetail_Orders");
-
-                entity.HasOne(d => d.Package)
-                    .WithMany()
-                    .HasForeignKey(d => d.PackageId)
-                    .HasConstraintName("FK_OrderDetail_Package");
-            });
-
             modelBuilder.Entity<Package>(entity =>
             {
                 entity.ToTable("Package");
-
-                entity.HasIndex(e => e.UserId, "idx_package_user");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -283,7 +269,6 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.ServiceId).HasColumnName("Service_Id");
 
-                // Define a composite key for PackageDetail
                 entity.HasKey(pd => new { pd.PackageId, pd.ServiceId });
 
                 entity.HasOne(d => d.Package)
@@ -302,7 +287,7 @@ namespace BusinessObject.Models
                 entity.ToTable("PackageImage");
 
                 entity.Property(e => e.ImgUrl)
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
                     .HasColumnName("Img_url");
 
                 entity.Property(e => e.PackageId).HasColumnName("package_id");
@@ -374,7 +359,6 @@ namespace BusinessObject.Models
                     .HasMaxLength(50)
                     .HasColumnName("service_name");
 
-
                 entity.HasOne(d => d.ServiceCategory)
                     .WithMany(p => p.Services)
                     .HasForeignKey(d => d.ServiceCategoryId)
@@ -401,9 +385,9 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("ServiceImage");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.ImgUrl).HasColumnName("Img_url");
+                entity.Property(e => e.ImgUrl)
+                    .HasMaxLength(200)
+                    .HasColumnName("Img_url");
 
                 entity.Property(e => e.ServiceId).HasColumnName("service_id");
 
@@ -424,8 +408,6 @@ namespace BusinessObject.Models
             {
                 entity.HasIndex(e => e.Email, "UQ__Users__AB6E61646663D104")
                     .IsUnique();
-
-                entity.HasIndex(e => e.RoleId, "idx_user_role");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
