@@ -16,10 +16,10 @@ namespace PartyPalKiddosAPI.Controllers
         [HttpPost("packages")]
         public IActionResult PostPackage(string? packageName, int? numberOfKid, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
-            if (!startTime.HasValue || !endTime.HasValue || !locationId.HasValue)
+            /*if (!startTime.HasValue || !endTime.HasValue || !locationId.HasValue)
             {
                 return BadRequest("Start time, end time, and location are required.");
-            }
+            }*/
             if (!repository.isTimeSlotAvaiable(locationId.Value, startTime.Value, endTime.Value))
             {
                 return Conflict("The selected time slot is not available for this location.");
