@@ -25,6 +25,7 @@ namespace DataAccess.CategoryDAO
                     Id = ServiceCategory.Id,
                     CategoryName = ServiceCategory.CategoryName,
                     Description = ServiceCategory.Description,
+                    TypeId = ServiceCategory.TypeId,
                     Services= ServiceCategory.Services,
                 }).ToList();
                 }
@@ -51,6 +52,7 @@ namespace DataAccess.CategoryDAO
                     Id = ServiceCategory.Id,
                     CategoryName = ServiceCategory.CategoryName,
                     Description = ServiceCategory.Description,
+                    TypeId = ServiceCategory.TypeId,
                     Services = ServiceCategory.Services,
                 }).SingleOrDefault(x => x.Id == id);
                 }
@@ -78,6 +80,7 @@ namespace DataAccess.CategoryDAO
                     Id = ServiceCategory.Id,
                     CategoryName = ServiceCategory.CategoryName,
                     Description = ServiceCategory.Description,
+                    TypeId = ServiceCategory.TypeId,
                     Services = ServiceCategory.Services,
                 }).ToList();
                 }

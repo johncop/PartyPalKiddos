@@ -20,10 +20,10 @@ namespace PartyPalKiddosAPI.Controllers
             {
                 return BadRequest("Start time, end time, and location are required.");
             }*/
-            if (!repository.isTimeSlotAvaiable(locationId.Value, startTime.Value, endTime.Value))
+            /*if (!repository.isTimeSlotAvaiable(locationId.Value, startTime.Value, endTime.Value))
             {
                 return Conflict("The selected time slot is not available for this location.");
-            }
+            }*/
             Package p = new Package(packageName, numberOfKid, numberOfAdults, userId, locationId, startTime, endTime, price, status);
             repository.addPackage(p);
             return Ok(new { success = true, message = "Package Added successfully." });
