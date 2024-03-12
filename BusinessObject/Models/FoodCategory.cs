@@ -10,6 +10,19 @@ namespace BusinessObject.Models
             Foods = new HashSet<Food>();
         }
 
+        public FoodCategory(string? foodCategoryName, string? description)
+        {
+            FoodCategoryName = foodCategoryName;
+            Description = description;
+        }
+
+        public FoodCategory(int id, string? foodCategoryName, string? description)
+        {
+            Id = id;
+            FoodCategoryName = foodCategoryName;
+            Description = description;
+        }
+
         public int Id { get; set; }
         public string? FoodCategoryName { get; set; }
         public string? Description { get; set; }
