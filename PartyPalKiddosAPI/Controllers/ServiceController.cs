@@ -24,13 +24,13 @@ namespace PartyPalKiddosAPI.Controllers
         public ActionResult<List<Service>> GetServiceByName(string serviceName) =>
             repository.GetServiceByName(serviceName);
 
-        [HttpPost("services")]
+        /*[HttpPost("services")]
         public ActionResult<Service> CreateService(string? serviceName, string? description, int? serviceCategoryId, decimal? price)
         {
             Service s = new Service(serviceName, description, serviceCategoryId,price);
             repository.addService(s);
             return Ok(new { success = true, message = "Service updated successfully." });
-        }
+        }*/
 
         [HttpDelete("services/{id}")]
         public IActionResult DeleteService(int id)
@@ -44,7 +44,7 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Service deleted successfully." });
         }
 
-        [HttpPut("services/{id}")]
+        /*[HttpPut("services/{id}")]
         public IActionResult UpdateService(int id, string serviceName, string? description, int? serviceCategoryId, decimal price)
         {
             Service service = repository.GetServiceById(id);
@@ -55,6 +55,6 @@ namespace PartyPalKiddosAPI.Controllers
             service = new Service(id, serviceName, description, serviceCategoryId ,price);
             repository.UpdateService(service);
             return Ok(new { success = true, message = "Service Updated successfully." });
-        }
+        }*/
     }
 }

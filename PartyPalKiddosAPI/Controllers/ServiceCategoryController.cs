@@ -25,9 +25,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetServiceCategoryByName(foodCateName);
 
         [HttpPost("service-categories")]
-        public ActionResult<ServiceCategory> CreateServiceCategory(string? categoryName, string? description, int? typeId)
+        public ActionResult<ServiceCategory> CreateServiceCategory(string? categoryName, string? description)
         {
-            ServiceCategory f = new ServiceCategory(categoryName, description, typeId);
+            ServiceCategory f = new ServiceCategory(categoryName, description);
             repository.addServiceCategory(f);
             return Ok(new { success = true, message = "Service category Added successfully." });
         }
@@ -45,14 +45,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("service-categories/{id}")]
-        public IActionResult UpdateProduct(int id, string? categoryName, string? description, int? typeId)
+        public IActionResult UpdateProduct(int id, string? categoryName, string? description)
         {
             ServiceCategory food = repository.GetServiceCategoryById(id);
             if (food == null)
             {
                 return NotFound();
             }
-            food = new ServiceCategory(id, categoryName, description, typeId);
+            food = new ServiceCategory(id, categoryName, description);
             repository.UpdateServiceCategory(food);
             return Ok(new { success = true, message = "Service cateogry Updated successfully." });
         }

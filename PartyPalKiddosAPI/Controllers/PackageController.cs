@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿/*using BusinessObject.Models;
 using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +16,14 @@ namespace PartyPalKiddosAPI.Controllers
         [HttpPost("packages")]
         public IActionResult PostPackage(string? packageName, int? numberOfKid, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)
         {
-            /*if (!startTime.HasValue || !endTime.HasValue || !locationId.HasValue)
+            *//*if (!startTime.HasValue || !endTime.HasValue || !locationId.HasValue)
             {
                 return BadRequest("Start time, end time, and location are required.");
             }*/
             /*if (!repository.isTimeSlotAvaiable(locationId.Value, startTime.Value, endTime.Value))
             {
                 return Conflict("The selected time slot is not available for this location.");
-            }*/
+            }*//*
             Package p = new Package(packageName, numberOfKid, numberOfAdults, userId, locationId, startTime, endTime, price, status);
             repository.addPackage(p);
             return Ok(new { success = true, message = "Package Added successfully." });
@@ -42,7 +42,7 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Package updated successfully." });
         }
 
-        [HttpPut("packages/clone-package/{id}")]
+        *//*[HttpPut("packages/clone-package/{id}")]
         public IActionResult ClonePackage(int id, string? packageName, int? numberOfKid, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
         {
             var existingPackage = repository.GetPackageById(id);
@@ -64,7 +64,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.addPackage(newPackage);
 
             return NoContent();
-        }
+        }*//*
 
 
         [HttpDelete("packages")]
@@ -96,3 +96,4 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetPackagetByUserId(userId);
     }
 }
+*/

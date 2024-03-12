@@ -8,48 +8,48 @@ namespace PartyPalKiddosAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationImageController : ControllerBase
+    public class HostImageController : ControllerBase
     {
-        private ILocationImageRepository repository = new LocationImageRepository();
+        private IHostImageRepository repository = new HostImageRepository();
 
         [HttpGet("location-image")]
-        public ActionResult<IEnumerable<LocationImage>> getLocationImage()
-            => repository.GetAllLocationImages();
+        public ActionResult<IEnumerable<HostImage>> getHostImage()
+            => repository.GetAllHostImages();
 
         [HttpGet("location-image/{id}")]
-        public ActionResult<LocationImage> getPackageById(int id) =>
-            repository.GetLocationImageById(id);
+        public ActionResult<HostImage> getPackageById(int id) =>
+            repository.GetHostImageById(id);
 
         [HttpPost("location-image")]
-        public ActionResult<LocationImage> CreateLocationImage(string? imgUrl, int? drinkId)
+        public ActionResult<HostImage> CreateHostImage(string? imgUrl, int? drinkId)
         {
-            LocationImage f = new LocationImage(imgUrl, drinkId);
-            repository.addLocationImage(f);
+            HostImage f = new HostImage(imgUrl, drinkId);
+            repository.addHostImage(f);
             return Ok(new { success = true, message = "Location image Added successfully." });
         }
 
         [HttpDelete("location-image/{id}")]
         public IActionResult Delete(int id)
         {
-            var f = repository.GetLocationImageById(id);
+            var f = repository.GetHostImageById(id);
             if (f == null)
             {
                 return NotFound();
             }
-            repository.removeLocationImage(f);
+            repository.removeHostImage(f);
             return Ok(new { success = true, message = "Location image deleted successfully." });
         }
 
         [HttpPut("location-image/{id}")]
         public IActionResult UpdateProduct(int id, string? imgUrl, int? drinkId)
         {
-            LocationImage LocationImage = repository.GetLocationImageById(id);
-            if (LocationImage == null)
+            HostImage HostImage = repository.GetHostImageById(id);
+            if (HostImage == null)
             {
                 return NotFound();
             }
-            LocationImage = new LocationImage(id, imgUrl, drinkId);
-            repository.UpdateLocationImage(LocationImage);
+            HostImage = new HostImage(id, imgUrl, drinkId);
+            repository.UpdateHostImage(HostImage);
             return Ok(new { success = true, message = "Location image updated successfully." });
         }
     }

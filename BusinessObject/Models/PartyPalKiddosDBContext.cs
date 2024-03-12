@@ -19,7 +19,8 @@ namespace BusinessObject.Models
 
         public virtual DbSet<AvailableTimeSlot> AvailableTimeSlots { get; set; } = null!;
         public virtual DbSet<Booking> Bookings { get; set; } = null!;
-        public virtual DbSet<BookingDetail> BookingDetails { get; set; } = null!;
+        public virtual DbSet<BookingFoodDetail> BookingFoodDetails { get; set; } = null!;
+        public virtual DbSet<BookingServiceDetail> BookingServiceDetails { get; set; } = null!;
         public virtual DbSet<BookingTimeSlot> BookingTimeSlots { get; set; } = null!;
         public virtual DbSet<Combo> Combos { get; set; } = null!;
         public virtual DbSet<ComboFoodDetail> ComboFoodDetails { get; set; } = null!;
@@ -44,11 +45,11 @@ namespace BusinessObject.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var builder = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                IConfigurationRoot configuration = builder.Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
             }
         }
 
@@ -88,10 +89,6 @@ namespace BusinessObject.Models
                     .HasColumnType("date")
                     .HasColumnName("booking_date");
 
-                entity.Property(e => e.BookingDetailId)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("booking_detail_id");
-
                 entity.Property(e => e.BookingStatus)
                     .HasMaxLength(50)
                     .HasColumnName("booking_status");
@@ -118,11 +115,11 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK__Orders__user_id__76969D2E");
             });
 
-            modelBuilder.Entity<BookingDetail>(entity =>
+            modelBuilder.Entity<BookingFoodDetail>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToTable("BookingDetail");
+                entity.ToTable("BookingFoodDetail");
 
                 entity.Property(e => e.BookingId).HasColumnName("booking_id");
 
@@ -133,6 +130,30 @@ namespace BusinessObject.Models
                 entity.Property(e => e.FoodId).HasColumnName("food_id");
 
                 entity.Property(e => e.FoodQuantity).HasColumnName("food_quantity");
+
+                entity.HasOne(d => d.Booking)
+                    .WithMany()
+                    .HasForeignKey(d => d.BookingId)
+                    .HasConstraintName("FK_BookingFoodDetail_Booking");
+
+                entity.HasOne(d => d.Combo)
+                    .WithMany()
+                    .HasForeignKey(d => d.ComboId)
+                    .HasConstraintName("FK_BookingFoodDetail_Combo");
+
+                entity.HasOne(d => d.Food)
+                    .WithMany()
+                    .HasForeignKey(d => d.FoodId)
+                    .HasConstraintName("FK_BookingFoodDetail_Food");
+            });
+
+            modelBuilder.Entity<BookingServiceDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("BookingServiceDetail");
+
+                entity.Property(e => e.BookingId).HasColumnName("booking_id");
 
                 entity.Property(e => e.ServiceId).HasColumnName("service_id");
 
@@ -145,27 +166,17 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Booking)
                     .WithMany()
                     .HasForeignKey(d => d.BookingId)
-                    .HasConstraintName("FK_BookingDetail_Booking1");
-
-                entity.HasOne(d => d.Combo)
-                    .WithMany()
-                    .HasForeignKey(d => d.ComboId)
-                    .HasConstraintName("FK_BookingDetail_Combo");
-
-                entity.HasOne(d => d.Food)
-                    .WithMany()
-                    .HasForeignKey(d => d.FoodId)
-                    .HasConstraintName("FK_BookingDetail_Food");
+                    .HasConstraintName("FK_BookingServiceDetail_Booking");
 
                 entity.HasOne(d => d.Service)
                     .WithMany()
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK_BookingDetail_Service");
+                    .HasConstraintName("FK_BookingServiceDetail_Service");
 
                 entity.HasOne(d => d.ServicePackage)
                     .WithMany()
                     .HasForeignKey(d => d.ServicePackageId)
-                    .HasConstraintName("FK_BookingDetail_ServicePackage");
+                    .HasConstraintName("FK_BookingServiceDetail_ServicePackage");
             });
 
             modelBuilder.Entity<BookingTimeSlot>(entity =>

@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿/*using BusinessObject.Models;
 using DataAccess.ImageDAO;
 using Repository.Interface.IImageRepository;
 using System;
@@ -22,3 +22,4 @@ namespace Repository.Repository.ImageRepository
         public void UpdatePackageImage(PackageImage pi) => PackageImageDAO.UpdatePackageImage(pi);
     }
 }
+*/

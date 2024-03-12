@@ -13,7 +13,6 @@ namespace BusinessObject.Models
         public int Id { get; set; }
         public DateTime BookingDate { get; set; }
         public int UserId { get; set; }
-        public decimal BookingDetailId { get; set; }
         public int? PaymentId { get; set; }
         public int? CouponId { get; set; }
         public int? NumberOfKids { get; set; }

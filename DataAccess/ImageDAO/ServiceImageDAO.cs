@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿/*using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace DataAccess.ImageDAO
             var listServiceImages = new List<ServiceImage>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listServiceImages = context.ServiceImages
                 .Select(ServiceImage => new ServiceImage
@@ -39,7 +39,7 @@ namespace DataAccess.ImageDAO
             ServiceImage d = new ServiceImage();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     d = context.ServiceImages
                 .Select(ServiceImage => new ServiceImage
@@ -66,7 +66,7 @@ namespace DataAccess.ImageDAO
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.ServiceImages.Add(si);
                     context.SaveChanges();
@@ -82,7 +82,7 @@ namespace DataAccess.ImageDAO
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.ServiceImages.SingleOrDefault(x => x.Id == si.Id);
                     context.ServiceImages.Remove(p1);
@@ -100,7 +100,7 @@ namespace DataAccess.ImageDAO
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<ServiceImage>(si).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -116,3 +116,4 @@ namespace DataAccess.ImageDAO
         #endregion
     }
 }
+*/

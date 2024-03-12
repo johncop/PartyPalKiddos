@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿/*using BusinessObject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface.IImageRepository;
@@ -55,3 +55,4 @@ namespace PartyPalKiddosAPI.Controllers
         }
     }
 }
+*/

@@ -16,7 +16,7 @@ namespace DataAccess.CategoryDAO
             var listServiceCategorys = new List<ServiceCategory>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listServiceCategorys = context.ServiceCategories
                         .Include(s=>s.Services)
@@ -25,7 +25,6 @@ namespace DataAccess.CategoryDAO
                     Id = ServiceCategory.Id,
                     CategoryName = ServiceCategory.CategoryName,
                     Description = ServiceCategory.Description,
-                    TypeId = ServiceCategory.TypeId,
                     Services= ServiceCategory.Services,
                 }).ToList();
                 }
@@ -43,7 +42,7 @@ namespace DataAccess.CategoryDAO
             ServiceCategory d = new ServiceCategory();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     d = context.ServiceCategories
                         .Include(s=>s.Services)
@@ -52,7 +51,6 @@ namespace DataAccess.CategoryDAO
                     Id = ServiceCategory.Id,
                     CategoryName = ServiceCategory.CategoryName,
                     Description = ServiceCategory.Description,
-                    TypeId = ServiceCategory.TypeId,
                     Services = ServiceCategory.Services,
                 }).SingleOrDefault(x => x.Id == id);
                 }
@@ -70,7 +68,7 @@ namespace DataAccess.CategoryDAO
             List<ServiceCategory> d = new List<ServiceCategory>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     d = context.ServiceCategories
                      .Where(ServiceCategory => ServiceCategory.CategoryName.Contains(ServiceCategoryName))
@@ -80,7 +78,6 @@ namespace DataAccess.CategoryDAO
                     Id = ServiceCategory.Id,
                     CategoryName = ServiceCategory.CategoryName,
                     Description = ServiceCategory.Description,
-                    TypeId = ServiceCategory.TypeId,
                     Services = ServiceCategory.Services,
                 }).ToList();
                 }
@@ -100,7 +97,7 @@ namespace DataAccess.CategoryDAO
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.ServiceCategories.Add(d);
                     context.SaveChanges();
@@ -116,7 +113,7 @@ namespace DataAccess.CategoryDAO
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.ServiceCategories.SingleOrDefault(x => x.Id == d.Id);
                     context.ServiceCategories.Remove(p1);
@@ -134,7 +131,7 @@ namespace DataAccess.CategoryDAO
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<ServiceCategory>(d).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

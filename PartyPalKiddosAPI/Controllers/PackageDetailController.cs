@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿/*using BusinessObject.Models;
 using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +16,9 @@ namespace PartyPalKiddosAPI.Controllers
         [HttpPost("package-detail")]
         public IActionResult PostPackageDetail([FromBody] List<PackageDetail> packageDetails)
         {
-            /*PackageDetail pt = new PackageDetail(packageId, serviceId, quantity);
+            *//*PackageDetail pt = new PackageDetail(packageId, serviceId, quantity);
             repository.addPackageDetail(pt);
-            return NoContent();*/
+            return NoContent();*//*
             foreach (var detail in packageDetails)
             {
                 PackageDetail pt = new PackageDetail(detail.PackageId, detail.ServiceId, detail.Quantity);
@@ -53,7 +53,7 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "PackageDetail updated successfully." });
         }
 
-        /*[HttpPut("package-detail/{id}")]
+        *//*[HttpPut("package-detail/{id}")]
         public IActionResult UpdatePackageDetail(int id, int? serviceId, int? quantity)
         {
             var packageDetail = repository.GetPackageDetailByPackageId(id); // Method to get the package detail by its ID
@@ -76,7 +76,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdatePackageDetail(packageDetail);
 
             return NoContent();
-        }*/
+        }*//*
 
         [HttpDelete("package-detail/{id}")]
         public IActionResult DeletePackageDetail(int id)
@@ -91,3 +91,4 @@ namespace PartyPalKiddosAPI.Controllers
         }
     }
 }
+*/
