@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -474,3 +474,4 @@ namespace BusinessObject.Models
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
+*/

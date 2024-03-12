@@ -2,32 +2,33 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class LocationDAO
+    public class FoodDAO
     {
         #region query
-        public static List<Location> GetLocations()
+        public static List<Food> GetFoods()
         {
-            var listLocations = new List<Location>();
+            var listFoods = new List<Food>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listLocations = context.Locations
-                .Include(Location => Location.LocationImages)
-                .Select(Location => new Location
+                    listFoods = context.Foods
+                .Select(food => new Food
                 {
-                    Id = Location.Id,
-                    Address = Location.Address,
-                    DistrictId = Location.DistrictId,
-                    Description = Location.Description,                
-                    Price = Location.Price,
-                    LocationImages = Location.LocationImages
+                    Id = food.Id,
+                    FoodName = food.FoodName,
+                    Description = food.Description,
+                    ImageUrl = food.ImageUrl,
+                    FoodCategoryId = food.FoodCategoryId,
+                    Price = food.Price,
+                    FoodCategory = food.FoodCategory,
                 }).ToList();
                 }
             }
@@ -36,26 +37,26 @@ namespace DataAccess
 
                 throw;
             }
-            return listLocations;
+            return listFoods;
         }
 
-        public static Location findLocationById(int id)
+        public static Food findFoodById(int id)
         {
-            Location l = new Location();
+            Food l = new Food();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    l = context.Locations
-                .Include(Location => Location.LocationImages)
-                .Select(Location => new Location
+                    l = context.Foods
+                .Select(food => new Food
                 {
-                    Id = Location.Id,
-                    Address = Location.Address,
-                    DistrictId = Location.DistrictId,
-                    Description = Location.Description,
-                    Price = Location.Price,
-                    LocationImages = Location.LocationImages
+                    Id = food.Id,
+                    FoodName = food.FoodName,
+                    Description = food.Description,
+                    ImageUrl = food.ImageUrl,
+                    FoodCategoryId = food.FoodCategoryId,
+                    Price = food.Price,
+                    FoodCategory = food.FoodCategory,
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -66,24 +67,24 @@ namespace DataAccess
             return l;
         }
 
-        public static List<Location> findLocationByName(string address)
+        public static List<Food> findFoodByName(string foodName)
         {
-            List<Location> f = new List<Location>();
+            List<Food> f = new List<Food>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    f = context.Locations
-                     .Include(Location => Location.LocationImages)
-                     .Where(Location => Location.Address.Contains(address))
-                .Select(Location => new Location
+                    f = context.Foods
+                     .Where(Food => Food.FoodName.Contains(foodName))
+                .Select(food => new Food
                 {
-                    Id = Location.Id,
-                    Address = Location.Address,
-                    DistrictId = Location.DistrictId,
-                    Description = Location.Description,
-                    Price = Location.Price,
-                    LocationImages = Location.LocationImages
+                    Id = food.Id,
+                    FoodName = food.FoodName,
+                    Description = food.Description,
+                    ImageUrl = food.ImageUrl,
+                    FoodCategoryId = food.FoodCategoryId,
+                    Price = food.Price,
+                    FoodCategory = food.FoodCategory,
                 }).ToList();
                 }
             }
@@ -98,13 +99,13 @@ namespace DataAccess
 
 
         #region command
-        public static void SaveLocation(Location f)
+        public static void SaveFood(Food f)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Locations.Add(f);
+                    context.Foods.Add(f);
                     context.SaveChanges();
                 }
             }
@@ -114,14 +115,14 @@ namespace DataAccess
             }
         }
 
-        public static void DeleteLocation(Location f)
+        public static void DeleteFood(Food f)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.Locations.SingleOrDefault(x => x.Id == f.Id);
-                    context.Locations.Remove(p1);
+                    var p1 = context.Foods.SingleOrDefault(x => x.Id == f.Id);
+                    context.Foods.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -132,13 +133,13 @@ namespace DataAccess
             }
         }
 
-        public static void UpdateLocation(Location p)
+        public static void UpdateFood(Food p)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<Location>(p).State =
+                    context.Entry<Food>(p).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }

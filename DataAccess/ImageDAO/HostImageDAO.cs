@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace DataAccess.ImageDAO
 {
-    public class LocationImageDAO
+    public class HostImageDAO
     {
         #region query
-        public static List<LocationImage> GetLocationImages()
+        public static List<HostImage> GetHostImages()
         {
-            var listLocationImages = new List<LocationImage>();
+            var listHostImages = new List<HostImage>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
-                    listLocationImages = context.LocationImages
-                .Select(LocationImage => new LocationImage
+                    listHostImages = context.HostImages
+                .Select(HostImage => new HostImage
                 {
-                    Id = LocationImage.Id,
-                    ImgUrl = LocationImage.ImgUrl,
-                    LocationId = LocationImage.LocationId
+                    Id = HostImage.Id,
+                    ImgUrl = HostImage.ImgUrl,
+                    LocationId = HostImage.LocationId
                 }).ToList();
                 }
             }
@@ -31,22 +31,22 @@ namespace DataAccess.ImageDAO
 
                 throw;
             }
-            return listLocationImages;
+            return listHostImages;
         }
 
-        public static LocationImage findLocationImageById(int id)
+        public static HostImage findHostImageById(int id)
         {
-            LocationImage d = new LocationImage();
+            HostImage d = new HostImage();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
-                    d = context.LocationImages
-                .Select(LocationImage => new LocationImage
+                    d = context.HostImages
+                .Select(HostImage => new HostImage
                 {
-                    Id = LocationImage.Id,
-                    ImgUrl = LocationImage.ImgUrl,
-                    LocationId = LocationImage.LocationId
+                    Id = HostImage.Id,
+                    ImgUrl = HostImage.ImgUrl,
+                    LocationId = HostImage.LocationId
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -62,13 +62,13 @@ namespace DataAccess.ImageDAO
 
 
         #region command
-        public static void SaveLocationImage(LocationImage li)
+        public static void SaveHostImage(HostImage li)
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.LocationImages.Add(li);
+                    context.HostImages.Add(li);
                     context.SaveChanges();
                 }
             }
@@ -78,14 +78,14 @@ namespace DataAccess.ImageDAO
             }
         }
 
-        public static void DeleteLocationImage(LocationImage li)
+        public static void DeleteHostImage(HostImage li)
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.LocationImages.SingleOrDefault(x => x.Id == li.Id);
-                    context.LocationImages.Remove(p1);
+                    var p1 = context.HostImages.SingleOrDefault(x => x.Id == li.Id);
+                    context.HostImages.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -96,13 +96,13 @@ namespace DataAccess.ImageDAO
             }
         }
 
-        public static void UpdateLocationImage(LocationImage li)
+        public static void UpdateHostImage(HostImage li)
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<LocationImage>(li).State =
+                    context.Entry<HostImage>(li).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }

@@ -8,24 +8,27 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class ServiceDAO
+    public class HostDAO
     {
         #region query
-        public static List<Service> Getservices()
+        public static List<Host> GetHosts()
         {
-            var listService = new List<Service>();
+            var listHosts = new List<Host>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listService = context.Services
-                .Select(service => new Service
+                    listHosts = context.Hosts
+                .Include(Host => Host.HostImages)
+                .Select(Host => new Host
                 {
-                    Id = service.Id,
-                    ServiceName = service.ServiceName,
-                    Description = service.Description,
-                    ServiceCategoryId = service.ServiceCategoryId,
-                    Price = service.Price,
+                    Id = Host.Id,
+                    Address = Host.Address,
+                    Capacity = Host.Capacity,
+                    DistrictId = Host.DistrictId,
+                    Description = Host.Description,                
+                    Price = Host.Price,
+                    HostImages = Host.HostImages
                 }).ToList();
                 }
             }
@@ -34,24 +37,27 @@ namespace DataAccess
 
                 throw;
             }
-            return listService;
+            return listHosts;
         }
 
-        public static Service findserviceById(int id)
+        public static Host findHostById(int id)
         {
-            Service f = new Service();
+            Host l = new Host();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    f = context.Services
-                .Select(service => new Service
+                    l = context.Hosts
+                .Include(Host => Host.HostImages)
+                .Select(Host => new Host
                 {
-                    Id = service.Id,
-                    ServiceName = service.ServiceName,
-                    Description = service.Description,
-                    ServiceCategoryId = service.ServiceCategoryId,
-                    Price = service.Price,
+                    Id = Host.Id,
+                    Address = Host.Address,
+                    Capacity = Host.Capacity,
+                    DistrictId = Host.DistrictId,
+                    Description = Host.Description,
+                    Price = Host.Price,
+                    HostImages = Host.HostImages
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -59,24 +65,28 @@ namespace DataAccess
             {
                 throw new Exception(e.Message);
             }
-            return f;
+            return l;
         }
 
-        public static List<Service> findserviceByName(string serviceName)
+        public static List<Host> findHostByName(string address)
         {
-            List<Service> f = new List<Service>();
+            List<Host> f = new List<Host>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    f = context.Services
-                     .Where(service => service.ServiceName.Contains(serviceName))
-                .Select(service => new Service
+                    f = context.Hosts
+                     .Include(Host => Host.HostImages)
+                     .Where(Host => Host.Address.Contains(address))
+                .Select(Host => new Host
                 {
-                    Id = service.Id,
-                    ServiceName = service.ServiceName,
-                    Description = service.Description,
-                    ServiceCategoryId = service.ServiceCategoryId,
+                    Id = Host.Id,
+                    Address = Host.Address,
+                    Capacity = Host.Capacity,
+                    DistrictId = Host.DistrictId,
+                    Description = Host.Description,
+                    Price = Host.Price,
+                    HostImages = Host.HostImages
                 }).ToList();
                 }
             }
@@ -91,13 +101,13 @@ namespace DataAccess
 
 
         #region command
-        public static void Saveservice(Service s)
+        public static void SaveHost(Host f)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Services.Add(s);
+                    context.Hosts.Add(f);
                     context.SaveChanges();
                 }
             }
@@ -107,14 +117,14 @@ namespace DataAccess
             }
         }
 
-        public static void Deleteservice(Service s)
+        public static void DeleteHost(Host f)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.Services.SingleOrDefault(x => x.Id == s.Id);
-                    context.Services.Remove(p1);
+                    var p1 = context.Hosts.SingleOrDefault(x => x.Id == f.Id);
+                    context.Hosts.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -125,13 +135,13 @@ namespace DataAccess
             }
         }
 
-        public static void Updateservice(Service s)
+        public static void UpdateHost(Host p)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<Service>(s).State =
+                    context.Entry<Host>(p).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }

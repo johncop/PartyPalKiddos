@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿/*using BusinessObject.Models;
 using DataAccess;
 using Repository.Interface;
 using System;
@@ -22,3 +22,4 @@ namespace Repository.Repository
         public void UpdateOrderDetail(OrderDetail od) => OrderDetailDAO.UpdateOrderDetail(od);
     }
 }
+*/
