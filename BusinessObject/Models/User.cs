@@ -7,31 +7,7 @@ namespace BusinessObject.Models
     {
         public User()
         {
-            Orders = new HashSet<Order>();
-            Packages = new HashSet<Package>();
-        }
-
-        public User(string fullName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
-        {
-            FullName = fullName;
-            Email = email;
-            Password = password;
-            Address = address;
-            PhoneNumber = phoneNumber;
-            RoleId = roleId;
-            Status = status;
-        }
-
-        public User(int id, string fullName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
-        {
-            Id = id;
-            FullName = fullName;
-            Email = email;
-            Password = password;
-            Address = address;
-            PhoneNumber = phoneNumber;
-            RoleId = roleId;
-            Status = status;
+            Bookings = new HashSet<Booking>();
         }
 
         public int Id { get; set; }
@@ -44,7 +20,6 @@ namespace BusinessObject.Models
         public int? Status { get; set; }
 
         public virtual Role? Role { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<Package> Packages { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

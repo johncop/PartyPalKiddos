@@ -7,34 +7,7 @@ namespace BusinessObject.Models
     {
         public Coupon()
         {
-            Orders = new HashSet<Order>();
-        }
-
-        public Coupon(string? couponName, decimal? discountAmount, decimal? conditionAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
-        {
-            CouponName = couponName;
-            DiscountAmount = discountAmount;
-            ConditionAmount = conditionAmount;
-            Description = description;
-            TypeId = typeId;
-            Quantity = quantity;
-            CreatedDate = createdDate;
-            ExpiredDate = expiredDate;
-            Status = status;
-        }
-
-        public Coupon(int id, string? couponName, decimal? discountAmount, decimal? conditionAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? expiredDate, string? status)
-        {
-            Id = id;
-            CouponName = couponName;
-            DiscountAmount = discountAmount;
-            ConditionAmount = conditionAmount;
-            Description = description;
-            TypeId = typeId;
-            Quantity = quantity;
-            CreatedDate = createdDate;
-            ExpiredDate = expiredDate;
-            Status = status;
+            Bookings = new HashSet<Booking>();
         }
 
         public int Id { get; set; }
@@ -50,6 +23,6 @@ namespace BusinessObject.Models
         public string? Status { get; set; }
 
         public virtual CouponType? Type { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

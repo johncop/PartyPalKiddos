@@ -17,22 +17,27 @@ namespace BusinessObject.Models
         {
         }
 
+        public virtual DbSet<AvailableTimeSlot> AvailableTimeSlots { get; set; } = null!;
+        public virtual DbSet<Booking> Bookings { get; set; } = null!;
+        public virtual DbSet<BookingDetail> BookingDetails { get; set; } = null!;
+        public virtual DbSet<BookingTimeSlot> BookingTimeSlots { get; set; } = null!;
+        public virtual DbSet<Combo> Combos { get; set; } = null!;
+        public virtual DbSet<ComboFoodDetail> ComboFoodDetails { get; set; } = null!;
         public virtual DbSet<Coupon> Coupons { get; set; } = null!;
         public virtual DbSet<CouponType> CouponTypes { get; set; } = null!;
         public virtual DbSet<District> Districts { get; set; } = null!;
-        public virtual DbSet<Location> Locations { get; set; } = null!;
-        public virtual DbSet<LocationImage> LocationImages { get; set; } = null!;
-        public virtual DbSet<LocationType> LocationTypes { get; set; } = null!;
-        public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<Package> Packages { get; set; } = null!;
-        public virtual DbSet<PackageDetail> PackageDetails { get; set; } = null!;
-        public virtual DbSet<PackageImage> PackageImages { get; set; } = null!;
+        public virtual DbSet<Food> Foods { get; set; } = null!;
+        public virtual DbSet<FoodCategory> FoodCategories { get; set; } = null!;
+        public virtual DbSet<Host> Hosts { get; set; } = null!;
+        public virtual DbSet<HostImage> HostImages { get; set; } = null!;
         public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
         public virtual DbSet<ServiceCategory> ServiceCategories { get; set; } = null!;
-        public virtual DbSet<ServiceImage> ServiceImages { get; set; } = null!;
-        public virtual DbSet<ServiceType> ServiceTypes { get; set; } = null!;
+        public virtual DbSet<ServicePackage> ServicePackages { get; set; } = null!;
+        public virtual DbSet<ServicePackageDetail> ServicePackageDetails { get; set; } = null!;
+        public virtual DbSet<ServicePackageImage> ServicePackageImages { get; set; } = null!;
+        public virtual DbSet<TimeSlot> TimeSlots { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,8 +45,8 @@ namespace BusinessObject.Models
             if (!optionsBuilder.IsConfigured)
             {
                 var builder = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+           .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 IConfigurationRoot configuration = builder.Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
             }
@@ -49,9 +54,198 @@ namespace BusinessObject.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AvailableTimeSlot>(entity =>
+            {
+                entity.ToTable("AvailableTimeSlot");
+
+                entity.Property(e => e.HostId).HasColumnName("host_id");
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("status");
+
+                entity.Property(e => e.TimeslotId).HasColumnName("timeslot_id");
+
+                entity.HasOne(d => d.Host)
+                    .WithMany(p => p.AvailableTimeSlots)
+                    .HasForeignKey(d => d.HostId)
+                    .HasConstraintName("FK_AvailableTimeSlot_Host");
+
+                entity.HasOne(d => d.Timeslot)
+                    .WithMany(p => p.AvailableTimeSlots)
+                    .HasForeignKey(d => d.TimeslotId)
+                    .HasConstraintName("FK_AvailableTimeSlot_TimeSlot");
+            });
+
+            modelBuilder.Entity<Booking>(entity =>
+            {
+                entity.ToTable("Booking");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.BookingDate)
+                    .HasColumnType("date")
+                    .HasColumnName("booking_date");
+
+                entity.Property(e => e.BookingDetailId)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("booking_detail_id");
+
+                entity.Property(e => e.BookingStatus)
+                    .HasMaxLength(50)
+                    .HasColumnName("booking_status");
+
+                entity.Property(e => e.CouponId).HasColumnName("coupon_id");
+
+                entity.Property(e => e.NumberOfAdults).HasColumnName("number_of_adults");
+
+                entity.Property(e => e.NumberOfKids).HasColumnName("number_of_kids");
+
+                entity.Property(e => e.PaymentId).HasColumnName("payment_id");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Coupon)
+                    .WithMany(p => p.Bookings)
+                    .HasForeignKey(d => d.CouponId)
+                    .HasConstraintName("FK__Orders__coupon_i__778AC167");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Bookings)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Orders__user_id__76969D2E");
+            });
+
+            modelBuilder.Entity<BookingDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("BookingDetail");
+
+                entity.Property(e => e.BookingId).HasColumnName("booking_id");
+
+                entity.Property(e => e.ComboId).HasColumnName("combo_id");
+
+                entity.Property(e => e.ComboQuantity).HasColumnName("combo_quantity");
+
+                entity.Property(e => e.FoodId).HasColumnName("food_id");
+
+                entity.Property(e => e.FoodQuantity).HasColumnName("food_quantity");
+
+                entity.Property(e => e.ServiceId).HasColumnName("service_id");
+
+                entity.Property(e => e.ServicePackageId).HasColumnName("service_package_id");
+
+                entity.Property(e => e.ServicePackageQuantity).HasColumnName("service_package_quantity");
+
+                entity.Property(e => e.ServiceQuantity).HasColumnName("service_quantity");
+
+                entity.HasOne(d => d.Booking)
+                    .WithMany()
+                    .HasForeignKey(d => d.BookingId)
+                    .HasConstraintName("FK_BookingDetail_Booking1");
+
+                entity.HasOne(d => d.Combo)
+                    .WithMany()
+                    .HasForeignKey(d => d.ComboId)
+                    .HasConstraintName("FK_BookingDetail_Combo");
+
+                entity.HasOne(d => d.Food)
+                    .WithMany()
+                    .HasForeignKey(d => d.FoodId)
+                    .HasConstraintName("FK_BookingDetail_Food");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany()
+                    .HasForeignKey(d => d.ServiceId)
+                    .HasConstraintName("FK_BookingDetail_Service");
+
+                entity.HasOne(d => d.ServicePackage)
+                    .WithMany()
+                    .HasForeignKey(d => d.ServicePackageId)
+                    .HasConstraintName("FK_BookingDetail_ServicePackage");
+            });
+
+            modelBuilder.Entity<BookingTimeSlot>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("BookingTimeSlot");
+
+                entity.Property(e => e.AvailableTimeslotId).HasColumnName("available_timeslot_id");
+
+                entity.Property(e => e.BookingId).HasColumnName("booking_id");
+
+                entity.HasOne(d => d.AvailableTimeslot)
+                    .WithMany()
+                    .HasForeignKey(d => d.AvailableTimeslotId)
+                    .HasConstraintName("FK_BookingTimeSlot_AvailableTimeSlot");
+
+                entity.HasOne(d => d.Booking)
+                    .WithMany()
+                    .HasForeignKey(d => d.BookingId)
+                    .HasConstraintName("FK_BookingTimeSlot_Booking");
+            });
+
+            modelBuilder.Entity<Combo>(entity =>
+            {
+                entity.ToTable("Combo");
+
+                entity.Property(e => e.ComboName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("combo_name");
+
+                entity.Property(e => e.ComboPrice)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("combo_price");
+
+                entity.Property(e => e.HostId).HasColumnName("host_id");
+
+                entity.Property(e => e.ImgUrl)
+                    .HasColumnType("text")
+                    .HasColumnName("img_url");
+
+                entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.HasOne(d => d.Host)
+                    .WithMany(p => p.Combos)
+                    .HasForeignKey(d => d.HostId)
+                    .HasConstraintName("FK_Combo_Host");
+            });
+
+            modelBuilder.Entity<ComboFoodDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("ComboFoodDetail");
+
+                entity.Property(e => e.ComboId).HasColumnName("combo_id");
+
+                entity.Property(e => e.FoodId).HasColumnName("food_id");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.HasOne(d => d.Combo)
+                    .WithMany()
+                    .HasForeignKey(d => d.ComboId)
+                    .HasConstraintName("FK_ComboFoodDetail_Combo");
+
+                entity.HasOne(d => d.Food)
+                    .WithMany()
+                    .HasForeignKey(d => d.FoodId)
+                    .HasConstraintName("FK_ComboFoodDetail_Food");
+            });
+
             modelBuilder.Entity<Coupon>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.AvailableDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("available_date");
 
                 entity.Property(e => e.ConditionAmount)
                     .HasColumnType("decimal(10, 2)")
@@ -107,18 +301,60 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("District");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Description).HasMaxLength(100);
             });
 
-            modelBuilder.Entity<Location>(entity =>
+            modelBuilder.Entity<Food>(entity =>
             {
-                entity.ToTable("Location");
+                entity.ToTable("Food");
+
+                entity.Property(e => e.Description)
+                    .HasColumnType("text")
+                    .HasColumnName("description");
+
+                entity.Property(e => e.FoodCategoryId).HasColumnName("food_category_id");
+
+                entity.Property(e => e.FoodName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("food_name");
+
+                entity.Property(e => e.ImageUrl)
+                    .HasColumnType("text")
+                    .HasColumnName("image_url");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("price");
+
+                entity.HasOne(d => d.FoodCategory)
+                    .WithMany(p => p.Foods)
+                    .HasForeignKey(d => d.FoodCategoryId)
+                    .HasConstraintName("FK_Food_FoodCategory");
+            });
+
+            modelBuilder.Entity<FoodCategory>(entity =>
+            {
+                entity.ToTable("FoodCategory");
+
+                entity.Property(e => e.Description)
+                    .HasColumnType("text")
+                    .HasColumnName("description");
+
+                entity.Property(e => e.FoodCategoryName)
+                    .HasMaxLength(255)
+                    .HasColumnName("food_category_name");
+            });
+
+            modelBuilder.Entity<Host>(entity =>
+            {
+                entity.ToTable("Host");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Address).HasMaxLength(100);
+
+                entity.Property(e => e.Capacity).HasColumnName("capacity");
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -133,22 +369,15 @@ namespace BusinessObject.Models
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.TypeId).HasColumnName("Type_id");
-
                 entity.HasOne(d => d.District)
-                    .WithMany(p => p.Locations)
+                    .WithMany(p => p.Hosts)
                     .HasForeignKey(d => d.DistrictId)
                     .HasConstraintName("FK_Location_District");
-
-                entity.HasOne(d => d.Type)
-                    .WithMany(p => p.Locations)
-                    .HasForeignKey(d => d.TypeId)
-                    .HasConstraintName("FK_Location_LocationType");
             });
 
-            modelBuilder.Entity<LocationImage>(entity =>
+            modelBuilder.Entity<HostImage>(entity =>
             {
-                entity.ToTable("LocationImage");
+                entity.ToTable("HostImage");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
@@ -159,145 +388,10 @@ namespace BusinessObject.Models
                 entity.Property(e => e.LocationId).HasColumnName("location_id");
 
                 entity.HasOne(d => d.Location)
-                    .WithMany(p => p.LocationImages)
+                    .WithMany(p => p.HostImages)
                     .HasForeignKey(d => d.LocationId)
                     .HasConstraintName("FK_LocationImg_Location");
             });
-
-            modelBuilder.Entity<LocationType>(entity =>
-            {
-                entity.ToTable("LocationType");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<Order>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.CouponId).HasColumnName("coupon_id");
-
-                entity.Property(e => e.OrderDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("order_date");
-
-                entity.Property(e => e.PackageId).HasColumnName("package_id");
-
-                entity.Property(e => e.PaymentId).HasColumnName("payment_id");
-
-                entity.Property(e => e.TotalAmount)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("total_amount");
-
-                entity.Property(e => e.InitialPrice)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("initial_price");
-
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.HasOne(d => d.Coupon)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.CouponId)
-                    .HasConstraintName("FK__Orders__coupon_i__778AC167");
-
-                entity.HasOne(d => d.Package)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.PackageId)
-                    .HasConstraintName("FK_Orders_Package");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Orders__user_id__76969D2E");
-            });
-
-            modelBuilder.Entity<Package>(entity =>
-            {
-                entity.ToTable("Package");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.EndTime)
-                    .HasColumnType("datetime")
-                    .HasColumnName("end_time");
-
-                entity.Property(e => e.LocationId).HasColumnName("location_id");
-
-                entity.Property(e => e.NumberOfAdults).HasColumnName("number_of_adults");
-
-                entity.Property(e => e.NumberOfKids).HasColumnName("number_of_kids");
-
-                entity.Property(e => e.PackageName)
-                    .HasMaxLength(50)
-                    .HasColumnName("package_name");
-
-                entity.Property(e => e.Price)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("price");
-
-                entity.Property(e => e.StartTime)
-                    .HasColumnType("datetime")
-                    .HasColumnName("start_time");
-
-                entity.Property(e => e.Status).HasColumnName("status");
-
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.HasOne(d => d.Location)
-                    .WithMany(p => p.Packages)
-                    .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK_Package_Location");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Packages)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Package__user_id__71D1E811");
-
-                entity.HasMany(p => p.PackageDetails)
-                .WithOne()
-                .HasForeignKey(pd => pd.PackageId);
-            });
-
-
-            modelBuilder.Entity<PackageDetail>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("PackageDetail");
-
-                entity.Property(e => e.PackageId).HasColumnName("Package_Id");
-
-                entity.Property(e => e.ServiceId).HasColumnName("Service_Id");
-
-                entity.HasKey(pd => new { pd.PackageId, pd.ServiceId });
-
-                entity.HasOne(d => d.Package)
-                    .WithMany(p => p.PackageDetails)
-                    .HasForeignKey(d => d.PackageId)
-                    .HasConstraintName("FK_PackageDetail_Package");
-
-                entity.HasOne(d => d.Service)
-                    .WithMany()
-                    .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK_PackageDetail_Service1");
-            });
-
-            modelBuilder.Entity<PackageImage>(entity =>
-            {
-                entity.ToTable("PackageImage");
-
-                entity.Property(e => e.ImgUrl)
-                    .HasMaxLength(200)
-                    .HasColumnName("Img_url");
-
-                entity.Property(e => e.PackageId).HasColumnName("package_id");
-
-                entity.HasOne(d => d.Package)
-                    .WithMany(p => p.PackageImages)
-                    .HasForeignKey(d => d.PackageId)
-                    .HasConstraintName("FK_PackageImage_Package");
-            });
-
 
             modelBuilder.Entity<Payment>(entity =>
             {
@@ -353,7 +447,11 @@ namespace BusinessObject.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("price");
 
-                entity.Property(e => e.ServiceCategoryId).HasColumnName("serviceCategory_Id");
+                entity.Property(e => e.ServiceCategoryId).HasColumnName("service_category_Id");
+
+                entity.Property(e => e.ServiceImage)
+                    .HasMaxLength(200)
+                    .HasColumnName("service_image");
 
                 entity.Property(e => e.ServiceName)
                     .HasMaxLength(50)
@@ -372,36 +470,86 @@ namespace BusinessObject.Models
                 entity.Property(e => e.CategoryName)
                     .HasMaxLength(50)
                     .HasColumnName("category_name");
-
-                entity.Property(e => e.TypeId).HasColumnName("type_id");
-
-                entity.HasOne(d => d.Type)
-                    .WithMany(p => p.ServiceCategories)
-                    .HasForeignKey(d => d.TypeId)
-                    .HasConstraintName("FK_ServiceCategory_ServiceType");
             });
 
-            modelBuilder.Entity<ServiceImage>(entity =>
+            modelBuilder.Entity<ServicePackage>(entity =>
             {
-                entity.ToTable("ServiceImage");
+                entity.ToTable("ServicePackage");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.HostId).HasColumnName("host_id");
+
+                entity.Property(e => e.PackageName)
+                    .HasMaxLength(50)
+                    .HasColumnName("package_name");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("price");
+
+                entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.HasOne(d => d.Host)
+                    .WithMany(p => p.ServicePackages)
+                    .HasForeignKey(d => d.HostId)
+                    .HasConstraintName("FK_Package_Location");
+            });
+
+            modelBuilder.Entity<ServicePackageDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("ServicePackageDetail");
+
+                entity.Property(e => e.ServiceId).HasColumnName("Service_Id");
+
+                entity.Property(e => e.ServicePackageId).HasColumnName("service_package_Id");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany()
+                    .HasForeignKey(d => d.ServiceId)
+                    .HasConstraintName("FK_PackageDetail_Service1");
+
+                entity.HasOne(d => d.ServicePackage)
+                    .WithMany()
+                    .HasForeignKey(d => d.ServicePackageId)
+                    .HasConstraintName("FK_PackageDetail_Package");
+            });
+
+            modelBuilder.Entity<ServicePackageImage>(entity =>
+            {
+                entity.ToTable("ServicePackageImage");
 
                 entity.Property(e => e.ImgUrl)
                     .HasMaxLength(200)
                     .HasColumnName("Img_url");
 
-                entity.Property(e => e.ServiceId).HasColumnName("service_id");
+                entity.Property(e => e.ServicePackageId).HasColumnName("service_package_id");
 
-                entity.HasOne(d => d.Service)
-                    .WithMany(p => p.ServiceImages)
-                    .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK_ServiceImage_Service");
+                entity.HasOne(d => d.ServicePackage)
+                    .WithMany(p => p.ServicePackageImages)
+                    .HasForeignKey(d => d.ServicePackageId)
+                    .HasConstraintName("FK_PackageImage_Package");
             });
 
-            modelBuilder.Entity<ServiceType>(entity =>
+            modelBuilder.Entity<TimeSlot>(entity =>
             {
-                entity.ToTable("ServiceType");
+                entity.ToTable("TimeSlot");
 
-                entity.Property(e => e.TypeName).HasMaxLength(50);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Hours).HasColumnName("hours");
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("status");
+
+                entity.Property(e => e.Weekday)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("weekday");
             });
 
             modelBuilder.Entity<User>(entity =>
