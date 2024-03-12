@@ -16,7 +16,7 @@ namespace DataAccess
             var listLocations = new List<Location>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listLocations = context.Locations
                 .Include(Location => Location.LocationImages)
@@ -44,7 +44,7 @@ namespace DataAccess
             Location l = new Location();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     l = context.Locations
                 .Include(Location => Location.LocationImages)
@@ -71,7 +71,7 @@ namespace DataAccess
             List<Location> f = new List<Location>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     f = context.Locations
                      .Include(Location => Location.LocationImages)
@@ -102,7 +102,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Locations.Add(f);
                     context.SaveChanges();
@@ -118,7 +118,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.Locations.SingleOrDefault(x => x.Id == f.Id);
                     context.Locations.Remove(p1);
@@ -136,7 +136,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<Location>(p).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

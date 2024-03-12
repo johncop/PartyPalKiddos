@@ -15,7 +15,7 @@ namespace DataAccess
             var listDistricts = new List<District>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listDistricts = context.Districts
                 .Select(District => new District
@@ -38,7 +38,7 @@ namespace DataAccess
             District d = new District();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     d = context.Districts
                 .Select(District => new District
@@ -60,7 +60,7 @@ namespace DataAccess
             List<District> d = new List<District>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     d = context.Districts
                      .Where(District => District.Description.Contains(description))
@@ -86,7 +86,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Districts.Add(d);
                     context.SaveChanges();
@@ -102,7 +102,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.Districts.SingleOrDefault(x => x.Id == d.Id);
                     context.Districts.Remove(p1);
@@ -120,7 +120,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<District>(d).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

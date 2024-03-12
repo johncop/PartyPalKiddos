@@ -16,7 +16,7 @@ namespace DataAccess
             var listOrder = new List<PackageDetail>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listOrder = context.PackageDetails
                 .Select(pd => new PackageDetail
@@ -40,7 +40,7 @@ namespace DataAccess
             PackageDetail p = new PackageDetail();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.PackageDetails
                 .Select(pd => new PackageDetail
@@ -63,7 +63,7 @@ namespace DataAccess
             List<PackageDetail> pt = new List<PackageDetail>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     pt = context.PackageDetails
                 .Where(PackageDetail => PackageDetail.PackageId == packageId)
@@ -88,7 +88,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.PackageDetails.Add(pd);
                     context.SaveChanges();
@@ -103,7 +103,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.PackageDetails.SingleOrDefault(x => x.PackageId == pd.PackageId);
                     context.PackageDetails.Remove(p1);
@@ -120,7 +120,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<PackageDetail>(pd).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

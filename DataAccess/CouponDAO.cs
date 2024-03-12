@@ -14,7 +14,7 @@ namespace DataAccess
             var listCoupon = new List<Coupon>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listCoupon = context.Coupons
                 .Select(coupon => new Coupon
@@ -38,7 +38,7 @@ namespace DataAccess
             Coupon p = new Coupon();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.Coupons
                 .Select(coupon => new Coupon
@@ -60,7 +60,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Coupons.Add(coupon);
                     context.SaveChanges();
@@ -75,7 +75,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.Coupons.SingleOrDefault(x => x.Id == coupon.Id);
                     context.Coupons.Remove(p1);
@@ -92,7 +92,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<Coupon>(coupon).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

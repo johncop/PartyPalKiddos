@@ -11,7 +11,7 @@ namespace PartyPalKiddosAPI.Controllers
     [ApiController]
     public class PackageController : ControllerBase
     {
-        private IPackageRepository repository = new PackageRepository();
+        private IPackageRepository repository = new ServicePackageRepository();
 
         [HttpPost("packages")]
         public IActionResult PostPackage(string? packageName, int? numberOfKid, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price, int? status)

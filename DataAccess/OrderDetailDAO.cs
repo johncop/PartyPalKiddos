@@ -16,7 +16,7 @@ namespace DataAccess
             var listOrderDetails = new List<OrderDetail>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listOrderDetails = context.OrderDetails
                 .Select(OrderDetail => new OrderDetail
@@ -39,7 +39,7 @@ namespace DataAccess
             OrderDetail p = new OrderDetail();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.OrderDetails
                 .Select(OrderDetail => new OrderDetail
@@ -65,7 +65,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.OrderDetails.Add(f);
                     context.SaveChanges();
@@ -81,7 +81,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.OrderDetails.SingleOrDefault(x => x.OrderId == f.OrderId);
                     context.OrderDetails.Remove(p1);
@@ -99,7 +99,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<OrderDetail>(p).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

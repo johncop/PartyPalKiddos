@@ -16,7 +16,7 @@ namespace DataAccess
             var listOrder = new List<ServiceType>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listOrder = context.ServiceTypes
                         .Include(st => st.ServiceCategories)
@@ -42,7 +42,7 @@ namespace DataAccess
             ServiceType p = new ServiceType();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.ServiceTypes
                 .Select(st => new ServiceType
@@ -66,7 +66,7 @@ namespace DataAccess
             List<ServiceType> pt = new List<ServiceType>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     pt = context.ServiceTypes
                 .Where(ServiceType => ServiceType.TypeName == serviceTypeName)
@@ -92,7 +92,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.ServiceTypes.Add(st);
                     context.SaveChanges();
@@ -107,7 +107,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.ServiceTypes.SingleOrDefault(x => x.Id == st.Id);
                     context.ServiceTypes.Remove(p1);
@@ -124,7 +124,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<ServiceType>(st).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

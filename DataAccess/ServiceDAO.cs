@@ -16,7 +16,7 @@ namespace DataAccess
             var listService = new List<Service>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listService = context.Services
                         .Include(service => service.ServiceImages)
@@ -44,7 +44,7 @@ namespace DataAccess
             Service f = new Service();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     f = context.Services
                 .Include(service => service.ServiceImages)
@@ -71,7 +71,7 @@ namespace DataAccess
             List<Service> f = new List<Service>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     f = context.Services
                      .Include(service => service.ServiceImages)
@@ -102,7 +102,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Services.Add(s);
                     context.SaveChanges();
@@ -118,7 +118,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.Services.SingleOrDefault(x => x.Id == s.Id);
                     context.Services.Remove(p1);
@@ -136,7 +136,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<Service>(s).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

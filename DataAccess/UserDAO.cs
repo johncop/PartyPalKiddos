@@ -14,7 +14,7 @@ namespace DataAccess
             var listUser = new List<User>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listUser = context.Users
                 .Select(user => new User
@@ -42,7 +42,7 @@ namespace DataAccess
             User p = new User();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.Users
                 .Select(user => new User
@@ -68,7 +68,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Users.Add(user);
                     context.SaveChanges();
@@ -83,7 +83,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.Users.SingleOrDefault(x => x.Id == user.Id);
                     context.Users.Remove(p1);
@@ -100,7 +100,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<User>(user).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

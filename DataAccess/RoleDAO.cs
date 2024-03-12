@@ -14,7 +14,7 @@ namespace DataAccess
             var listRole = new List<Role>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listRole = context.Roles
                 .Select(role => new Role
@@ -37,7 +37,7 @@ namespace DataAccess
             Role p = new Role();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.Roles
                 .Select(role => new Role
@@ -58,7 +58,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Roles.Add(role);
                     context.SaveChanges();
@@ -73,7 +73,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.Roles.SingleOrDefault(x => x.Id == role.Id);
                     context.Roles.Remove(p1);
@@ -90,7 +90,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<Role>(role).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

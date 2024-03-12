@@ -14,7 +14,7 @@ namespace DataAccess
             var listOrders = new List<Order>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listOrders = context.Orders
                 .Select(order => new Order
@@ -42,7 +42,7 @@ namespace DataAccess
             Order l = new Order();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     l = context.Orders
                 .Select(order => new Order
@@ -69,7 +69,7 @@ namespace DataAccess
             List<Order> f = new List<Order>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     f = context.Orders
                      .Where(Order => Order.UserId == userId)
@@ -97,7 +97,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Orders.Add(o);
                     context.SaveChanges();
@@ -113,7 +113,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var p1 = context.Orders.SingleOrDefault(x => x.Id == o.Id);
                     context.Orders.Remove(p1);
@@ -131,7 +131,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<Order>(o).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;

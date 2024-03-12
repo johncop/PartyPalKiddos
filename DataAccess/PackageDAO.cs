@@ -16,7 +16,7 @@ namespace DataAccess
             var listPackage = new List<Package>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     listPackage = context.Packages
                         .Include(p => p.PackageDetails)
@@ -65,7 +65,7 @@ namespace DataAccess
             Package p = new Package();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.Packages
                 .Select(package => new Package
@@ -108,7 +108,7 @@ namespace DataAccess
             List<Package> p = new List<Package>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.Packages
                 .Where(package => package.PackageName.Contains(packageName))
@@ -151,7 +151,7 @@ namespace DataAccess
             List<Package> p = new List<Package>();
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.Packages
                 .Where(package => package.UserId == id)
@@ -196,7 +196,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Packages.Add(p);
                     context.SaveChanges();
@@ -212,7 +212,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     var packageDetails = context.PackageDetails.Where(pd => pd.PackageId == p.Id).ToList();
                     context.PackageDetails.RemoveRange(packageDetails);
@@ -233,7 +233,7 @@ namespace DataAccess
         {
             try
             {
-                using (var context = new PartyPalKiddosContext())
+                using (var context = new PartyPalKiddosDBContext())
                 {
                     context.Entry<Package>(p).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -249,7 +249,7 @@ namespace DataAccess
 
         public static Package ClonePackage(Package existingPackage, string? packageName, int? numberOfKid, int? numberOfAdult, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
         {
-            var context = new PartyPalKiddosContext();
+            var context = new PartyPalKiddosDBContext();
             // Create a new package with the customized details
             Package newPackage = new Package()
             {
@@ -284,7 +284,7 @@ namespace DataAccess
         #region validation
         public static bool IsTimeSlotAvailable(int? locationId, DateTime? startTime, DateTime? endTime)
         {
-            using (var context = new PartyPalKiddosContext())
+            using (var context = new PartyPalKiddosDBContext())
             {
                 return !context.Packages.Any(p =>
                 p.LocationId == locationId &&

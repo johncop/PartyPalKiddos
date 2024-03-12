@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository
 {
-    public class PackageRepository : IPackageRepository
+    public class ServicePackageRepository : IPackageRepository
     {
         public void addPackage(Package p) => PackageDAO.SavePackage(p);
 
