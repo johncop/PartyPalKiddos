@@ -24,7 +24,7 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("BookingTimeSlots")]
-        public IActionResult UpdateBookingTimeSlot(int bookingId) // Assuming these are the identifiers
+        public IActionResult UpdateBookingTimeSlot(int bookingId, int? availableTimeslotId) // Assuming these are the identifiers
         {
             var checkBookingTimeSlot = repository.GetBookingTimeSlotById(bookingId);
             if (checkBookingTimeSlot == null)
@@ -34,7 +34,8 @@ namespace PartyPalKiddosAPI.Controllers
 
             BookingTimeSlot bookingTimeSlot = new BookingTimeSlot
             {
-                BookingId = bookingId
+                BookingId = bookingId,
+                AvailableTimeslotId = availableTimeslotId
             };
             repository.UpdateBookingTimeSlot(bookingTimeSlot);
             return Ok(new { success = true, message = "Booking time slot updated successfully." });
