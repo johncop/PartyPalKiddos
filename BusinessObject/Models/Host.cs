@@ -13,6 +13,27 @@ namespace BusinessObject.Models
             ServicePackages = new HashSet<ServicePackage>();
         }
 
+        public Host(string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
+        {
+            Address = address;
+            Capacity = capacity;
+            DistrictId = districtId;
+            Description = description;
+            Price = price;
+            Status = status;
+        }
+
+        public Host(int id, string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
+        {
+            Id = id;
+            Address = address;
+            Capacity = capacity;
+            DistrictId = districtId;
+            Description = description;
+            Price = price;
+            Status = status;
+        }
+
         public int Id { get; set; }
         public string? Address { get; set; }
         public int? Capacity { get; set; }
