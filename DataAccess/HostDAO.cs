@@ -28,7 +28,8 @@ namespace DataAccess
                     DistrictId = Host.DistrictId,
                     Description = Host.Description,                
                     Price = Host.Price,
-                    HostImages = Host.HostImages
+                    HostImages = Host.HostImages,
+                    District = Host.District,
                 }).ToList();
                 }
             }
@@ -57,7 +58,8 @@ namespace DataAccess
                     DistrictId = Host.DistrictId,
                     Description = Host.Description,
                     Price = Host.Price,
-                    HostImages = Host.HostImages
+                    HostImages = Host.HostImages,
+                    District = Host.District,
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -86,7 +88,8 @@ namespace DataAccess
                     DistrictId = Host.DistrictId,
                     Description = Host.Description,
                     Price = Host.Price,
-                    HostImages = Host.HostImages
+                    HostImages = Host.HostImages,
+                    District = Host.District,
                 }).ToList();
                 }
             }
