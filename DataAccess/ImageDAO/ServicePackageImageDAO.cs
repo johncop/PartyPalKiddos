@@ -1,4 +1,4 @@
-﻿/*using BusinessObject.Models;
+﻿using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace DataAccess.ImageDAO
 {
-    public class ServiceImageDAO
+    public class ServicePackageImageDAO
     {
         #region query
-        public static List<ServiceImage> GetServiceImages()
+        public static List<ServicePackageImage> GetServicePackageImages()
         {
-            var listServiceImages = new List<ServiceImage>();
+            var listServicePackageImages = new List<ServicePackageImage>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listServiceImages = context.ServiceImages
-                .Select(ServiceImage => new ServiceImage
+                    listServicePackageImages = context.ServicePackageImages
+                .Select(ServicePackageImage => new ServicePackageImage
                 {
-                    Id = ServiceImage.Id,
-                    ImgUrl = ServiceImage.ImgUrl,
-                    ServiceId = ServiceImage.ServiceId
+                    Id = ServicePackageImage.Id,
+                    ImgUrl = ServicePackageImage.ImgUrl,
+                    ServicePackageId = ServicePackageImage.ServicePackageId
                 }).ToList();
                 }
             }
@@ -31,22 +31,22 @@ namespace DataAccess.ImageDAO
 
                 throw;
             }
-            return listServiceImages;
+            return listServicePackageImages;
         }
 
-        public static ServiceImage findServiceImageById(int id)
+        public static ServicePackageImage findServicePackageImageById(int id)
         {
-            ServiceImage d = new ServiceImage();
+            ServicePackageImage d = new ServicePackageImage();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    d = context.ServiceImages
-                .Select(ServiceImage => new ServiceImage
+                    d = context.ServicePackageImages
+                .Select(ServicePackageImage => new ServicePackageImage
                 {
-                    Id = ServiceImage.Id,
-                    ImgUrl = ServiceImage.ImgUrl,
-                    ServiceId = ServiceImage.ServiceId
+                    Id = ServicePackageImage.Id,
+                    ImgUrl = ServicePackageImage.ImgUrl,
+                    ServicePackageId = ServicePackageImage.ServicePackageId
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -62,13 +62,13 @@ namespace DataAccess.ImageDAO
 
 
         #region command
-        public static void SaveServiceImage(ServiceImage si)
+        public static void SaveServicePackageImage(ServicePackageImage pi)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.ServiceImages.Add(si);
+                    context.ServicePackageImages.Add(pi);
                     context.SaveChanges();
                 }
             }
@@ -78,14 +78,14 @@ namespace DataAccess.ImageDAO
             }
         }
 
-        public static void DeleteServiceImage(ServiceImage si)
+        public static void DeleteServicePackageImage(ServicePackageImage li)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.ServiceImages.SingleOrDefault(x => x.Id == si.Id);
-                    context.ServiceImages.Remove(p1);
+                    var p1 = context.ServicePackageImages.SingleOrDefault(x => x.Id == li.Id);
+                    context.ServicePackageImages.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -96,13 +96,13 @@ namespace DataAccess.ImageDAO
             }
         }
 
-        public static void UpdateServiceImage(ServiceImage si)
+        public static void UpdateServicePackageImage(ServicePackageImage li)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<ServiceImage>(si).State =
+                    context.Entry<ServicePackageImage>(li).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
@@ -116,4 +116,3 @@ namespace DataAccess.ImageDAO
         #endregion
     }
 }
-*/

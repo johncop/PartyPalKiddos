@@ -10,11 +10,10 @@ namespace BusinessObject.Models
             Payments = new HashSet<Payment>();
         }
 
-        public Booking(DateTime bookingDate, int userId, decimal bookingDetailId, int? paymentId, int? couponId, int? numberOfKids, int? numberOfAdults, string? bookingStatus)
+        public Booking(DateTime bookingDate, int userId, int? paymentId, int? couponId, int? numberOfKids, int? numberOfAdults, string? bookingStatus)
         {
             BookingDate = bookingDate;
             UserId = userId;
-            BookingDetailId = bookingDetailId;
             PaymentId = paymentId;
             CouponId = couponId;
             NumberOfKids = numberOfKids;
@@ -22,12 +21,11 @@ namespace BusinessObject.Models
             BookingStatus = bookingStatus;
         }
 
-        public Booking(int id, DateTime bookingDate, int userId, decimal bookingDetailId, int? paymentId, int? couponId, int? numberOfKids, int? numberOfAdults, string? bookingStatus)
+        public Booking(int id, DateTime bookingDate, int userId, int? paymentId, int? couponId, int? numberOfKids, int? numberOfAdults, string? bookingStatus)
         {
             Id = id;
             BookingDate = bookingDate;
             UserId = userId;
-            BookingDetailId = bookingDetailId;
             PaymentId = paymentId;
             CouponId = couponId;
             NumberOfKids = numberOfKids;
