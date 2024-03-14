@@ -28,7 +28,7 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Combo food detail updated successfully." });
         }
 
-        [HttpDelete("combo-food-detail/{id}")]
+        [HttpDelete("combo-food-detail")]
         public IActionResult DeleteCombo(int comboId, int foodId)
         {
             var f = repository.GetComboFoodDetail(comboId, foodId);

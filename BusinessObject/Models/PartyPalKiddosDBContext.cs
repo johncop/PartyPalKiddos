@@ -231,6 +231,8 @@ namespace BusinessObject.Models
             {
                 entity.HasNoKey();
 
+                entity.HasKey(cfd => new { cfd.ComboId, cfd.FoodId });
+
                 entity.ToTable("ComboFoodDetail");
 
                 entity.Property(e => e.ComboId).HasColumnName("combo_id");
@@ -510,6 +512,8 @@ namespace BusinessObject.Models
             modelBuilder.Entity<ServicePackageDetail>(entity =>
             {
                 entity.HasNoKey();
+
+                entity.HasKey(spd => new { spd.ServicePackageId, spd.ServiceId });
 
                 entity.ToTable("ServicePackageDetail");
 

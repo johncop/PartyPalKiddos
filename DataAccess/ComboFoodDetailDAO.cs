@@ -114,7 +114,7 @@ namespace DataAccess
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.ComboFoodDetails.SingleOrDefault(x => x.ComboId == comboFoodDetail.ComboId);
+                    var p1 = context.ComboFoodDetails.SingleOrDefault(x => x.ComboId == comboFoodDetail.ComboId && x.FoodId == comboFoodDetail.FoodId);
                     context.ComboFoodDetails.Remove(p1);
                     context.SaveChanges();
                 }
