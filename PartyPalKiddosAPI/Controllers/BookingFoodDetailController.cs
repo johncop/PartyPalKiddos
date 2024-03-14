@@ -18,7 +18,7 @@ namespace PartyPalKiddosAPI.Controllers
         public BookingFoodDetail GetBookingFoodDetail(int bookingId, int foodId) => repository.GetBookingFoodDetails(bookingId, foodId);
         [HttpGet("BookingFoodDetail/{BookingId}/{ComboId}")]
         public BookingFoodDetail GetBookingComboDetail(int bookingId, int comboId) => repository.GetBookingComboDetails(bookingId, comboId);
-        [HttpPost("BookingFoodDetail")]
+        [HttpPost("BookingFoodDetail1")]
         public IActionResult PostBookingFoodDetail(int? bookingId, int? foodId, int? foodQuantity)
         {
             BookingFoodDetail foodDetail = new BookingFoodDetail
@@ -30,7 +30,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.SaveBookingFoodDetail(foodDetail);
             return Ok(new { success = true, message = "FoodDetail added successfully." });
         }
-        [HttpPost("BookingComboDetail")]
+        [HttpPost("BookingComboDetail2")]
         public IActionResult PostBookingComboDetail(int? bookingId, int? comboId, int? comboQuantity)
         {
             BookingFoodDetail comboDetail = new BookingFoodDetail
@@ -42,7 +42,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.SaveBookingFoodDetail(comboDetail);
             return Ok(new { success = true, message = "ComboDetail added successfully." });
         }
-        [HttpPut("BookingFoodDetail")]
+        [HttpPut("BookingFoodDetail1")]
         public IActionResult UpdateBookingFoodDetail(int? bookingId, int? foodId, int? foodQuantity)
         {
             var checkbooking = repository.GetBookingFoodDetails((int)bookingId, (int)foodId);
@@ -59,7 +59,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdateBookingFoodDetail(foodDetail);
             return Ok(new { success = true, message = "FoodDetail updated successfully." });
         }
-        [HttpPut("BookingComboDetail")]
+        [HttpPut("BookingComboDetail2")]
         public IActionResult UpdateBookingComboDetail(int? bookingId, int? comboId, int? comboQuantity)
         {
             var checkbooking = repository.GetBookingComboDetails((int)bookingId, (int)comboId);
@@ -76,7 +76,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.UpdateBookingComboDetail(comboDetail);
             return Ok(new { success = true, message = "FoodDetail updated successfully." });
         }
-        [HttpDelete("BookingFoodDetail")]
+        [HttpDelete("BookingFoodDetail1")]
         public IActionResult DeleteBookingFoodDetail(int? bookingId, int? foodId)
         {
             var checkbooking = repository.GetBookingFoodDetails((int)bookingId, (int)foodId);
@@ -87,7 +87,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.DeleteBookingFoodDetail((int)checkbooking.BookingId, (int)checkbooking.FoodId);
             return Ok(new { success = true, message = "Food Detail deleted successfully." });
         }
-        [HttpDelete("BookingComboDetail")]
+        [HttpDelete("BookingComboDetail2")]
         public IActionResult DeleteBookingComboDetail(int? bookingId, int? comboId)
         {
             var checkbooking = repository.GetBookingComboDetails((int)bookingId, (int)comboId);
