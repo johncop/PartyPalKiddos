@@ -10,6 +10,19 @@ namespace BusinessObject.Models
             Services = new HashSet<Service>();
         }
 
+        public ServiceCategory(string? categoryName, string? description)
+        {
+            CategoryName = categoryName;
+            Description = description;
+        }
+
+        public ServiceCategory(int id, string? categoryName, string? description)
+        {
+            Id = id;
+            CategoryName = categoryName;
+            Description = description;
+        }
+
         public int Id { get; set; }
         public string? CategoryName { get; set; }
         public string? Description { get; set; }

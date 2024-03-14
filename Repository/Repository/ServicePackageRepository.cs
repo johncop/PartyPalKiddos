@@ -1,4 +1,4 @@
-﻿/*using BusinessObject.Models;
+﻿using BusinessObject.Models;
 using DataAccess;
 using Repository.Interface;
 using System;
@@ -9,25 +9,26 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository
 {
-    public class ServicePackageRepository : IPackageRepository
+    public class ServicePackageRepository : IServicePackageRepository
     {
-        public void addPackage(Package p) => PackageDAO.SavePackage(p);
+        public void addServicePackage(ServicePackage p) => ServicePackageDAO.SaveServicePackage(p);
 
-        public List<Package> GetAllPackage() => PackageDAO.GetPackages();
+        public void removeServicePackage(ServicePackage p) => ServicePackageDAO.DeleteServicePackage(p);
 
-        public Package GetPackageById(int id) => PackageDAO.findPackageById(id);
+        public void UpdateServicePackage(ServicePackage p) => ServicePackageDAO.UpdateServicePackage(p);
 
-        public List<Package> GetPackagetByName(string packgakeName) => PackageDAO.findPackageByName(packgakeName);
-        public List<Package> GetPackagetByUserId(int userId) => PackageDAO.findPackageByUserId(userId);
+        public List<ServicePackage> GetAllServicePackage() => ServicePackageDAO.GetServicePackages();
 
-        public bool isTimeSlotAvaiable(int? locationId, DateTime? startTime, DateTime? endTime) 
-            => PackageDAO.IsTimeSlotAvailable(locationId, startTime, endTime);
+        public ServicePackage GetServicePackageById(int id) => ServicePackageDAO.findServicePackageById(id);
 
-        public void removePackage(Package p) => PackageDAO.DeletePackage(p);
+        public List<ServicePackage> GetServicePackagetByName(string packgakeName) => ServicePackageDAO.findServicePackageByName(packgakeName);
+        public List<ServicePackage> GetServicePackagetByHostId(int hostId) => ServicePackageDAO.findServicePackageByHostId(hostId);
 
-        public void UpdatePackage(Package p) => PackageDAO.UpdatePackage(p);
+       /* public bool isTimeSlotAvaiable(int? locationId, DateTime? startTime, DateTime? endTime)
+            => ServicePackageDAO.IsTimeSlotAvailable(locationId, startTime, endTime);*/
+
+        
 
 
     }
 }
-*/

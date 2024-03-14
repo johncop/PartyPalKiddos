@@ -24,13 +24,13 @@ namespace PartyPalKiddosAPI.Controllers
         public ActionResult<List<Service>> GetServiceByName(string serviceName) =>
             repository.GetServiceByName(serviceName);
 
-        /*[HttpPost("services")]
-        public ActionResult<Service> CreateService(string? serviceName, string? description, int? serviceCategoryId, decimal? price)
+        [HttpPost("services")]
+        public ActionResult<Service> CreateService(string? serviceName, string? description, int? serviceCategoryId, string? serviceImage, decimal? price)
         {
-            Service s = new Service(serviceName, description, serviceCategoryId,price);
+            Service s = new Service(serviceName, description, serviceCategoryId,serviceImage, price);
             repository.addService(s);
             return Ok(new { success = true, message = "Service updated successfully." });
-        }*/
+        }
 
         [HttpDelete("services/{id}")]
         public IActionResult DeleteService(int id)
@@ -44,17 +44,17 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Service deleted successfully." });
         }
 
-        /*[HttpPut("services/{id}")]
-        public IActionResult UpdateService(int id, string serviceName, string? description, int? serviceCategoryId, decimal price)
+        [HttpPut("services/{id}")]
+        public IActionResult UpdateService(int id, string? serviceName, string? description, int? serviceCategoryId, string? serviceImage, decimal? price)
         {
             Service service = repository.GetServiceById(id);
             if (service == null)
             {
                 return NotFound();
             }
-            service = new Service(id, serviceName, description, serviceCategoryId ,price);
+            service = new Service(id, serviceName, description, serviceCategoryId, serviceImage, price);
             repository.UpdateService(service);
             return Ok(new { success = true, message = "Service Updated successfully." });
-        }*/
+        }
     }
 }
