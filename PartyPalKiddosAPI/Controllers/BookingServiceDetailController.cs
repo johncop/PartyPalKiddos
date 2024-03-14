@@ -95,7 +95,7 @@ namespace PartyPalKiddosAPI.Controllers
             {
                 return NotFound();
             }
-            repository.DeleteBookingServiceDetail((int)checkbooking.BookingId, (int)checkbooking.PackageId);
+            repository.DeleteBookingServiceDetail((int)checkbooking.BookingId, (int)checkbooking.ServicePackageId);
             return Ok(new { success = true, message = "PackageDetail deleted successfully." });
         }
     }
