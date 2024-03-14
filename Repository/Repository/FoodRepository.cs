@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess;
 using Repository.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,16 @@ namespace Repository.Repository
 {
     public class FoodRepository : IFoodRepository
     {
-        public void addFood(Food food)
-        {
-            throw new NotImplementedException();
-        }
+        public void addFood(Food food) => FoodDAO.SaveFood(food);
 
-        public List<Food> GetAllFoods()
-        {
-            throw new NotImplementedException();
-        }
+        public List<Food> GetAllFoods() => FoodDAO.GetFoods();
 
-        public Food GetFoodById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Food GetFoodById(int id) => FoodDAO.findFoodById(id);
 
-        public List<Food> GetFoodByName(string foodName)
-        {
-            throw new NotImplementedException();
-        }
+        public List<Food> GetFoodByName(string foodName) => FoodDAO.findFoodByName(foodName);
 
-        public void removeFood(Food food)
-        {
-            throw new NotImplementedException();
-        }
+        public void removeFood(Food food) => FoodDAO.DeleteFood(food);
 
-        public void UpdateFood(Food food)
-        {
-            throw new NotImplementedException();
-        }
+        public void UpdateFood(Food food) => FoodDAO.UpdateFood(food);
     }
 }
