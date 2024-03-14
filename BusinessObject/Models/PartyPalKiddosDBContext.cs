@@ -363,7 +363,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Host");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("Id");
 
                 entity.Property(e => e.Address).HasMaxLength(100);
 
