@@ -15,7 +15,7 @@ namespace Repository.Repository
 
         public List<ComboFoodDetail> GetAllComboFoodDetail() => ComboFoodDetailDAO.GetComboFoodDetails();
 
-        public List<ComboFoodDetail> GetComboFoodDetailByComboId(int comboId) => ComboFoodDetailDAO.findComboFoodDetailByComboId(comboId);
+        public ComboFoodDetail GetComboFoodDetailByComboId(int comboId) => ComboFoodDetailDAO.findComboFoodDetailByComboId(comboId);
 
         public void removeComboFoodDetail(ComboFoodDetail comboFoodDetail) => ComboFoodDetailDAO.DeleteComboFoodDetail(comboFoodDetail);
 

@@ -37,15 +37,15 @@ namespace DataAccess
             return listComboFoodDetails;
         }
 
-        public static List<ComboFoodDetail> findComboFoodDetailByComboId(int comboId)
+        public static ComboFoodDetail findComboFoodDetailByComboId(int comboId)
         {
-            List<ComboFoodDetail> f = new List<ComboFoodDetail>();
+            ComboFoodDetail f = new ComboFoodDetail();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
                     f = context.ComboFoodDetails
-                     .Where(ComboFoodDetail => ComboFoodDetail.ComboId == comboId)
+                     
                 .Select(ComboFoodDetail => new ComboFoodDetail
                 {
                     ComboId = ComboFoodDetail.ComboId,
@@ -53,7 +53,7 @@ namespace DataAccess
                     FoodId = ComboFoodDetail.FoodId,
                     Food = ComboFoodDetail.Food,
                     Quantity = ComboFoodDetail.Quantity,
-                }).ToList();
+                }).SingleOrDefault(x => x.ComboId == comboId);
                 }
             }
             catch (Exception e)
