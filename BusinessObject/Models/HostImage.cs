@@ -9,19 +9,19 @@ namespace BusinessObject.Models
         public HostImage(string? imgUrl, int? locationId)
         {
             ImgUrl = imgUrl;
-            HostId = locationId;
+            LocationId = locationId;
         }
 
         public HostImage(int id, string? imgUrl, int? locationId)
         {
             Id = id;
             ImgUrl = imgUrl;
-            HostId = locationId;
+            LocationId = locationId;
         }
 
         public int Id { get; set; }
         public string? ImgUrl { get; set; }
-        public int? HostId { get; set; }
+        public int? LocationId { get; set; }
 
         public virtual Host? Location { get; set; }
     }
