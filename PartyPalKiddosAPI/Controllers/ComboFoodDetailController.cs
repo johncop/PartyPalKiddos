@@ -17,8 +17,8 @@ namespace PartyPalKiddosAPI.Controllers
             => repository.GetAllComboFoodDetail();
 
         [HttpGet("combo-food-detail/{comboId}")]
-        public ActionResult<ComboFoodDetail> getComboFoodPackageByComboID(int comboId) =>
-            repository.GetComboFoodDetailByComboId(comboId);
+        public ActionResult<IEnumerable<ComboFoodDetail>> getComboFoodPackageByComboID(int comboId) =>
+            repository.GetListComboFoodDetailByComboId(comboId);
 
         [HttpPost("combo-food-detail")]
         public ActionResult<ComboFoodDetail> CreateCombo(int? comboId, int? foodId, int? quantity)
@@ -29,9 +29,9 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpDelete("combo-food-detail/{id}")]
-        public IActionResult DeleteCombo(int id)
+        public IActionResult DeleteCombo(int comboId, int foodId)
         {
-            var f = repository.GetComboFoodDetailByComboId(id);
+            var f = repository.GetComboFoodDetail(comboId, foodId);
             if (f == null)
             {
                 return NotFound();
@@ -41,14 +41,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("combo-food-detail/{id}")]
-        public IActionResult UpdateCombo(int id, int? comboId, int? foodId, int? quantity)
+        public IActionResult UpdateCombo(int comboId, int foodId, int? quantity)
         {
-            ComboFoodDetail Combo = repository.GetComboFoodDetailByComboId(id);
+            ComboFoodDetail Combo = repository.GetComboFoodDetail(comboId, foodId);
             if (Combo == null)
             {
                 return NotFound();
             }
-            Combo = new ComboFoodDetail(comboId, foodId, quantity);
+            Combo = new ComboFoodDetail(foodId, quantity);
             repository.UpdateComboFoodDetail(Combo);
             return Ok(new { success = true, message = "Combo Updated successfully." });
         }

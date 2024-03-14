@@ -13,12 +13,17 @@ namespace Repository.Repository
     {
         public void addComboFoodDetail(ComboFoodDetail comboFoodDetail) => ComboFoodDetailDAO.SaveComboFoodDetail(comboFoodDetail);
 
-        public List<ComboFoodDetail> GetAllComboFoodDetail() => ComboFoodDetailDAO.GetComboFoodDetails();
-
-        public ComboFoodDetail GetComboFoodDetailByComboId(int comboId) => ComboFoodDetailDAO.findComboFoodDetailByComboId(comboId);
-
         public void removeComboFoodDetail(ComboFoodDetail comboFoodDetail) => ComboFoodDetailDAO.DeleteComboFoodDetail(comboFoodDetail);
 
         public void UpdateComboFoodDetail(ComboFoodDetail comboFoodDetail) => ComboFoodDetailDAO.UpdateComboFoodDetail(comboFoodDetail);
+
+        public List<ComboFoodDetail> GetAllComboFoodDetail() => ComboFoodDetailDAO.GetComboFoodDetails();
+
+        public ComboFoodDetail GetComboFoodDetail(int comboId, int foodId) => ComboFoodDetailDAO.GetComboFoodDetails(comboId, foodId);
+
+        public List<ComboFoodDetail> GetListComboFoodDetailByComboId(int comboId) => ComboFoodDetailDAO.findComboFoodDetailByComboId(comboId);
+
+        
+
     }
 }

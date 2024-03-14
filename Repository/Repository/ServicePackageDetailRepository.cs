@@ -20,6 +20,9 @@ namespace Repository.Repository
         public List<ServicePackageDetail> GetServicePackageDetailByServicePackageId(int servicePackageId) 
             => ServicePackageDetailDAO.findServicePackageDetailServicePackageId(servicePackageId);
 
+        public ServicePackageDetail GetServicePackageDetails(int servicePackageId, int serviceId)
+            => ServicePackageDetailDAO.GetServicePackageDetails(servicePackageId, serviceId);
+
         public void removeServicePackageDetail(ServicePackageDetail ServicePackageDetail) 
             => ServicePackageDetailDAO.DeleteServicePackageDetail(ServicePackageDetail);
 

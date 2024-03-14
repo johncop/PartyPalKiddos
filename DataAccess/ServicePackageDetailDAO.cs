@@ -62,6 +62,31 @@ namespace DataAccess
             }
             return f;
         }
+
+        public static ServicePackageDetail GetServicePackageDetails(int servicePackageId, int serviceId)
+        {
+            try
+            {
+                using (var context = new PartyPalKiddosDBContext())
+                {
+                    // Assuming BookingFoodDetail is a class that represents a single row in your database
+                    var bookingFoodDetail = context.ServicePackageDetails
+                        .Where(detail => detail.ServicePackageId == servicePackageId && detail.ServiceId == serviceId)
+                        .Select(detail => new ServicePackageDetail
+                        {
+                            ServicePackageId = detail.ServicePackageId,
+                            ServiceId = detail.ServiceId,
+                            Quantity = detail.Quantity,
+                        }).FirstOrDefault(); // Change this line
+
+                    return bookingFoodDetail; // This now correctly matches the method signature
+                }
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message); // Consider specific exception handling or logging
+            }
+        }
         #endregion
 
 

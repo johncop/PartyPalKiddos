@@ -37,15 +37,15 @@ namespace DataAccess
             return listComboFoodDetails;
         }
 
-        public static ComboFoodDetail findComboFoodDetailByComboId(int comboId)
+        public static List<ComboFoodDetail> findComboFoodDetailByComboId(int comboId)
         {
-            ComboFoodDetail f = new ComboFoodDetail();
+            List<ComboFoodDetail> f = new List<ComboFoodDetail>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
                     f = context.ComboFoodDetails
-                     
+                        .Where(x => x.ComboId == comboId)
                 .Select(ComboFoodDetail => new ComboFoodDetail
                 {
                     ComboId = ComboFoodDetail.ComboId,
@@ -53,7 +53,7 @@ namespace DataAccess
                     FoodId = ComboFoodDetail.FoodId,
                     Food = ComboFoodDetail.Food,
                     Quantity = ComboFoodDetail.Quantity,
-                }).SingleOrDefault(x => x.ComboId == comboId);
+                }).ToList();
                 }
             }
             catch (Exception e)
@@ -61,6 +61,31 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
             return f;
+        }
+
+        public static ComboFoodDetail GetComboFoodDetails(int comboId, int foodId)
+        {
+            try
+            {
+                using (var context = new PartyPalKiddosDBContext())
+                {
+                    // Assuming BookingFoodDetail is a class that represents a single row in your database
+                    var bookingFoodDetail = context.ComboFoodDetails
+                        .Where(detail => detail.ComboId == comboId && detail.FoodId == foodId)
+                        .Select(detail => new ComboFoodDetail
+                        {
+                            ComboId = detail.ComboId,
+                            FoodId = detail.FoodId,
+                            Quantity = detail.Quantity,
+                        }).FirstOrDefault(); // Change this line
+
+                    return bookingFoodDetail; // This now correctly matches the method signature
+                }
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message); // Consider specific exception handling or logging
+            }
         }
         #endregion
 

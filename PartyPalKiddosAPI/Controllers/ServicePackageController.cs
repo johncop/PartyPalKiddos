@@ -34,31 +34,6 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "ServicePackage updated successfully." });
         }
 
-        /*[HttpPut("ServicePackages/clone-ServicePackage/{id}")]
-        public IActionResult CloneServicePackage(int id, string? ServicePackageName, int? numberOfKid, int? numberOfAdults, int? userId, int? locationId, DateTime? startTime, DateTime? endTime, decimal? price)
-        {
-            var existingServicePackage = repository.GetServicePackageById(id);
-            if (existingServicePackage == null)
-            {
-                return NotFound("The ServicePackage does not exist.");
-            }
-
-            // Check if the time slot is available for the new ServicePackage
-            if (!repository.isTimeSlotAvaiable(locationId ?? existingServicePackage.LocationId, startTime ?? existingServicePackage.StartTime, endTime ?? existingServicePackage.EndTime))
-            {
-                return Conflict("The selected time slot is not available for this location.");
-            }
-
-            // Clone the ServicePackage with new customizations
-            ServicePackage newServicePackage = ServicePackageDAO.CloneServicePackage(existingServicePackage, ServicePackageName, numberOfKid, numberOfAdults, userId, locationId, startTime, endTime, price);
-
-            // Add the new ServicePackage as a new entity in the database
-            repository.addServicePackage(newServicePackage);
-
-            return NoContent();
-        }
-*/
-
         [HttpDelete("ServicePackages")]
         public IActionResult DeleteServicePackage(int id)
         {

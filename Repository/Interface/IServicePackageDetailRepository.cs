@@ -14,5 +14,6 @@ namespace Repository.Interface
         void UpdateServicePackageDetail(ServicePackageDetail ServicePackageDetail);
         List<ServicePackageDetail> GetServicePackageDetailByServicePackageId(int servicePackageId);
         List<ServicePackageDetail> GetAllServicePackageDetail();
+        ServicePackageDetail GetServicePackageDetails(int servicePackageId, int serviceId);
     }
 }

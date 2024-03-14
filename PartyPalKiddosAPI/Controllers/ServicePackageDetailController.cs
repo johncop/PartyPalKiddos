@@ -29,8 +29,8 @@ namespace PartyPalKiddosAPI.Controllers
             => repository.GetAllServicePackageDetail();
 
         [HttpGet("package-detail/{packageId}")]
-        public ActionResult<IEnumerable<ServicePackageDetail>> getServicePackageDetailById(int packageId) =>
-            repository.GetServicePackageDetailByServicePackageId(packageId);
+        public ActionResult<IEnumerable<ServicePackageDetail>> getServicePackageDetailById(int servicePackageId) =>
+            repository.GetServicePackageDetailByServicePackageId(servicePackageId);
 
         [HttpPut("package-detail/{id}")]
         public IActionResult UpdateServicePackageDetail(int packageId, int? serviceId, int? quantity)
@@ -45,35 +45,10 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "ServicePackageDetail updated successfully." });
         }
 
-        [HttpPut("package-detail/{id}")]
-        public IActionResult UpdateServicePackageDetail(int id, int? serviceId, int? quantity)
-        {
-            var ServicePackageDetail = repository.GetServicePackageDetailByPackageId(id); // Method to get the package detail by its ID
-            if (ServicePackageDetail == null)
-            {
-                return NotFound();
-            }
-
-            // Now that we have the ServicePackageDetail, let's update its properties
-            if (serviceId.HasValue)
-            {
-                ServicePackageDetail.ServiceId = serviceId.Value;
-            }
-            if (quantity.HasValue)
-            {
-                ServicePackageDetail.Quantity = quantity.Value;
-            }
-
-            // The repository should have a method to update the ServicePackageDetail
-            repository.UpdateServicePackageDetail(ServicePackageDetail);
-
-            return NoContent();
-        }
-
         [HttpDelete("package-detail/{id}")]
-        public IActionResult DeleteServicePackageDetail(int id)
+        public IActionResult DeleteServicePackageDetail(int servicePackageId, int serviceId)
         {
-            var ServicePackageDetail = repository.GetServicePackageDetailByPackageId(id);
+            var ServicePackageDetail = repository.GetServicePackageDetails(servicePackageId, serviceId);
             if (ServicePackageDetail == null)
             {
                 return NotFound();
