@@ -11,7 +11,7 @@ namespace PartyPalKiddosAPI.Controllers
     {
         private IAvailableTimeSlotRepository repository = new AvailableTimeSlotRepository();
 
-        [HttpPost("TimeSlots")]
+        [HttpPost("AvailableTimeSlots")]
         public IActionResult PostAvailableTimeSlot(int? timeslotId, int? hostId, string? status)
         {
             AvailableTimeSlot timeSlot = new AvailableTimeSlot
@@ -24,7 +24,7 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Time Slot Added successfully." });
         }
 
-        [HttpPut("TimeSlots")]
+        [HttpPut("AvailableTimeSlots")]
         public IActionResult UpdateAvailableTimeSlot(int id, int? timeslotId, int? hostId, string? status)
         {
             var checkTimeSlot = repository.GetAvailableTimeSlotById(id);
@@ -44,7 +44,7 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Time Slot updated successfully." });
         }
 
-        [HttpDelete("TimeSlots")]
+        [HttpDelete("AvailableTimeSlots")]
         public IActionResult DeleteAvailableTimeSlot(int id)
         {
             var timeSlot = repository.GetAvailableTimeSlotById(id);
@@ -56,10 +56,10 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Time Slot deleted successfully." });
         }
 
-        [HttpGet("TimeSlots")]
+        [HttpGet("AvailableTimeSlots")]
         public ActionResult<IEnumerable<AvailableTimeSlot>> GetAllAvailableTimeSlots() => repository.GetAllAvailableTimeSlots();
 
-        [HttpGet("TimeSlots/{id}")]
+        [HttpGet("AvailableTimeSlots/{id}")]
         public ActionResult<AvailableTimeSlot> GetAvailableTimeSlotById(int id) => repository.GetAvailableTimeSlotById(id);
     }
 }
