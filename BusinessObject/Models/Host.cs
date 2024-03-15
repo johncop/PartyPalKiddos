@@ -8,13 +8,12 @@ namespace BusinessObject.Models
         public Host()
         {
             AvailableTimeSlots = new HashSet<AvailableTimeSlot>();
-            Combos = new HashSet<Combo>();
             HostImages = new HashSet<HostImage>();
-            ServicePackages = new HashSet<ServicePackage>();
         }
 
-        public Host(string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
+        public Host(string? hostName, string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
         {
+            HostName = hostName;
             Address = address;
             Capacity = capacity;
             DistrictId = districtId;
@@ -23,9 +22,10 @@ namespace BusinessObject.Models
             Status = status;
         }
 
-        public Host(int id, string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
+        public Host(int id, string? hostName, string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
         {
             Id = id;
+            HostName = hostName;
             Address = address;
             Capacity = capacity;
             DistrictId = districtId;
@@ -35,6 +35,7 @@ namespace BusinessObject.Models
         }
 
         public int Id { get; set; }
+        public string? HostName { get; set; }
         public string? Address { get; set; }
         public int? Capacity { get; set; }
         public int? DistrictId { get; set; }
@@ -44,8 +45,6 @@ namespace BusinessObject.Models
 
         public virtual District? District { get; set; }
         public virtual ICollection<AvailableTimeSlot> AvailableTimeSlots { get; set; }
-        public virtual ICollection<Combo> Combos { get; set; }
         public virtual ICollection<HostImage> HostImages { get; set; }
-        public virtual ICollection<ServicePackage> ServicePackages { get; set; }
     }
 }

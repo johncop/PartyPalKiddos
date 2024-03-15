@@ -31,7 +31,5 @@ namespace BusinessObject.Models
         public int? HostId { get; set; }
         public string? ImgUrl { get; set; }
         public int? Status { get; set; }
-
-        public virtual Host? Host { get; set; }
     }
 }

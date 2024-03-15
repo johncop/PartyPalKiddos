@@ -19,7 +19,6 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosDBContext())
                 {
                     listCombos = context.Combos
-                        .Include(c=>c.Host)
                 .Select(Combo => new Combo
                 {
                     Id = Combo.Id,
@@ -28,7 +27,6 @@ namespace DataAccess
                     HostId = Combo.HostId,
                     ImgUrl = Combo.ImgUrl,
                     Status = Combo.Status,
-                    Host = Combo.Host,
                 }).ToList();
                 }
             }
@@ -56,7 +54,6 @@ namespace DataAccess
                     HostId = Combo.HostId,
                     ImgUrl = Combo.ImgUrl,
                     Status = Combo.Status,
-                    Host = Combo.Host,
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -84,7 +81,6 @@ namespace DataAccess
                     HostId = Combo.HostId,
                     ImgUrl = Combo.ImgUrl,
                     Status = Combo.Status,
-                    Host = Combo.Host,
                 }).ToList();
                 }
             }
@@ -112,7 +108,6 @@ namespace DataAccess
                     HostId = Combo.HostId,
                     ImgUrl = Combo.ImgUrl,
                     Status = Combo.Status,
-                    Host = Combo.Host,
                 }).ToList();
                 }
             }
