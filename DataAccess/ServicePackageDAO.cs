@@ -19,7 +19,6 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosDBContext())
                 {
                     listServicePackage = context.ServicePackages
-                        .Include(p => p.Host)
                         .Include(p => p.ServicePackageImages)
                 .Select(ServicePackage => new ServicePackage
                 {
@@ -28,7 +27,6 @@ namespace DataAccess
                     Price = ServicePackage.Price,
                     HostId= ServicePackage.HostId,
                     Status= ServicePackage.Status,
-                    Host = ServicePackage.Host,
                     ServicePackageImages= ServicePackage.ServicePackageImages,
                 }).ToList();
                 }
@@ -57,7 +55,6 @@ namespace DataAccess
                     Price = ServicePackage.Price,
                     HostId = ServicePackage.HostId,
                     Status = ServicePackage.Status,
-                    Host = ServicePackage.Host,
                     ServicePackageImages = ServicePackage.ServicePackageImages,
                 }).SingleOrDefault(x => x.Id == id);
                 }
@@ -85,7 +82,6 @@ namespace DataAccess
                     Price = ServicePackage.Price,
                     HostId = ServicePackage.HostId,
                     Status = ServicePackage.Status,
-                    Host = ServicePackage.Host,
                     ServicePackageImages = ServicePackage.ServicePackageImages,
                 }).ToList();
                 }
@@ -112,7 +108,6 @@ namespace DataAccess
                     Price = ServicePackage.Price,
                     HostId = ServicePackage.HostId,
                     Status = ServicePackage.Status,
-                    Host = ServicePackage.Host,
                     ServicePackageImages = ServicePackage.ServicePackageImages,
                 }).ToList();
                 }

@@ -30,7 +30,9 @@ namespace BusinessObject.Models
         public virtual DbSet<Food> Foods { get; set; } = null!;
         public virtual DbSet<FoodCategory> FoodCategories { get; set; } = null!;
         public virtual DbSet<Host> Hosts { get; set; } = null!;
+        public virtual DbSet<HostComboDetail> HostComboDetails { get; set; } = null!;
         public virtual DbSet<HostImage> HostImages { get; set; } = null!;
+        public virtual DbSet<HostServiceDetail> HostServiceDetails { get; set; } = null!;
         public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
@@ -45,11 +47,11 @@ namespace BusinessObject.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
+                var builder = new ConfigurationBuilder()
+           .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                IConfigurationRoot configuration = builder.Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
             }
         }
 
@@ -220,18 +222,11 @@ namespace BusinessObject.Models
                     .HasColumnName("img_url");
 
                 entity.Property(e => e.Status).HasColumnName("status");
-
-                entity.HasOne(d => d.Host)
-                    .WithMany(p => p.Combos)
-                    .HasForeignKey(d => d.HostId)
-                    .HasConstraintName("FK_Combo_Host");
             });
 
             modelBuilder.Entity<ComboFoodDetail>(entity =>
             {
                 entity.HasNoKey();
-
-                entity.HasKey(cfd => new { cfd.ComboId, cfd.FoodId });
 
                 entity.ToTable("ComboFoodDetail");
 
@@ -363,29 +358,60 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Host");
 
+                entity.Property(e => e.Address).HasMaxLength(200);
+
                 entity.Property(e => e.Id).HasColumnName("Id");
-
-                entity.Property(e => e.Address).HasMaxLength(100);
-
                 entity.Property(e => e.Capacity).HasColumnName("capacity");
 
-                entity.Property(e => e.Description).HasMaxLength(100);
+                entity.Property(e => e.Description).HasMaxLength(1000);
 
                 entity.Property(e => e.DistrictId).HasColumnName("District_id");
+
+                entity.Property(e => e.HostName)
+                    .HasMaxLength(100)
+                    .HasColumnName("host_name");
 
                 entity.Property(e => e.Price)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("price");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(5)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .IsFixedLength();
 
                 entity.HasOne(d => d.District)
                     .WithMany(p => p.Hosts)
                     .HasForeignKey(d => d.DistrictId)
-                    .HasConstraintName("FK_Location_District");
+                    .HasConstraintName("FK_Host_District");
+            });
+
+            modelBuilder.Entity<HostComboDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("HostComboDetail");
+
+                entity.Property(e => e.ComboId).HasColumnName("combo_id");
+
+                entity.Property(e => e.FoodId).HasColumnName("food_id");
+
+                entity.Property(e => e.HostId).HasColumnName("host_id");
+
+                entity.HasOne(d => d.Combo)
+                    .WithMany()
+                    .HasForeignKey(d => d.ComboId)
+                    .HasConstraintName("FK_HostComboDetail_Combo");
+
+                entity.HasOne(d => d.Food)
+                    .WithMany()
+                    .HasForeignKey(d => d.FoodId)
+                    .HasConstraintName("FK_HostComboDetail_Food");
+
+                entity.HasOne(d => d.Host)
+                    .WithMany()
+                    .HasForeignKey(d => d.HostId)
+                    .HasConstraintName("FK_HostComboDetail_Host");
             });
 
             modelBuilder.Entity<HostImage>(entity =>
@@ -403,7 +429,35 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.HostImages)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK_LocationImg_Location");
+                    .HasConstraintName("FK_HostImage_Host");
+            });
+
+            modelBuilder.Entity<HostServiceDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("HostServiceDetail");
+
+                entity.Property(e => e.HostId).HasColumnName("host_id");
+
+                entity.Property(e => e.ServiceId).HasColumnName("service_id");
+
+                entity.Property(e => e.ServicePackageId).HasColumnName("service_package_id");
+
+                entity.HasOne(d => d.Host)
+                    .WithMany()
+                    .HasForeignKey(d => d.HostId)
+                    .HasConstraintName("FK_HostServiceDetail_Host");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany()
+                    .HasForeignKey(d => d.ServiceId)
+                    .HasConstraintName("FK_HostServiceDetail_Service");
+
+                entity.HasOne(d => d.ServicePackage)
+                    .WithMany()
+                    .HasForeignKey(d => d.ServicePackageId)
+                    .HasConstraintName("FK_HostServiceDetail_ServicePackage");
             });
 
             modelBuilder.Entity<Payment>(entity =>
@@ -502,11 +556,6 @@ namespace BusinessObject.Models
                     .HasColumnName("price");
 
                 entity.Property(e => e.Status).HasColumnName("status");
-
-                entity.HasOne(d => d.Host)
-                    .WithMany(p => p.ServicePackages)
-                    .HasForeignKey(d => d.HostId)
-                    .HasConstraintName("FK_Package_Location");
             });
 
             modelBuilder.Entity<ServicePackageDetail>(entity =>

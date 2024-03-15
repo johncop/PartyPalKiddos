@@ -33,7 +33,6 @@ namespace BusinessObject.Models
         public decimal? Price { get; set; }
         public int? Status { get; set; }
 
-        public virtual Host? Host { get; set; }
         public virtual ICollection<ServicePackageImage> ServicePackageImages { get; set; }
     }
 }

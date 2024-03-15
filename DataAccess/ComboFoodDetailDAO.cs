@@ -10,7 +10,7 @@ namespace DataAccess
 {
     public class ComboFoodDetailDAO
     {
-        #region query
+        #region QUERY
         public static List<ComboFoodDetail> GetComboFoodDetails()
         {
             var listComboFoodDetails = new List<ComboFoodDetail>();
@@ -91,7 +91,7 @@ namespace DataAccess
 
 
 
-        #region command
+        #region COMMAND
         public static void SaveComboFoodDetail(ComboFoodDetail f)
         {
             try

@@ -26,9 +26,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetHostByName(address);
 
         [HttpPost("Hosts")]
-        public ActionResult<Host> createHost(string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
+        public ActionResult<Host> createHost(string? hostName,string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
         {
-            Host host = new Host(address, capacity, districtId, description, price, status);
+            Host host = new Host(hostName, address, capacity, districtId, description, price, status);
             repository.addHost(host);
             return Ok(new { success = true, message = "Host Added successfully." });
         }
@@ -46,14 +46,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("Hosts/{id}")]
-        public IActionResult UpdateProduct(int id, string? address,int? capacity, int? districtId,string? description, decimal? price, string? status)
+        public IActionResult UpdateHost(int id, string? hostName, string? address,int? capacity, int? districtId,string? description, decimal? price, string? status)
         {
             Host host = repository.GetHostById(id);
             if (host == null)
             {
                 return NotFound();
             }
-            host = new Host(id, address, capacity,districtId, description, price, status);
+            host = new Host(id,hostName, address, capacity,districtId, description, price, status);
             repository.UpdateHost(host);
             return Ok(new { success = true, message = "Host updated successfully." });
         }
