@@ -12,6 +12,5 @@ namespace BusinessObject.DTO
         [Key]
         public int? HostId { get; set; }
         public int? ComboId { get; set; }
-        public int? FoodId { get; set; }
     }
 }
