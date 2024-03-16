@@ -5,6 +5,10 @@ namespace BusinessObject.Models
 {
     public partial class HostServiceDetail
     {
+        public HostServiceDetail()
+        {
+                
+        }
         public HostServiceDetail(int? hostId, int? serviceId)
         {
             HostId = hostId;
