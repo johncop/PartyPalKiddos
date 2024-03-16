@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models
 {
@@ -15,7 +16,7 @@ namespace BusinessObject.Models
             ComboId = comboId;
             FoodId = foodId;
         }
-
+        [Key]
         public int? HostId { get; set; }
         public int? ComboId { get; set; }
         public int? FoodId { get; set; }

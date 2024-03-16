@@ -215,7 +215,7 @@ namespace DataAccess.Models
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.HostComboDetails.SingleOrDefault(x => x.HostId == HostComboDetail.HostId);
+                    var p1 = context.HostComboDetails.SingleOrDefault(x => x.HostId == HostComboDetail.HostId && x.ComboId == HostComboDetail.ComboId && x.FoodId == HostComboDetail.FoodId);
                     context.HostComboDetails.Remove(p1);
                     context.SaveChanges();
                 }
