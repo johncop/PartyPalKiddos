@@ -74,10 +74,10 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Combo added successfully." });
         }
 
-        /*[HttpDelete("HostComboDetails/{id}")]
-        public IActionResult DeleteCombo(int id)
+        [HttpDelete("HostComboDetails")]
+        public IActionResult DeleteCombo(int hostId, int comboId, int foodId)
         {
-            var f = repository.GetHostComboDetailById(id);
+            var f = repository.GetHostComboDetailByIds(hostId, comboId, foodId);
             if (f == null)
             {
                 return NotFound();
@@ -86,17 +86,22 @@ namespace PartyPalKiddosAPI.Controllers
             return Ok(new { success = true, message = "Combo deleted successfully." });
         }
 
-        [HttpPut("HostComboDetails/{id}")]
-        public IActionResult UpdateCombo(int id, string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, int? status)
+        [HttpPut("HostComboDetails")]
+        public IActionResult UpdateCombo(addHostComboDetail hostComboDetail, int hostId, int comboId, int foodId)
         {
-            Combo Combo = repository.GetComboById(id);
+            var Combo = repository.GetHostComboDetailByIds(hostId, comboId, foodId);
             if (Combo == null)
             {
                 return NotFound();
             }
-            Combo = new Combo(id, comboName, comboPrice, hostId, imgUrl, status);
-            repository.UpdateCombo(Combo);
+            HostComboDetail hcd = new HostComboDetail
+            {
+                HostId = hostId,
+                ComboId = hostComboDetail.ComboId,
+                FoodId = hostComboDetail.FoodId
+            };
+            repository.UpdateHostComboDetail(hcd);
             return Ok(new { success = true, message = "Combo Updated successfully." });
-        }*/
+        }
     }
 }
