@@ -14,6 +14,6 @@ namespace Repository.Interface
         void UpdateHostComboDetail(HostComboDetail hcd);
         List<HostComboDetail> GetAllHostComboDetails();
         List<HostComboDetail> GetHostComboDetailById(int id);
-        HostComboDetail GetHostComboDetailByIds(int hostId, int comboId, int foodId);
+        HostComboDetail GetHostComboDetailByIds(int hostId, int comboId);
     }
 }

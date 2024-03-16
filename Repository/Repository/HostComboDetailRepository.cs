@@ -15,7 +15,7 @@ namespace Repository.Repository
 
         public List<HostComboDetail> GetAllHostComboDetails() => HostComboDetailDAO.GetHostComboDetails();
 
-        public HostComboDetail GetHostComboDetailByIds(int hostId, int comboId, int foodId) => HostComboDetailDAO.GetHostComboDetailByIds(hostId, comboId, foodId);
+        public HostComboDetail GetHostComboDetailByIds(int hostId, int comboId) => HostComboDetailDAO.GetHostComboDetailByIds(hostId, comboId);
 
         public List<HostComboDetail> GetHostComboDetailById(int id) => HostComboDetailDAO.FindHostComboDetailById(id);
 

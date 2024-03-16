@@ -125,19 +125,18 @@ namespace DataAccess.Models
             }
         }*/
 
-        public static HostComboDetail GetHostComboDetailByIds(int hostId, int comboId, int foodId)
+        public static HostComboDetail GetHostComboDetailByIds(int hostId, int comboId)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
                     var hcd = context.HostComboDetails
-                         .Where(hcd => hcd.HostId == hostId && hcd.ComboId == comboId && hcd.FoodId == foodId)
+                         .Where(hcd => hcd.HostId == hostId && hcd.ComboId == comboId)
                      .Select(hcd => new HostComboDetail
                      {
                          HostId = hcd.HostId,
                          ComboId = hcd.ComboId,
-                         FoodId = hcd.FoodId,
                      }).FirstOrDefault();
                     return hcd;
                 }

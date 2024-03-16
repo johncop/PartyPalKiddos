@@ -68,14 +68,13 @@ namespace PartyPalKiddosAPI.Controllers
             {
                 HostId = hostComboDetail.HostId,
                 ComboId = hostComboDetail.ComboId,
-                FoodId = hostComboDetail.FoodId
             };
             repository.addHostComboDetail(hcd);
             return Ok(new { success = true, message = "Combo added successfully." });
         }
 
         [HttpDelete("HostComboDetails")]
-        public IActionResult DeleteCombo(int hostId, int comboId, int foodId)
+        public IActionResult DeleteCombo(int hostId, int comboId)
         {
             var f = repository.GetHostComboDetailByIds(hostId, comboId, foodId);
             if (f == null)
