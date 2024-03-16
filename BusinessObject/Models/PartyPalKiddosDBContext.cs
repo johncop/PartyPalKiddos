@@ -388,7 +388,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<HostComboDetail>(entity =>
             {
-                entity.HasNoKey();
+                
 
                 entity.ToTable("HostComboDetail");
 
