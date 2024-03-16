@@ -69,7 +69,6 @@ namespace DataAccess.Models
                     {
                         HostId = hcd.HostId,
                         ComboId = hcd.ComboId,
-                        FoodId = hcd.FoodId,
                     })
                     .ToList();
                     return listHostComboDetails;
@@ -94,7 +93,6 @@ namespace DataAccess.Models
                     {
                         HostId = hcd.HostId,
                         ComboId = hcd.ComboId,
-                        FoodId = hcd.FoodId,
                     })
                     .ToList();
                     return listHostComboDetails;
@@ -214,7 +212,7 @@ namespace DataAccess.Models
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.HostComboDetails.SingleOrDefault(x => x.HostId == HostComboDetail.HostId && x.ComboId == HostComboDetail.ComboId && x.FoodId == HostComboDetail.FoodId);
+                    var p1 = context.HostComboDetails.SingleOrDefault(x => x.HostId == HostComboDetail.HostId && x.ComboId == HostComboDetail.ComboId);
                     context.HostComboDetails.Remove(p1);
                     context.SaveChanges();
                 }

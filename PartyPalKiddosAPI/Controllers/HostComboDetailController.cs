@@ -62,21 +62,20 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetHostComboDetailById(hostId);
 
         [HttpPost("HostComboDetails")]
-        public ActionResult<HostComboDetail> CreateCombo([FromBody]addHostComboDetail hostComboDetail)
+        public ActionResult<HostComboDetail> CreateCombo([FromBody] List<addHostComboDetail> hostComboDetail)
         {
-            HostComboDetail hcd = new HostComboDetail
+            foreach (var detail in hostComboDetail)
             {
-                HostId = hostComboDetail.HostId,
-                ComboId = hostComboDetail.ComboId,
-            };
-            repository.addHostComboDetail(hcd);
+                HostComboDetail hcd = new HostComboDetail(detail.HostId, detail.ComboId);
+                repository.addHostComboDetail(hcd);
+            }
             return Ok(new { success = true, message = "Combo added successfully." });
         }
 
         [HttpDelete("HostComboDetails")]
         public IActionResult DeleteCombo(int hostId, int comboId)
         {
-            var f = repository.GetHostComboDetailByIds(hostId, comboId, foodId);
+            var f = repository.GetHostComboDetailByIds(hostId, comboId);
             if (f == null)
             {
                 return NotFound();
@@ -86,9 +85,9 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("HostComboDetails")]
-        public IActionResult UpdateCombo(addHostComboDetail hostComboDetail, int hostId, int comboId, int foodId)
+        public IActionResult UpdateCombo(addHostComboDetail hostComboDetail, int hostId, int comboId)
         {
-            var Combo = repository.GetHostComboDetailByIds(hostId, comboId, foodId);
+            var Combo = repository.GetHostComboDetailByIds(hostId, comboId);
             if (Combo == null)
             {
                 return NotFound();
@@ -97,7 +96,6 @@ namespace PartyPalKiddosAPI.Controllers
             {
                 HostId = hostId,
                 ComboId = hostComboDetail.ComboId,
-                FoodId = hostComboDetail.FoodId
             };
             repository.UpdateHostComboDetail(hcd);
             return Ok(new { success = true, message = "Combo Updated successfully." });
