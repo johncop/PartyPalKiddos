@@ -23,6 +23,7 @@ namespace DataAccess
                 .Select(Host => new Host
                 {
                     Id = Host.Id,
+                    HostName = Host.HostName,
                     Address = Host.Address,
                     Capacity = Host.Capacity,
                     DistrictId = Host.DistrictId,
@@ -53,6 +54,7 @@ namespace DataAccess
                 .Select(Host => new Host
                 {
                     Id = Host.Id,
+                    HostName = Host.HostName,
                     Address = Host.Address,
                     Capacity = Host.Capacity,
                     DistrictId = Host.DistrictId,
@@ -83,6 +85,7 @@ namespace DataAccess
                 .Select(Host => new Host
                 {
                     Id = Host.Id,
+                    HostName = Host.HostName,
                     Address = Host.Address,
                     Capacity = Host.Capacity,
                     DistrictId = Host.DistrictId,
