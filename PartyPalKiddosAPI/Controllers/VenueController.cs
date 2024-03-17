@@ -25,9 +25,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetVenueByName(address);
 
         [HttpPost("Venues")]
-        public ActionResult<Venue> createVenue(string? venueName, string? address, int? capacity, int? districtId, string? description, TimeSpan? openHour, TimeSpan? closeHour, string? status)
+        public ActionResult<Venue> createVenue(string? venueName, string? address, int? capacity, int? districtId, string? description, decimal? price, TimeSpan? openHour, TimeSpan? closeHour, string? status)
         {
-            Venue Venue = new Venue(venueName, address, capacity, districtId, description, openHour,closeHour, status);
+            Venue Venue = new Venue(venueName, address, capacity, districtId, description,price, openHour,closeHour, status);
             repository.addVenue(Venue);
             return Ok(new { success = true, message = "Venue Added successfully." });
         }
@@ -45,14 +45,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("Venues/{id}")]
-        public IActionResult UpdateVenue(int id, string? venueName, string? address, int? capacity, int? districtId, string? description, TimeSpan? openHour, TimeSpan? closeHour, string? status)
+        public IActionResult UpdateVenue(int id, string? venueName, string? address, int? capacity, int? districtId, string? description, decimal? price, TimeSpan? openHour, TimeSpan? closeHour, string? status)
         {
             Venue Venue = repository.GetVenueById(id);
             if (Venue == null)
             {
                 return NotFound();
             }
-            Venue = new Venue(id, venueName, address, capacity, districtId, description, openHour, closeHour, status);
+            Venue = new Venue(id, venueName, address, capacity, districtId, description,price, openHour, closeHour, status);
             repository.UpdateVenue(Venue);
             return Ok(new { success = true, message = "Venue updated successfully." });
         }

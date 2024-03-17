@@ -21,9 +21,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetVenueImageById(id);
 
         [HttpPost("location-image")]
-        public ActionResult<VenueImage> CreateVenueImage(string? imgUrl, int? drinkId)
+        public ActionResult<VenueImage> CreateVenueImage(string? imgUrl, int? venueId, byte[]? image)
         {
-            VenueImage f = new VenueImage(imgUrl, drinkId);
+            VenueImage f = new VenueImage(imgUrl, venueId, image);
             repository.addVenueImage(f);
             return Ok(new { success = true, message = "Location image Added successfully." });
         }
@@ -41,14 +41,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("location-image/{id}")]
-        public IActionResult UpdateProduct(int id, string? imgUrl, int? drinkId)
+        public IActionResult UpdateProduct(int id, string? imgUrl, int? venueId, byte[]? image)
         {
             VenueImage VenueImage = repository.GetVenueImageById(id);
             if (VenueImage == null)
             {
                 return NotFound();
             }
-            VenueImage = new VenueImage(id, imgUrl, drinkId);
+            VenueImage = new VenueImage(id, imgUrl, venueId, image);
             repository.UpdateVenueImage(VenueImage);
             return Ok(new { success = true, message = "Location image updated successfully." });
         }

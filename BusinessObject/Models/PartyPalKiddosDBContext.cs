@@ -341,9 +341,9 @@ namespace BusinessObject.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("price");
 
-                entity.Property(e => e.Status)
+                /*entity.Property(e => e.Status)
                     .HasColumnType("text")
-                    .HasColumnName("status");
+                    .HasColumnName("status");*/
 
                 entity.HasOne(d => d.FoodCategory)
                     .WithMany(p => p.Foods)
