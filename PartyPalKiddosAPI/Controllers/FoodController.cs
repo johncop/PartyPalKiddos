@@ -24,13 +24,34 @@ namespace PartyPalKiddosAPI.Controllers
         public ActionResult<List<Food>> GetFoodByName(string FoodName) =>
             repository.GetFoodByName(FoodName);
 
+
         [HttpPost("Foods")]
-        public ActionResult<Food> CreateFood(string? foodName, string? description, string? imageUrl, byte[]? image, int? foodCategoryId, decimal? price)
+        public async Task<ActionResult<Food>> CreateFood(string? foodName, string? description, string? imageUrl, IFormFile? file, int? foodCategoryId, decimal? price)
         {
-            Food food = new Food(foodName, description, imageUrl,image, foodCategoryId, price);
+            byte[] imageBytes = null;
+            if (file != null)
+            {
+                // This reads the uploaded file into a byte array.
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    imageBytes = memoryStream.ToArray();
+                }
+            }
+
+            Food food = new Food
+            {
+                FoodName = foodName,
+                Description = description,
+                Image = imageBytes, // Now correctly assigning byte[] to byte[]
+                ImageUrl = imageUrl, // Assuming you're not using this field now
+                FoodCategoryId = foodCategoryId,
+                Price = price,
+            };
             repository.addFood(food);
-            return Ok(new { success = true, message = "Food updated successfully." });
+            return Ok(new { success = true, message = "Food created successfully." });
         }
+
 
         [HttpDelete("Foods/{id}")]
         public IActionResult DeleteFood(int id)
