@@ -10,35 +10,6 @@ namespace BusinessObject.Models
             Bookings = new HashSet<Booking>();
         }
 
-        public Coupon(string? couponName, decimal? discountAmount, decimal? conditionAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? availableDate, DateTime? expiredDate, string? status)
-        {
-            CouponName = couponName;
-            DiscountAmount = discountAmount;
-            ConditionAmount = conditionAmount;
-            Description = description;
-            TypeId = typeId;
-            Quantity = quantity;
-            CreatedDate = createdDate;
-            AvailableDate = availableDate;
-            ExpiredDate = expiredDate;
-            Status = status;
-        }
-
-        public Coupon(int id, string? couponName, decimal? discountAmount, decimal? conditionAmount, string? description, int? typeId, int? quantity, DateTime? createdDate, DateTime? availableDate, DateTime? expiredDate, string? status)
-        {
-            Id = id;
-            CouponName = couponName;
-            DiscountAmount = discountAmount;
-            ConditionAmount = conditionAmount;
-            Description = description;
-            TypeId = typeId;
-            Quantity = quantity;
-            CreatedDate = createdDate;
-            AvailableDate = availableDate;
-            ExpiredDate = expiredDate;
-            Status = status;
-        }
-
         public int Id { get; set; }
         public string? CouponName { get; set; }
         public decimal? DiscountAmount { get; set; }

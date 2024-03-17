@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace BusinessObject.Models
 {
-    public partial class ComboFoodDetail
+    public partial class VenueComboDetail
     {
+        public int? VenueId { get; set; }
         public int? ComboId { get; set; }
-        public int? FoodId { get; set; }
-        public int? Quantity { get; set; }
 
         public virtual Combo? Combo { get; set; }
-        public virtual Food? Food { get; set; }
+        public virtual Venue? Venue { get; set; }
     }
 }
