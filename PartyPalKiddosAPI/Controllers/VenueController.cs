@@ -21,8 +21,8 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetVenueById(VenueId);
 
         [HttpGet("Venues/by-name")]
-        public ActionResult<List<Venue>> GetVenueByName(string address) =>
-            repository.GetVenueByName(address);
+        public ActionResult<List<Venue>> GetVenueByName(string venueName) =>
+            repository.GetVenueByName(venueName);
 
         [HttpPost("Venues")]
         public ActionResult<Venue> createVenue(string? venueName, string? address, int? capacity, int? districtId, string? description, decimal? price, TimeSpan? openHour, TimeSpan? closeHour, string? status)

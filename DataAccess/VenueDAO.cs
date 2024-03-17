@@ -81,7 +81,7 @@ namespace DataAccess
                 {
                     f = context.Venues
                      .Include(Venue => Venue.VenueImages)
-                     .Where(Venue => Venue.Address.Contains(address))
+                     .Where(Venue => Venue.VenueName.Contains(address))
                 .Select(Venue => new Venue
                 {
                     Id = Venue.Id,
@@ -90,7 +90,7 @@ namespace DataAccess
                     Capacity = Venue.Capacity,
                     DistrictId = Venue.DistrictId,
                     Description = Venue.Description,
-                   // Price = Venue.Price,
+                    Price = Venue.Price,
                     VenueImages = Venue.VenueImages,
                     District = Venue.District,
                 }).ToList();
