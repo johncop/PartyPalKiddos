@@ -14,7 +14,7 @@ namespace Repository.Interface
         void UpdateVenue(Venue venue);
         Venue GetVenueById(int id);
         List<Venue> GetVenueByName(string address);
-
+        List<Venue> GetVenueByDistrict(int id);
         List<Venue> GetAllVenue();
     }
 }

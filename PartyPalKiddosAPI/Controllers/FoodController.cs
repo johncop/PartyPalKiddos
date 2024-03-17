@@ -20,11 +20,13 @@ namespace PartyPalKiddosAPI.Controllers
         public ActionResult<Food> getPackageById(int foodId) =>
             repository.GetFoodById(foodId);
 
-        [HttpGet("Foods/by-mame")]
+        [HttpGet("Foods/by-name")]
         public ActionResult<List<Food>> GetFoodByName(string FoodName) =>
             repository.GetFoodByName(FoodName);
 
-
+        [HttpGet("Foods/by-category")]
+        public ActionResult<List<Food>> GetFoodByCategory(int id) =>
+            repository.GetFoodByCategory(id);
         [HttpPost("Foods")]
         public async Task<ActionResult<Food>> CreateFood(string? foodName, string? description, string? imageUrl, IFormFile? file, int? foodCategoryId, decimal? price)
         {

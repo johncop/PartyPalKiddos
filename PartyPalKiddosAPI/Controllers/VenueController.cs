@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface;
@@ -19,6 +20,10 @@ namespace PartyPalKiddosAPI.Controllers
         [HttpGet("Venues/{VenueId}")]
         public ActionResult<Venue> getVenueById(int VenueId) =>
             repository.GetVenueById(VenueId);
+
+        [HttpGet("Venues/DistrictId")]
+        public ActionResult<List<Venue>> getVenueByDistrict(int disctricId) =>
+             repository.GetVenueByDistrict(disctricId);
 
         [HttpGet("Venues/by-name")]
         public ActionResult<List<Venue>> GetVenueByName(string venueName) =>

@@ -97,6 +97,34 @@ namespace DataAccess
             }
             return f;
         }
+        public static List<Food> findFoodByCategory(int id)
+        {
+            List<Food> f = new List<Food>();
+            try
+            {
+                using (var context = new PartyPalKiddosDBContext())
+                {
+                    f = context.Foods
+                     .Where(Food => Food.FoodCategoryId.Equals(id))
+                .Select(food => new Food
+                {
+                    Id = food.Id,
+                    FoodName = food.FoodName,
+                    Description = food.Description,
+                    ImageUrl = food.ImageUrl,
+                    //Image = food.Image,
+                    FoodCategoryId = food.FoodCategoryId,
+                    Price = food.Price,
+                    FoodCategory = food.FoodCategory,
+                }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return f;
+        }
         #endregion
 
 

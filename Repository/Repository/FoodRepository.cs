@@ -18,6 +18,7 @@ namespace Repository.Repository
         public Food GetFoodById(int id) => FoodDAO.findFoodById(id);
 
         public List<Food> GetFoodByName(string foodName) => FoodDAO.findFoodByName(foodName);
+        public List<Food> GetFoodByCategory(int id) => FoodDAO.findFoodByCategory(id);
 
         public void removeFood(Food food) => FoodDAO.DeleteFood(food);
 

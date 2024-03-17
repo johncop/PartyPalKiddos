@@ -18,6 +18,7 @@ namespace Repository.Repository
         public Venue GetVenueById(int id) => VenueDAO.findVenueById(id);
 
         public List<Venue> GetVenueByName(string address) => VenueDAO.findVenueByName(address);
+        public List<Venue> GetVenueByDistrict(int id) => VenueDAO.findVenueByDistricId(id);
 
         public void removeVenue(Venue Venue) => VenueDAO.DeleteVenue(Venue);
 

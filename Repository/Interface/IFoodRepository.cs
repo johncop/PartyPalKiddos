@@ -15,5 +15,6 @@ namespace Repository.Interface
         List<Food> GetAllFoods();
         Food GetFoodById(int id);
         List<Food> GetFoodByName(string foodName);
+        List<Food> GetFoodByCategory(int id);
     }
 }

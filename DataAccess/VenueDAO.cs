@@ -28,7 +28,7 @@ namespace DataAccess
                     Capacity = Venue.Capacity,
                     DistrictId = Venue.DistrictId,
                     Description = Venue.Description,                
-                    //Price = Venue.Price,
+                    Price = Venue.Price,
                     VenueImages = Venue.VenueImages,
                     District = Venue.District,
                 }).ToList();
@@ -59,7 +59,7 @@ namespace DataAccess
                     Capacity = Venue.Capacity,
                     DistrictId = Venue.DistrictId,
                     Description = Venue.Description,
-                    //Price = Venue.Price,
+                    Price = Venue.Price,
                     VenueImages = Venue.VenueImages,
                     District = Venue.District,
                 }).SingleOrDefault(x => x.Id == id);
@@ -71,7 +71,36 @@ namespace DataAccess
             }
             return l;
         }
-
+        public static List<Venue> findVenueByDistricId(int districtId)
+        {
+            List<Venue> f = new List<Venue>();
+            try
+            {
+                using (var context = new PartyPalKiddosDBContext())
+                {
+                    f = context.Venues
+                     .Include(Venue => Venue.VenueImages)
+                     .Where(Venue => Venue.DistrictId.Equals(districtId))
+                .Select(Venue => new Venue
+                {
+                    Id = Venue.Id,
+                    VenueName = Venue.VenueName,
+                    Address = Venue.Address,
+                    Capacity = Venue.Capacity,
+                    DistrictId = Venue.DistrictId,
+                    Description = Venue.Description,
+                    Price = Venue.Price,
+                    VenueImages = Venue.VenueImages,
+                    District = Venue.District,
+                }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return f;
+        }
         public static List<Venue> findVenueByName(string address)
         {
             List<Venue> f = new List<Venue>();
