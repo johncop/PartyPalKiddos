@@ -25,7 +25,6 @@ namespace DataAccess
                     Id = ServicePackage.Id,
                     PackageName = ServicePackage.PackageName,
                     Price = ServicePackage.Price,
-                    HostId= ServicePackage.HostId,
                     Status= ServicePackage.Status,
                     ServicePackageImages= ServicePackage.ServicePackageImages,
                 }).ToList();
@@ -53,7 +52,6 @@ namespace DataAccess
                     Id = ServicePackage.Id,
                     PackageName = ServicePackage.PackageName,
                     Price = ServicePackage.Price,
-                    HostId = ServicePackage.HostId,
                     Status = ServicePackage.Status,
                     ServicePackageImages = ServicePackage.ServicePackageImages,
                 }).SingleOrDefault(x => x.Id == id);
@@ -80,7 +78,6 @@ namespace DataAccess
                     Id = ServicePackage.Id,
                     PackageName = ServicePackage.PackageName,
                     Price = ServicePackage.Price,
-                    HostId = ServicePackage.HostId,
                     Status = ServicePackage.Status,
                     ServicePackageImages = ServicePackage.ServicePackageImages,
                 }).ToList();
@@ -92,7 +89,7 @@ namespace DataAccess
             }
             return p;
         }
-        public static List<ServicePackage> findServicePackageByHostId(int hostId)
+        /*public static List<ServicePackage> findServicePackageByVenueId(int VenueId)
         {
             List<ServicePackage> p = new List<ServicePackage>();
             try
@@ -100,13 +97,13 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosDBContext())
                 {
                     p = context.ServicePackages
-                .Where(ServicePackage => ServicePackage.HostId == hostId)
+                .Where(ServicePackage => ServicePackage.VenueId == VenueId)
                 .Select(ServicePackage => new ServicePackage
                 {
                     Id = ServicePackage.Id,
                     PackageName = ServicePackage.PackageName,
                     Price = ServicePackage.Price,
-                    HostId = ServicePackage.HostId,
+                    VenueId = ServicePackage.VenueId,
                     Status = ServicePackage.Status,
                     ServicePackageImages = ServicePackage.ServicePackageImages,
                 }).ToList();
@@ -117,7 +114,7 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
             return p;
-        }
+        }*/
         #endregion
 
         #region command

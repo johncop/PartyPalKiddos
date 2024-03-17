@@ -5,7 +5,10 @@ namespace BusinessObject.Models
 {
     public partial class Combo
     {
-        public Combo() { }
+        public Combo()
+        {
+
+        }
         public Combo(string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, int? status)
         {
             ComboName = comboName;

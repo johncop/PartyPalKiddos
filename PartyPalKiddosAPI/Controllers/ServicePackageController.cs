@@ -14,22 +14,22 @@ namespace PartyPalKiddosAPI.Controllers
         private IServicePackageRepository repository = new ServicePackageRepository();
 
         [HttpPost("ServicePackages")]
-        public IActionResult PostServicePackage(string? packageName, int? hostId, decimal? price, int? status)
+        public IActionResult PostServicePackage(string? packageName, decimal? price, int? status)
         {           
-            ServicePackage p = new ServicePackage(packageName, hostId, price, status);
+            ServicePackage p = new ServicePackage(packageName, price, status);
             repository.addServicePackage(p);
             return Ok(new { success = true, message = "ServicePackage Added successfully." });
         }
 
         [HttpPut("ServicePackages")]
-        public IActionResult UpdateServicePackage(int id, string? packageName, int? hostId, decimal? price, int? status)
+        public IActionResult UpdateServicePackage(int id, string? packageName, decimal? price, int? status)
         {
             var ServicePackage = repository.GetServicePackageById(id);
             if (ServicePackage == null)
             {
                 return NotFound();
             }
-            ServicePackage p = new ServicePackage(packageName, hostId, price, status);
+            ServicePackage p = new ServicePackage(packageName, price, status);
             repository.UpdateServicePackage(p);
             return Ok(new { success = true, message = "ServicePackage updated successfully." });
         }

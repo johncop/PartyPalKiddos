@@ -10,26 +10,23 @@ namespace BusinessObject.Models
             ServicePackageImages = new HashSet<ServicePackageImage>();
         }
 
-        public ServicePackage(string? packageName, int? hostId, decimal? price, int? status)
+        public ServicePackage(string? packageName, decimal? price, int? status)
         {
             PackageName = packageName;
-            HostId = hostId;
             Price = price;
             Status = status;
         }
 
-        public ServicePackage(int id, string? packageName, int? hostId, decimal? price, int? status)
+        public ServicePackage(int id, string? packageName, decimal? price, int? status)
         {
             Id = id;
             PackageName = packageName;
-            HostId = hostId;
             Price = price;
             Status = status;
         }
 
         public int Id { get; set; }
         public string? PackageName { get; set; }
-        public int? HostId { get; set; }
         public decimal? Price { get; set; }
         public int? Status { get; set; }
 
