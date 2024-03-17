@@ -228,7 +228,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<ComboFoodDetail>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(hfd => new { hfd.ComboId, hfd.FoodId });
 
                 entity.ToTable("ComboFoodDetail");
 
@@ -450,7 +450,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<HostServiceDetail>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(hfd => new { hfd.HostId, hfd.ServiceId });
 
                 entity.ToTable("HostServiceDetail");
 
@@ -471,7 +471,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<HostServicePackageDetail>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(hfd => new { hfd.HostId, hfd.ServicePackageId });
 
                 entity.ToTable("HostServicePackageDetail");
 
