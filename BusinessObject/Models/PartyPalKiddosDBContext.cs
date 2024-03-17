@@ -50,8 +50,8 @@ namespace BusinessObject.Models
             if (!optionsBuilder.IsConfigured)
             {
                 var builder = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+           .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 IConfigurationRoot configuration = builder.Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("PartyPalKiddo"));
             }
@@ -219,6 +219,8 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.HostId).HasColumnName("host_id");
 
+                entity.Property(e => e.Image).HasColumnName("image");
+
                 entity.Property(e => e.ImgUrl)
                     .HasColumnType("text")
                     .HasColumnName("img_url");
@@ -329,6 +331,8 @@ namespace BusinessObject.Models
                     .IsUnicode(false)
                     .HasColumnName("food_name");
 
+                entity.Property(e => e.Image).HasColumnName("image");
+
                 entity.Property(e => e.ImageUrl)
                     .HasColumnType("text")
                     .HasColumnName("image_url");
@@ -336,6 +340,10 @@ namespace BusinessObject.Models
                 entity.Property(e => e.Price)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("price");
+
+                entity.Property(e => e.Status)
+                    .HasColumnType("text")
+                    .HasColumnName("status");
 
                 entity.HasOne(d => d.FoodCategory)
                     .WithMany(p => p.Foods)
@@ -406,15 +414,17 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.Description).HasColumnName("description");
 
+                entity.Property(e => e.Image).HasColumnName("image");
+
+                entity.Property(e => e.ImageUrl)
+                    .HasColumnType("text")
+                    .HasColumnName("image_url");
+
                 entity.Property(e => e.Price)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("price");
 
                 entity.Property(e => e.ServiceCategoryId).HasColumnName("service_category_Id");
-
-                entity.Property(e => e.ServiceImage)
-                    .HasMaxLength(200)
-                    .HasColumnName("service_image");
 
                 entity.Property(e => e.ServiceName)
                     .HasMaxLength(50)
@@ -454,7 +464,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<ServicePackageDetail>(entity =>
             {
-                entity.HasKey(hfd => new { hfd.ServicePackageId, hfd.ServiceId });
+                entity.HasNoKey();
 
                 entity.ToTable("ServicePackageDetail");
 
@@ -478,8 +488,10 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("ServicePackageImage");
 
+                entity.Property(e => e.Image).HasColumnName("image");
+
                 entity.Property(e => e.ImgUrl)
-                    .HasMaxLength(200)
+                    .HasColumnType("text")
                     .HasColumnName("Img_url");
 
                 entity.Property(e => e.ServicePackageId).HasColumnName("service_package_id");
@@ -565,6 +577,8 @@ namespace BusinessObject.Models
                 entity.Property(e => e.DistrictId).HasColumnName("District_id");
 
                 entity.Property(e => e.OpenHour).HasColumnName("open_hour");
+
+                entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(50)

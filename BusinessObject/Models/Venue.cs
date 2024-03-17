@@ -11,19 +11,20 @@ namespace BusinessObject.Models
             VenueImages = new HashSet<VenueImage>();
         }
 
-        public Venue(string? venueName, string? address, int? capacity, int? districtId, string? description, TimeSpan? openHour, TimeSpan? closeHour, string? status)
+        public Venue(string? venueName, string? address, int? capacity, int? districtId, string? description, decimal? price, TimeSpan? openHour, TimeSpan? closeHour, string? status)
         {
             VenueName = venueName;
             Address = address;
             Capacity = capacity;
             DistrictId = districtId;
             Description = description;
+            Price = price;
             OpenHour = openHour;
             CloseHour = closeHour;
             Status = status;
         }
 
-        public Venue(int id, string? venueName, string? address, int? capacity, int? districtId, string? description, TimeSpan? openHour, TimeSpan? closeHour, string? status)
+        public Venue(int id, string? venueName, string? address, int? capacity, int? districtId, string? description, decimal? price, TimeSpan? openHour, TimeSpan? closeHour, string? status)
         {
             Id = id;
             VenueName = venueName;
@@ -31,6 +32,7 @@ namespace BusinessObject.Models
             Capacity = capacity;
             DistrictId = districtId;
             Description = description;
+            Price = price;
             OpenHour = openHour;
             CloseHour = closeHour;
             Status = status;
@@ -42,6 +44,7 @@ namespace BusinessObject.Models
         public int? Capacity { get; set; }
         public int? DistrictId { get; set; }
         public string? Description { get; set; }
+        public decimal? Price { get; set; }
         public TimeSpan? OpenHour { get; set; }
         public TimeSpan? CloseHour { get; set; }
         public string? Status { get; set; }

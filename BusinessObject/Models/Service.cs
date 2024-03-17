@@ -9,22 +9,25 @@ namespace BusinessObject.Models
         {
 
         }
-        public Service(string? serviceName, string? description, int? serviceCategoryId, string? serviceImage, decimal? price)
+
+        public Service(string? serviceName, string? description, int? serviceCategoryId, string? imageUrl, byte[]? image, decimal? price)
         {
             ServiceName = serviceName;
             Description = description;
             ServiceCategoryId = serviceCategoryId;
-            ServiceImage = serviceImage;
+            ImageUrl = imageUrl;
+            Image = image;
             Price = price;
         }
 
-        public Service(int id, string? serviceName, string? description, int? serviceCategoryId, string? serviceImage, decimal? price)
+        public Service(int id, string? serviceName, string? description, int? serviceCategoryId, string? imageUrl, byte[]? image, decimal? price)
         {
             Id = id;
             ServiceName = serviceName;
             Description = description;
             ServiceCategoryId = serviceCategoryId;
-            ServiceImage = serviceImage;
+            ImageUrl = imageUrl;
+            Image = image;
             Price = price;
         }
 
@@ -32,7 +35,8 @@ namespace BusinessObject.Models
         public string? ServiceName { get; set; }
         public string? Description { get; set; }
         public int? ServiceCategoryId { get; set; }
-        public string? ServiceImage { get; set; }
+        public string? ImageUrl { get; set; }
+        public byte[]? Image { get; set; }
         public decimal? Price { get; set; }
 
         public virtual ServiceCategory? ServiceCategory { get; set; }
