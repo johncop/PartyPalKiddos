@@ -20,7 +20,7 @@ namespace DataAccess
                         {
                             Id = timeslot.Id,
                             TimeslotId = timeslot.TimeslotId,
-                            HostId = timeslot.HostId,
+                            VenueId = timeslot.VenueId,
                             Status = timeslot.Status
                         }).ToList();
                     return listAvailableTimeSlots;
@@ -43,7 +43,7 @@ namespace DataAccess
                         {
                             Id = timeslot.Id,
                             TimeslotId = timeslot.TimeslotId,
-                            HostId = timeslot.HostId,
+                            VenueId = timeslot.VenueId,
                             Status = timeslot.Status
                         }).SingleOrDefault(x => x.Id == id);
                     return timeslot;

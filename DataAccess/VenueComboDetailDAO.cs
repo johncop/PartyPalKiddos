@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public class HostComboDetailDAO
+    public class VenueComboDetailDAO
     {
         private readonly PartyPalKiddosDBContext _context;
-        public HostComboDetailDAO(PartyPalKiddosDBContext context)
+        public VenueComboDetailDAO(PartyPalKiddosDBContext context)
         {
             _context = context;
         }
         #region QUERY
-        /*public List<HostComboDetail> GetHostComboDetails()
+        /*public List<VenueComboDetail> GetVenueComboDetails()
         {
-            //var listHostComboDetails = new List<HostComboDetail>();
+            //var listVenueComboDetails = new List<VenueComboDetail>();
             try
             {
-                return _context.HostComboDetails
-                    .Select(hcd => new HostComboDetail
+                return _context.VenueComboDetails
+                    .Select(hcd => new VenueComboDetail
                     {
-                        HostId= hcd.HostId,
+                        VenueId= hcd.VenueId,
                         ComboId=hcd.ComboId,
                         FoodId=hcd.FoodId,
                     })
@@ -36,16 +36,16 @@ namespace DataAccess.Models
             }           
         }
 
-        public List<HostComboDetail> FindHostComboDetailById(int hostId)
+        public List<VenueComboDetail> FindVenueComboDetailById(int VenueId)
         {
-            //List<HostComboDetail> f = new List<HostComboDetail>();
+            //List<VenueComboDetail> f = new List<VenueComboDetail>();
             try
             {
-                return _context.HostComboDetails
-                    .Where(hcd => hcd.HostId == hostId)
-                    .Select(hcd => new HostComboDetail
+                return _context.VenueComboDetails
+                    .Where(hcd => hcd.VenueId == VenueId)
+                    .Select(hcd => new VenueComboDetail
                     {
-                        HostId = hcd.HostId,
+                        VenueId = hcd.VenueId,
                         ComboId = hcd.ComboId,
                         FoodId = hcd.FoodId,
                     })
@@ -57,22 +57,21 @@ namespace DataAccess.Models
             }
         }*/
 
-        public static List<HostComboDetail> GetHostComboDetails()
+        public static List<VenueComboDetail> GetVenueComboDetails()
         {
-            var listHostComboDetails = new List<HostComboDetail>();
+            var listVenueComboDetails = new List<VenueComboDetail>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listHostComboDetails = context.HostComboDetails
-                    .Select(hcd => new HostComboDetail
+                    listVenueComboDetails = context.VenueComboDetails
+                    .Select(hcd => new VenueComboDetail
                     {
-                        HostId = hcd.HostId,
+                        VenueId = hcd.VenueId,
                         ComboId = hcd.ComboId,
-                        FoodId = hcd.FoodId,
                     })
                     .ToList();
-                    return listHostComboDetails;
+                    return listVenueComboDetails;
                 }
             }
             catch (Exception)
@@ -81,23 +80,22 @@ namespace DataAccess.Models
             }
         }
 
-        public static List<HostComboDetail> FindHostComboDetailById(int hostId)
+        public static List<VenueComboDetail> FindVenueComboDetailById(int VenueId)
         {
-            var listHostComboDetails = new List<HostComboDetail>();
+            var listVenueComboDetails = new List<VenueComboDetail>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listHostComboDetails = context.HostComboDetails
-                        .Where(hcd => hcd.HostId == hostId)
-                    .Select(hcd => new HostComboDetail
+                    listVenueComboDetails = context.VenueComboDetails
+                        .Where(hcd => hcd.VenueId == VenueId)
+                    .Select(hcd => new VenueComboDetail
                     {
-                        HostId = hcd.HostId,
+                        VenueId = hcd.VenueId,
                         ComboId = hcd.ComboId,
-                        FoodId = hcd.FoodId,
                     })
                     .ToList();
-                    return listHostComboDetails;
+                    return listVenueComboDetails;
                 }
             }
             catch (Exception)
@@ -106,15 +104,15 @@ namespace DataAccess.Models
             }
         }
 
-        /*public static HostComboDetail GetHostComboDetailByIds(int hostId, int comboId, int foodId)
+        /*public static VenueComboDetail GetVenueComboDetailByIds(int VenueId, int comboId, int foodId)
         {
             try
             {
-                return _context.HostComboDetails
-                        .Where(detail => detail.HostId == hostId && detail.ComboId == comboId && detail.FoodId == foodId)
-                        .Select(detail => new HostComboDetail
+                return _context.VenueComboDetails
+                        .Where(detail => detail.VenueId == VenueId && detail.ComboId == comboId && detail.FoodId == foodId)
+                        .Select(detail => new VenueComboDetail
                         {
-                            HostId = detail.HostId,
+                            VenueId = detail.VenueId,
                             ComboId = detail.ComboId,
                             FoodId = detail.FoodId,
                         }).FirstOrDefault();               
@@ -125,19 +123,18 @@ namespace DataAccess.Models
             }
         }*/
 
-        public static HostComboDetail GetHostComboDetailByIds(int hostId, int comboId, int foodId)
+        public static VenueComboDetail GetVenueComboDetailByIds(int VenueId, int comboId)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var hcd = context.HostComboDetails
-                         .Where(hcd => hcd.HostId == hostId && hcd.ComboId == comboId && hcd.FoodId == foodId)
-                     .Select(hcd => new HostComboDetail
+                    var hcd = context.VenueComboDetails
+                         .Where(hcd => hcd.VenueId == VenueId && hcd.ComboId == comboId)
+                     .Select(hcd => new VenueComboDetail
                      {
-                         HostId = hcd.HostId,
+                         VenueId = hcd.VenueId,
                          ComboId = hcd.ComboId,
-                         FoodId = hcd.FoodId,
                      }).FirstOrDefault();
                     return hcd;
                 }
@@ -152,11 +149,11 @@ namespace DataAccess.Models
 
 
         #region COMMAND
-        /*public void SaveHostComboDetail(HostComboDetail f)
+        /*public void SaveVenueComboDetail(VenueComboDetail f)
         {
             try
             {             
-                    _context.HostComboDetails.Add(f);
+                    _context.VenueComboDetails.Add(f);
                     _context.SaveChanges();              
             }
             catch (Exception e)
@@ -165,12 +162,12 @@ namespace DataAccess.Models
             }
         }
 
-        public void DeleteHostComboDetail(HostComboDetail HostComboDetail)
+        public void DeleteVenueComboDetail(VenueComboDetail VenueComboDetail)
         {
             try
             {
-                    var p1 = _context.HostComboDetails.SingleOrDefault(x => x.ComboId == HostComboDetail.ComboId && x.FoodId == HostComboDetail.FoodId);
-                    _context.HostComboDetails.Remove(p1);
+                    var p1 = _context.VenueComboDetails.SingleOrDefault(x => x.ComboId == VenueComboDetail.ComboId && x.FoodId == VenueComboDetail.FoodId);
+                    _context.VenueComboDetails.Remove(p1);
                     _context.SaveChanges();
             }
             catch (Exception e)
@@ -180,11 +177,11 @@ namespace DataAccess.Models
             }
         }
 
-        public void UpdateHostComboDetail(HostComboDetail HostComboDetail)
+        public void UpdateVenueComboDetail(VenueComboDetail VenueComboDetail)
         {
             try
             {
-                    _context.Entry<HostComboDetail>(HostComboDetail).State =
+                    _context.Entry<VenueComboDetail>(VenueComboDetail).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     _context.SaveChanges();
             }
@@ -194,13 +191,13 @@ namespace DataAccess.Models
             }
         }*/
 
-        public static void SaveHostComboDetail(HostComboDetail HostComboDetail)
+        public static void SaveVenueComboDetail(VenueComboDetail VenueComboDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.HostComboDetails.Add(HostComboDetail);
+                    context.VenueComboDetails.Add(VenueComboDetail);
                     context.SaveChanges();
                 }
             }
@@ -209,14 +206,14 @@ namespace DataAccess.Models
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteHostComboDetail(HostComboDetail HostComboDetail)
+        public static void DeleteVenueComboDetail(VenueComboDetail VenueComboDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.HostComboDetails.SingleOrDefault(x => x.HostId == HostComboDetail.HostId && x.ComboId == HostComboDetail.ComboId && x.FoodId == HostComboDetail.FoodId);
-                    context.HostComboDetails.Remove(p1);
+                    var p1 = context.VenueComboDetails.SingleOrDefault(x => x.VenueId == VenueComboDetail.VenueId && x.ComboId == VenueComboDetail.ComboId);
+                    context.VenueComboDetails.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -226,13 +223,13 @@ namespace DataAccess.Models
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateHostComboDetail(HostComboDetail HostComboDetail)
+        public static void UpdateVenueComboDetail(VenueComboDetail VenueComboDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<HostComboDetail>(HostComboDetail).State =
+                    context.Entry<VenueComboDetail>(VenueComboDetail).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }

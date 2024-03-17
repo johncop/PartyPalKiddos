@@ -47,7 +47,7 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("food-categories/{id}")]
-        public IActionResult UpdateFoodCategory(int id, string FoodCategoryName, string? description, int? FoodCategoryCategoryId, decimal price)
+        public IActionResult UpdateFoodCategory(int id, string FoodCategoryName, string? description)
         {
             FoodCategory FoodCategory = repository.GetFoodCategoryById(id);
             if (FoodCategory == null)

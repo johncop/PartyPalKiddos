@@ -7,7 +7,7 @@ namespace BusinessObject.Models
     {
         public District()
         {
-            Hosts = new HashSet<Host>();
+            Venues = new HashSet<Venue>();
         }
 
         public District(int id, string? description)
@@ -24,6 +24,6 @@ namespace BusinessObject.Models
             Description = description;
         }
 
-        public virtual ICollection<Host> Hosts { get; set; }
+        public virtual ICollection<Venue> Venues { get; set; }
     }
 }

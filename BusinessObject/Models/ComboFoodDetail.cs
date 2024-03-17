@@ -5,7 +5,11 @@ namespace BusinessObject.Models
 {
     public partial class ComboFoodDetail
     {
-        public ComboFoodDetail() { }
+        public ComboFoodDetail()
+        {
+
+        }
+
         public ComboFoodDetail(int? foodId, int? quantity)
         {
             FoodId = foodId;
