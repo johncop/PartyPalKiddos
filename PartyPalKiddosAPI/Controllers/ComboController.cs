@@ -25,9 +25,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetComboByName(ComboName);
 
         [HttpPost("combos")]
-        public ActionResult<Combo> CreateCombo(string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, int? status)
+        public ActionResult<Combo> CreateCombo(string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, byte[]? image, int? status)
         {
-            Combo combo = new Combo(comboName, comboPrice, hostId, imgUrl, status);
+            Combo combo = new Combo(comboName, comboPrice, hostId, imgUrl, image,status);
             repository.addCombo(combo);
             return Ok(new { success = true, message = "Combo updated successfully." });
         }
@@ -45,14 +45,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("combos/{id}")]
-        public IActionResult UpdateCombo(int id, string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, int? status)
+        public IActionResult UpdateCombo(int id, string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, byte[]? image, int? status)
         {
             Combo Combo = repository.GetComboById(id);
             if (Combo == null)
             {
                 return NotFound();
             }
-            Combo = new Combo(id, comboName, comboPrice, hostId, imgUrl, status);
+            Combo = new Combo(id, comboName, comboPrice, hostId, imgUrl, image, status);
             repository.UpdateCombo(Combo);
             return Ok(new { success = true, message = "Combo Updated successfully." });
         }

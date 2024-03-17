@@ -22,9 +22,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetServicePackageImageById(id);
 
         [HttpPost("package-image")]
-        public IActionResult Post(string? imgUrl, int? packageId)
+        public IActionResult Post(string? imgUrl, byte[]? image, int? packageId)
         {
-            ServicePackageImage pi = new ServicePackageImage(imgUrl, packageId);
+            ServicePackageImage pi = new ServicePackageImage(imgUrl,image, packageId);
             repository.addServicePackageImage(pi);
             return Ok(new { success = true, message = "Package image Added successfully." });
         }
@@ -42,14 +42,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("package-image/{id}")]
-        public IActionResult UpdateProduct(int id, string? imgUrl, int? packageId)
+        public IActionResult UpdateProduct(int id, string? imgUrl, byte[]? image, int? packageId)
         {
             ServicePackageImage ServicePackageImage = repository.GetServicePackageImageById(id);
             if (ServicePackageImage == null)
             {
                 return NotFound();
             }
-            ServicePackageImage = new ServicePackageImage(id, imgUrl, packageId);
+            ServicePackageImage = new ServicePackageImage(imgUrl, image, packageId);
             repository.UpdateServicePackageImage(ServicePackageImage);
             return Ok(new { success = true, message = "Package Image Updated successfully." });
         }
