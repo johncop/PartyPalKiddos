@@ -10,6 +10,29 @@ namespace BusinessObject.Models
             Bookings = new HashSet<Booking>();
         }
 
+        public User(string fullName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
+        {
+            FullName = fullName;
+            Email = email;
+            Password = password;
+            Address = address;
+            PhoneNumber = phoneNumber;
+            RoleId = roleId;
+            Status = status;
+        }
+
+        public User(int id, string fullName, string email, string password, string? address, string? phoneNumber, int? roleId, int? status)
+        {
+            Id = id;
+            FullName = fullName;
+            Email = email;
+            Password = password;
+            Address = address;
+            PhoneNumber = phoneNumber;
+            RoleId = roleId;
+            Status = status;
+        }
+
         public int Id { get; set; }
         public string FullName { get; set; } = null!;
         public string Email { get; set; } = null!;

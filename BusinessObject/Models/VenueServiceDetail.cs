@@ -5,6 +5,16 @@ namespace BusinessObject.Models
 {
     public partial class VenueServiceDetail
     {
+        public VenueServiceDetail()
+        {
+
+        }
+        public VenueServiceDetail(int? venueId, int? serviceId)
+        {
+            VenueId = venueId;
+            ServiceId = serviceId;
+        }
+
         public int? VenueId { get; set; }
         public int? ServiceId { get; set; }
 

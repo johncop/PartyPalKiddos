@@ -17,7 +17,7 @@ builder.Services.AddCors(p => p.AddPolicy("corspolicy", build => {
 }));
 
 #region SCOPE
-builder.Services.AddScoped<HostComboDetailDAO>();
+builder.Services.AddScoped<VenueComboDetailDAO>();
 #endregion
 
 var app = builder.Build();

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.DTO
 {
-    public class addHostServicePackageDetail
+    public class addVenueServicePackageDetail
     {
-        public int? HostId { get; set; }
+        public int? VenueId { get; set; }
         public int? ServicePackageId { get; set; }
     }
 }

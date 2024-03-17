@@ -5,6 +5,25 @@ namespace BusinessObject.Models
 {
     public partial class Food
     {
+        public Food(string? foodName, string? description, string? imageUrl, int? foodCategoryId, decimal? price)
+        {
+            FoodName = foodName;
+            Description = description;
+            ImageUrl = imageUrl;
+            FoodCategoryId = foodCategoryId;
+            Price = price;
+        }
+
+        public Food(int id, string? foodName, string? description, string? imageUrl, int? foodCategoryId, decimal? price)
+        {
+            Id = id;
+            FoodName = foodName;
+            Description = description;
+            ImageUrl = imageUrl;
+            FoodCategoryId = foodCategoryId;
+            Price = price;
+        }
+
         public int Id { get; set; }
         public string? FoodName { get; set; }
         public string? Description { get; set; }

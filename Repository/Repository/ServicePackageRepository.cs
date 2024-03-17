@@ -22,7 +22,7 @@ namespace Repository.Repository
         public ServicePackage GetServicePackageById(int id) => ServicePackageDAO.findServicePackageById(id);
 
         public List<ServicePackage> GetServicePackagetByName(string packgakeName) => ServicePackageDAO.findServicePackageByName(packgakeName);
-        public List<ServicePackage> GetServicePackagetByHostId(int hostId) => ServicePackageDAO.findServicePackageByHostId(hostId);
+        //public List<ServicePackage> GetServicePackagetByHostId(int hostId) => ServicePackageDAO.findServicePackageByHostId(hostId);
 
        /* public bool isTimeSlotAvaiable(int? locationId, DateTime? startTime, DateTime? endTime)
             => ServicePackageDAO.IsTimeSlotAvailable(locationId, startTime, endTime);*/

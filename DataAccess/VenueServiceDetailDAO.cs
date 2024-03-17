@@ -7,24 +7,26 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class HostFoodDetailDAO
+    public class VenueServiceDetailDAO
     {
         #region QUERY
-        public static List<HostFoodDetail> GetHostFoodDetails()
+        public static List<VenueServiceDetail> GetVenueServiceDetails()
         {
-            var listHostFoodDetails = new List<HostFoodDetail>();
+            var listVenueServiceDetails = new List<VenueServiceDetail>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listHostFoodDetails = context.HostFoodDetails
-                    .Select(hcd => new HostFoodDetail
+                    listVenueServiceDetails = context.VenueServiceDetails
+                    .Select(hcd => new VenueServiceDetail
                     {
-                        HostId = hcd.HostId,
-                        FoodId = hcd.FoodId,
+                        VenueId = hcd.VenueId,
+                        ServiceId= hcd.ServiceId,
+                        Venue = hcd.Venue,
+                        Service = hcd.Service,
                     })
                     .ToList();
-                    return listHostFoodDetails;
+                    return listVenueServiceDetails;
                 }
             }
             catch (Exception)
@@ -33,22 +35,24 @@ namespace DataAccess
             }
         }
 
-        public static List<HostFoodDetail> FindHostFoodDetailById(int hostId)
+        public static List<VenueServiceDetail> FindVenueServiceDetailById(int VenueId)
         {
-            var listHostFoodDetails = new List<HostFoodDetail>();
+            var listVenueServiceDetails = new List<VenueServiceDetail>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listHostFoodDetails = context.HostFoodDetails
-                        .Where(hcd => hcd.HostId == hostId)
-                    .Select(hcd => new HostFoodDetail
+                    listVenueServiceDetails = context.VenueServiceDetails
+                        .Where(hcd => hcd.VenueId == VenueId)
+                    .Select(hcd => new VenueServiceDetail
                     {
-                        HostId = hcd.HostId,
-                        FoodId = hcd.FoodId,
+                        VenueId = hcd.VenueId,
+                        ServiceId = hcd.ServiceId,
+                        Venue = hcd.Venue,
+                        Service = hcd.Service,
                     })
                     .ToList();
-                    return listHostFoodDetails;
+                    return listVenueServiceDetails;
                 }
             }
             catch (Exception)
@@ -57,18 +61,20 @@ namespace DataAccess
             }
         }
 
-        public static HostFoodDetail GetHostFoodDetailByIds(int hostId, int foodId)
+        public static VenueServiceDetail GetVenueServiceDetailByIds(int VenueId, int foodId)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var hcd = context.HostFoodDetails
-                         .Where(hcd => hcd.HostId == hostId && hcd.FoodId == foodId)
-                     .Select(hcd => new HostFoodDetail
+                    var hcd = context.VenueServiceDetails
+                         .Where(hcd => hcd.VenueId == VenueId && hcd.ServiceId == foodId)
+                     .Select(hcd => new VenueServiceDetail
                      {
-                         HostId = hcd.HostId,
-                         FoodId = hcd.FoodId
+                         VenueId = hcd.VenueId,
+                         ServiceId = hcd.ServiceId,
+                         Venue = hcd.Venue,
+                         Service = hcd.Service,
                      }).FirstOrDefault();
                     return hcd;
                 }
@@ -84,13 +90,13 @@ namespace DataAccess
 
         #region COMMAND
 
-        public static void SaveHostFoodDetail(HostFoodDetail HostFoodDetail)
+        public static void SaveVenueServiceDetail(VenueServiceDetail VenueServiceDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.HostFoodDetails.Add(HostFoodDetail);
+                    context.VenueServiceDetails.Add(VenueServiceDetail);
                     context.SaveChanges();
                 }
             }
@@ -99,14 +105,14 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteHostFoodDetail(HostFoodDetail HostFoodDetail)
+        public static void DeleteVenueServiceDetail(VenueServiceDetail VenueServiceDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.HostFoodDetails.SingleOrDefault(x => x.HostId == HostFoodDetail.HostId && x.FoodId == HostFoodDetail.FoodId);
-                    context.HostFoodDetails.Remove(p1);
+                    var p1 = context.VenueServiceDetails.SingleOrDefault(x => x.VenueId == VenueServiceDetail.VenueId && x.ServiceId == VenueServiceDetail.ServiceId);
+                    context.VenueServiceDetails.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -116,13 +122,13 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateHostFoodDetail(HostFoodDetail HostFoodDetail)
+        public static void UpdateVenueServiceDetail(VenueServiceDetail VenueServiceDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<HostFoodDetail>(HostFoodDetail).State =
+                    context.Entry<VenueServiceDetail>(VenueServiceDetail).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }

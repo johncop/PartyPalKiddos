@@ -5,6 +5,16 @@ namespace BusinessObject.Models
 {
     public partial class VenueFoodDetail
     {
+        public VenueFoodDetail()
+        {
+
+        }
+        public VenueFoodDetail(int? venueId, int? foodId)
+        {
+            VenueId = venueId;
+            FoodId = foodId;
+        }
+
         public int? VenueId { get; set; }
         public int? FoodId { get; set; }
 

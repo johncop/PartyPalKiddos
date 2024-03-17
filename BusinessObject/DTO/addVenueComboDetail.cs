@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.DTO
 {
-    public class addHostComboDetail
+    public class addVenueComboDetail
     {
         [Key]
-        public int? HostId { get; set; }
+        public int? VenueId { get; set; }
         public int? ComboId { get; set; }
     }
 }

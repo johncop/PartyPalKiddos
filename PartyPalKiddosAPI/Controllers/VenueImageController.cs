@@ -8,48 +8,48 @@ namespace PartyPalKiddosAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HostImageController : ControllerBase
+    public class VenueImageController : ControllerBase
     {
-        private IHostImageRepository repository = new HostImageRepository();
+        private IVenueImageRepository repository = new VenueImageRepository();
 
         [HttpGet("location-image")]
-        public ActionResult<IEnumerable<HostImage>> getHostImage()
-            => repository.GetAllHostImages();
+        public ActionResult<IEnumerable<VenueImage>> getVenueImage()
+            => repository.GetAllVenueImages();
 
         [HttpGet("location-image/{id}")]
-        public ActionResult<HostImage> getPackageById(int id) =>
-            repository.GetHostImageById(id);
+        public ActionResult<VenueImage> getPackageById(int id) =>
+            repository.GetVenueImageById(id);
 
         [HttpPost("location-image")]
-        public ActionResult<HostImage> CreateHostImage(string? imgUrl, int? drinkId)
+        public ActionResult<VenueImage> CreateVenueImage(string? imgUrl, int? drinkId)
         {
-            HostImage f = new HostImage(imgUrl, drinkId);
-            repository.addHostImage(f);
+            VenueImage f = new VenueImage(imgUrl, drinkId);
+            repository.addVenueImage(f);
             return Ok(new { success = true, message = "Location image Added successfully." });
         }
 
         [HttpDelete("location-image/{id}")]
         public IActionResult Delete(int id)
         {
-            var f = repository.GetHostImageById(id);
+            var f = repository.GetVenueImageById(id);
             if (f == null)
             {
                 return NotFound();
             }
-            repository.removeHostImage(f);
+            repository.removeVenueImage(f);
             return Ok(new { success = true, message = "Location image deleted successfully." });
         }
 
         [HttpPut("location-image/{id}")]
         public IActionResult UpdateProduct(int id, string? imgUrl, int? drinkId)
         {
-            HostImage HostImage = repository.GetHostImageById(id);
-            if (HostImage == null)
+            VenueImage VenueImage = repository.GetVenueImageById(id);
+            if (VenueImage == null)
             {
                 return NotFound();
             }
-            HostImage = new HostImage(id, imgUrl, drinkId);
-            repository.UpdateHostImage(HostImage);
+            VenueImage = new VenueImage(id, imgUrl, drinkId);
+            repository.UpdateVenueImage(VenueImage);
             return Ok(new { success = true, message = "Location image updated successfully." });
         }
     }

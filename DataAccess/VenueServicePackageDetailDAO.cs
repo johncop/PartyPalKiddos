@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class HostServicePackageDetailDAO
+    public class VenueServicePackageDetailDAO
     {
         #region QUERY
-        public static List<HostServicePackageDetail> GetHostServicePackageDetails()
+        public static List<VenueServicePackageDetail> GetVenueServicePackageDetails()
         {
-            var listHostServicePackageDetails = new List<HostServicePackageDetail>();
+            var listVenueServicePackageDetails = new List<VenueServicePackageDetail>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listHostServicePackageDetails = context.HostServicePackageDetails
-                    .Select(hcd => new HostServicePackageDetail
+                    listVenueServicePackageDetails = context.VenueServicePackageDetails
+                    .Select(hcd => new VenueServicePackageDetail
                     {
-                        HostId = hcd.HostId,
+                        VenueId = hcd.VenueId,
                         ServicePackageId = hcd.ServicePackageId,
-                        Host = hcd.Host,
+                        Venue = hcd.Venue,
                         ServicePackage = hcd.ServicePackage,
                     })
                     .ToList();
-                    return listHostServicePackageDetails;
+                    return listVenueServicePackageDetails;
                 }
             }
             catch (Exception)
@@ -35,24 +35,24 @@ namespace DataAccess
             }
         }
 
-        public static List<HostServicePackageDetail> FindHostServicePackageDetailById(int hostId)
+        public static List<VenueServicePackageDetail> FindVenueServicePackageDetailById(int VenueId)
         {
-            var listHostServicePackageDetails = new List<HostServicePackageDetail>();
+            var listVenueServicePackageDetails = new List<VenueServicePackageDetail>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listHostServicePackageDetails = context.HostServicePackageDetails
-                        .Where(hcd => hcd.HostId == hostId)
-                    .Select(hcd => new HostServicePackageDetail
+                    listVenueServicePackageDetails = context.VenueServicePackageDetails
+                        .Where(hcd => hcd.VenueId == VenueId)
+                    .Select(hcd => new VenueServicePackageDetail
                     {
-                        HostId = hcd.HostId,
+                        VenueId = hcd.VenueId,
                         ServicePackageId = hcd.ServicePackageId,
-                        Host = hcd.Host,
+                        Venue = hcd.Venue,
                         ServicePackage = hcd.ServicePackage,
                     })
                     .ToList();
-                    return listHostServicePackageDetails;
+                    return listVenueServicePackageDetails;
                 }
             }
             catch (Exception)
@@ -61,19 +61,19 @@ namespace DataAccess
             }
         }
 
-        public static HostServicePackageDetail GetHostServicePackageDetailByIds(int hostId, int servicePackageId)
+        public static VenueServicePackageDetail GetVenueServicePackageDetailByIds(int VenueId, int servicePackageId)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var hcd = context.HostServicePackageDetails
-                         .Where(hcd => hcd.HostId == hostId && hcd.ServicePackageId == servicePackageId)
-                     .Select(hcd => new HostServicePackageDetail
+                    var hcd = context.VenueServicePackageDetails
+                         .Where(hcd => hcd.VenueId == VenueId && hcd.ServicePackageId == servicePackageId)
+                     .Select(hcd => new VenueServicePackageDetail
                      {
-                         HostId = hcd.HostId,
+                         VenueId = hcd.VenueId,
                          ServicePackageId = hcd.ServicePackageId,
-                         Host = hcd.Host,
+                         Venue = hcd.Venue,
                          ServicePackage = hcd.ServicePackage,
                      }).FirstOrDefault();
                     return hcd;
@@ -90,13 +90,13 @@ namespace DataAccess
 
         #region COMMAND
 
-        public static void SaveHostServicePackageDetail(HostServicePackageDetail HostServicePackageDetail)
+        public static void SaveVenueServicePackageDetail(VenueServicePackageDetail VenueServicePackageDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.HostServicePackageDetails.Add(HostServicePackageDetail);
+                    context.VenueServicePackageDetails.Add(VenueServicePackageDetail);
                     context.SaveChanges();
                 }
             }
@@ -105,14 +105,14 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteHostServicePackageDetail(HostServicePackageDetail HostServicePackageDetail)
+        public static void DeleteVenueServicePackageDetail(VenueServicePackageDetail VenueServicePackageDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.HostServicePackageDetails.SingleOrDefault(x => x.HostId == HostServicePackageDetail.HostId && x.ServicePackageId == HostServicePackageDetail.ServicePackageId);
-                    context.HostServicePackageDetails.Remove(p1);
+                    var p1 = context.VenueServicePackageDetails.SingleOrDefault(x => x.VenueId == VenueServicePackageDetail.VenueId && x.ServicePackageId == VenueServicePackageDetail.ServicePackageId);
+                    context.VenueServicePackageDetails.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -122,13 +122,13 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateHostServicePackageDetail(HostServicePackageDetail HostServicePackageDetail)
+        public static void UpdateVenueServicePackageDetail(VenueServicePackageDetail VenueServicePackageDetail)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<HostServicePackageDetail>(HostServicePackageDetail).State =
+                    context.Entry<VenueServicePackageDetail>(VenueServicePackageDetail).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }

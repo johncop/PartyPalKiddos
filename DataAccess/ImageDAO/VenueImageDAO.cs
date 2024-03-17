@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace DataAccess.ImageDAO
 {
-    public class HostImageDAO
+    public class VenueImageDAO
     {
         #region query
-        public static List<HostImage> GetHostImages()
+        public static List<VenueImage> GetVenueImages()
         {
-            var listHostImages = new List<HostImage>();
+            var listVenueImages = new List<VenueImage>();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    listHostImages = context.HostImages
-                .Select(HostImage => new HostImage
+                    listVenueImages = context.VenueImages
+                .Select(VenueImage => new VenueImage
                 {
-                    Id = HostImage.Id,
-                    ImgUrl = HostImage.ImgUrl,
-                    LocationId = HostImage.LocationId
+                    Id = VenueImage.Id,
+                    ImgUrl = VenueImage.ImgUrl,
+                    VenueId = VenueImage.VenueId
                 }).ToList();
                 }
             }
@@ -31,22 +31,22 @@ namespace DataAccess.ImageDAO
 
                 throw;
             }
-            return listHostImages;
+            return listVenueImages;
         }
 
-        public static HostImage findHostImageById(int id)
+        public static VenueImage findVenueImageById(int id)
         {
-            HostImage d = new HostImage();
+            VenueImage d = new VenueImage();
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    d = context.HostImages
-                .Select(HostImage => new HostImage
+                    d = context.VenueImages
+                .Select(VenueImage => new VenueImage
                 {
-                    Id = HostImage.Id,
-                    ImgUrl = HostImage.ImgUrl,
-                    LocationId = HostImage.LocationId
+                    Id = VenueImage.Id,
+                    ImgUrl = VenueImage.ImgUrl,
+                    VenueId = VenueImage.VenueId
                 }).SingleOrDefault(x => x.Id == id);
                 }
             }
@@ -62,13 +62,13 @@ namespace DataAccess.ImageDAO
 
 
         #region command
-        public static void SaveHostImage(HostImage li)
+        public static void SaveVenueImage(VenueImage li)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.HostImages.Add(li);
+                    context.VenueImages.Add(li);
                     context.SaveChanges();
                 }
             }
@@ -78,14 +78,14 @@ namespace DataAccess.ImageDAO
             }
         }
 
-        public static void DeleteHostImage(HostImage li)
+        public static void DeleteVenueImage(VenueImage li)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.HostImages.SingleOrDefault(x => x.Id == li.Id);
-                    context.HostImages.Remove(p1);
+                    var p1 = context.VenueImages.SingleOrDefault(x => x.Id == li.Id);
+                    context.VenueImages.Remove(p1);
                     context.SaveChanges();
                 }
             }
@@ -96,13 +96,13 @@ namespace DataAccess.ImageDAO
             }
         }
 
-        public static void UpdateHostImage(HostImage li)
+        public static void UpdateVenueImage(VenueImage li)
         {
             try
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    context.Entry<HostImage>(li).State =
+                    context.Entry<VenueImage>(li).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }

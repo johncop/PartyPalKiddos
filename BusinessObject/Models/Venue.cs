@@ -11,6 +11,31 @@ namespace BusinessObject.Models
             VenueImages = new HashSet<VenueImage>();
         }
 
+        public Venue(string? venueName, string? address, int? capacity, int? districtId, string? description, TimeSpan? openHour, TimeSpan? closeHour, string? status)
+        {
+            VenueName = venueName;
+            Address = address;
+            Capacity = capacity;
+            DistrictId = districtId;
+            Description = description;
+            OpenHour = openHour;
+            CloseHour = closeHour;
+            Status = status;
+        }
+
+        public Venue(int id, string? venueName, string? address, int? capacity, int? districtId, string? description, TimeSpan? openHour, TimeSpan? closeHour, string? status)
+        {
+            Id = id;
+            VenueName = venueName;
+            Address = address;
+            Capacity = capacity;
+            DistrictId = districtId;
+            Description = description;
+            OpenHour = openHour;
+            CloseHour = closeHour;
+            Status = status;
+        }
+
         public int Id { get; set; }
         public string? VenueName { get; set; }
         public string? Address { get; set; }
