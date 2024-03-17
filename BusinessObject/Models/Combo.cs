@@ -5,23 +5,29 @@ namespace BusinessObject.Models
 {
     public partial class Combo
     {
-        public Combo() { }
-        public Combo(string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, int? status)
+        public Combo()
+        {
+
+        }
+
+        public Combo(string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, byte[]? image, int? status)
         {
             ComboName = comboName;
             ComboPrice = comboPrice;
             HostId = hostId;
             ImgUrl = imgUrl;
+            Image = image;
             Status = status;
         }
 
-        public Combo(int id, string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, int? status)
+        public Combo(int id, string? comboName, decimal? comboPrice, int? hostId, string? imgUrl, byte[]? image, int? status)
         {
             Id = id;
             ComboName = comboName;
             ComboPrice = comboPrice;
             HostId = hostId;
             ImgUrl = imgUrl;
+            Image = image;
             Status = status;
         }
 
@@ -30,6 +36,7 @@ namespace BusinessObject.Models
         public decimal? ComboPrice { get; set; }
         public int? HostId { get; set; }
         public string? ImgUrl { get; set; }
+        public byte[]? Image { get; set; }
         public int? Status { get; set; }
     }
 }

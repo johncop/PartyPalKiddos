@@ -25,9 +25,9 @@ namespace PartyPalKiddosAPI.Controllers
             repository.GetFoodByName(FoodName);
 
         [HttpPost("Foods")]
-        public ActionResult<Food> CreateFood(string? foodName, string? description, string? imageUrl, int? foodCategoryId, decimal? price)
+        public ActionResult<Food> CreateFood(string? foodName, string? description, string? imageUrl, byte[]? image, int? foodCategoryId, decimal? price)
         {
-            Food food = new Food(foodName, description, imageUrl, foodCategoryId, price);
+            Food food = new Food(foodName, description, imageUrl,image, foodCategoryId, price);
             repository.addFood(food);
             return Ok(new { success = true, message = "Food updated successfully." });
         }
@@ -45,14 +45,14 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("Foods/{id}")]
-        public IActionResult UpdateFood(int id, string? foodName, string? description, string? imageUrl, int? foodCategoryId, decimal? price)
+        public IActionResult UpdateFood(int id, string? foodName, string? description, string? imageUrl, byte[]? image, int? foodCategoryId, decimal? price)
         {
             Food Food = repository.GetFoodById(id);
             if (Food == null)
             {
                 return NotFound();
             }
-            Food = new Food(id, foodName, description, imageUrl,foodCategoryId, price);
+            Food = new Food(id, foodName, description, imageUrl,image,foodCategoryId, price);
             repository.UpdateFood(Food);
             return Ok(new { success = true, message = "Food Updated successfully." });
         }

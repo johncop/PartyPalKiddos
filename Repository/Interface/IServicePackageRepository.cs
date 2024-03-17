@@ -16,7 +16,7 @@ namespace Repository.Interface
         List<ServicePackage> GetAllServicePackage();
         ServicePackage GetServicePackageById(int id);
         List<ServicePackage> GetServicePackagetByName(string packgakeName);
-        List<ServicePackage> GetServicePackagetByHostId(int hostId);
+        //List<ServicePackage> GetServicePackagetByHostId(int hostId);
         //bool isTimeSlotAvaiable(int? locationId, DateTime? startTime, DateTime? endTime);
     }
 }

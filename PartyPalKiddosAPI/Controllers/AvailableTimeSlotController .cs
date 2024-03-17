@@ -12,12 +12,12 @@ namespace PartyPalKiddosAPI.Controllers
         private IAvailableTimeSlotRepository repository = new AvailableTimeSlotRepository();
 
         [HttpPost("AvailableTimeSlots")]
-        public IActionResult PostAvailableTimeSlot(int? timeslotId, int? hostId, string? status)
+        public IActionResult PostAvailableTimeSlot(int? timeslotId, int? venueId, string? status)
         {
             AvailableTimeSlot timeSlot = new AvailableTimeSlot
             {
                 TimeslotId = timeslotId,
-                HostId = hostId,
+                VenueId = venueId,
                 Status = status
             };
             repository.AddAvailableTimeSlot(timeSlot);
@@ -25,7 +25,7 @@ namespace PartyPalKiddosAPI.Controllers
         }
 
         [HttpPut("AvailableTimeSlots")]
-        public IActionResult UpdateAvailableTimeSlot(int id, int? timeslotId, int? hostId, string? status)
+        public IActionResult UpdateAvailableTimeSlot(int id, int? timeslotId, int? venueId, string? status)
         {
             var checkTimeSlot = repository.GetAvailableTimeSlotById(id);
             if (checkTimeSlot == null)
@@ -37,7 +37,7 @@ namespace PartyPalKiddosAPI.Controllers
             {
                 Id = id,
                 TimeslotId = timeslotId,
-                HostId = hostId,
+                VenueId = venueId,
                 Status = status
             };
             repository.UpdateAvailableTimeSlot(timeSlot);

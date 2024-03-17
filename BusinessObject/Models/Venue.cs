@@ -3,48 +3,54 @@ using System.Collections.Generic;
 
 namespace BusinessObject.Models
 {
-    public partial class Host
+    public partial class Venue
     {
-        public Host()
+        public Venue()
         {
             AvailableTimeSlots = new HashSet<AvailableTimeSlot>();
-            HostImages = new HashSet<HostImage>();
+            VenueImages = new HashSet<VenueImage>();
         }
 
-        public Host(string? hostName, string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
+        public Venue(string? venueName, string? address, int? capacity, int? districtId, string? description, decimal? price, TimeSpan? openHour, TimeSpan? closeHour, string? status)
         {
-            HostName = hostName;
+            VenueName = venueName;
             Address = address;
             Capacity = capacity;
             DistrictId = districtId;
             Description = description;
             Price = price;
+            OpenHour = openHour;
+            CloseHour = closeHour;
             Status = status;
         }
 
-        public Host(int id, string? hostName, string? address, int? capacity, int? districtId, string? description, decimal? price, string? status)
+        public Venue(int id, string? venueName, string? address, int? capacity, int? districtId, string? description, decimal? price, TimeSpan? openHour, TimeSpan? closeHour, string? status)
         {
             Id = id;
-            HostName = hostName;
+            VenueName = venueName;
             Address = address;
             Capacity = capacity;
             DistrictId = districtId;
             Description = description;
             Price = price;
+            OpenHour = openHour;
+            CloseHour = closeHour;
             Status = status;
         }
 
         public int Id { get; set; }
-        public string? HostName { get; set; }
+        public string? VenueName { get; set; }
         public string? Address { get; set; }
         public int? Capacity { get; set; }
         public int? DistrictId { get; set; }
         public string? Description { get; set; }
         public decimal? Price { get; set; }
+        public TimeSpan? OpenHour { get; set; }
+        public TimeSpan? CloseHour { get; set; }
         public string? Status { get; set; }
 
         public virtual District? District { get; set; }
         public virtual ICollection<AvailableTimeSlot> AvailableTimeSlots { get; set; }
-        public virtual ICollection<HostImage> HostImages { get; set; }
+        public virtual ICollection<VenueImage> VenueImages { get; set; }
     }
 }
