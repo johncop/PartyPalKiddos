@@ -39,17 +39,7 @@ namespace PartyPalKiddosAPI.Controllers
             repository.removeComboFoodDetail(f);
             return Ok(new { success = true, message = "Combo deleted successfully." });
         }
-        [HttpDelete("combo-detail")]
-        public IActionResult DeleteCombo(int comboId)
-        {
-            var f = repository.GetListComboFoodDetailByComboId(comboId);
-            if (f == null)
-            {
-                return NotFound();
-            }
-            repository.removeComboDetail(comboId);
-            return Ok(new { success = true, message = "Combo deleted successfully." });
-        }
+
         [HttpPut("combo-food-detail/{id}")]
         public IActionResult UpdateCombo(int comboId, int foodId, int? quantity)
         {
