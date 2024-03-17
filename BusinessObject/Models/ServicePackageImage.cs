@@ -5,6 +5,10 @@ namespace BusinessObject.Models
 {
     public partial class ServicePackageImage
     {
+        public ServicePackageImage()
+        {
+
+        }
         public ServicePackageImage(string? imgUrl, byte[]? image, int? servicePackageId)
         {
             ImgUrl = imgUrl;
