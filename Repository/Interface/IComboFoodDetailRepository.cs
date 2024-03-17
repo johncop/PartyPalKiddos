@@ -11,7 +11,6 @@ namespace Repository.Interface
     {
         void addComboFoodDetail(ComboFoodDetail comboFoodDetail);
         void removeComboFoodDetail(ComboFoodDetail comboFoodDetail);
-        void removeComboDetail(int comboId);
         void UpdateComboFoodDetail(ComboFoodDetail comboFoodDetail);
         List<ComboFoodDetail> GetListComboFoodDetailByComboId(int comboId);
         List<ComboFoodDetail> GetAllComboFoodDetail();
