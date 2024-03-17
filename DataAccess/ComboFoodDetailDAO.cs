@@ -115,36 +115,14 @@ namespace DataAccess
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var sql = "DELETE FROM dbo.ComboFoodDetail WHERE combo_id = @comboId AND food_id = @foodId";
-
-                    // Execute the raw SQL query
-                    context.Database.ExecuteSqlRaw(sql,
-                        new SqlParameter("@comboId", comboFoodDetail.ComboId),
-                        new SqlParameter("@foodId", comboFoodDetail.FoodId));
+                    var p1 = context.ComboFoodDetails.SingleOrDefault(x => x.ComboId == comboFoodDetail.ComboId && x.FoodId == comboFoodDetail.FoodId);
+                    context.ComboFoodDetails.Remove(p1);
+                    context.SaveChanges();
                 }
             }
             catch (Exception e)
             {
 
-                throw new Exception(e.Message);
-            }
-        }
-        public static void DeleteComboDetail(int comboId)
-        {
-            try
-            {
-                using (var context = new PartyPalKiddosDBContext())
-                {
-                    var sql = "DELETE FROM dbo.ComboFoodDetail WHERE combo_id = @comboId";
-
-                    // Execute the raw SQL query
-                    context.Database.ExecuteSqlRaw(sql, new SqlParameter("@comboId", comboId));
-                }
-            }
-            catch (Exception e)
-            {
-                // It's generally a bad practice to throw a new exception like this because it can obscure the original stack trace.
-                // Consider logging the error and/or rethrowing the original exception if needed.
                 throw new Exception(e.Message);
             }
         }
