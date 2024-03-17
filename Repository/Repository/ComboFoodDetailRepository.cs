@@ -14,7 +14,6 @@ namespace Repository.Repository
         public void addComboFoodDetail(ComboFoodDetail comboFoodDetail) => ComboFoodDetailDAO.SaveComboFoodDetail(comboFoodDetail);
 
         public void removeComboFoodDetail(ComboFoodDetail comboFoodDetail) => ComboFoodDetailDAO.DeleteComboFoodDetail(comboFoodDetail);
-        public void removeComboDetail(int comboId) => ComboFoodDetailDAO.DeleteComboDetail(comboId);
 
         public void UpdateComboFoodDetail(ComboFoodDetail comboFoodDetail) => ComboFoodDetailDAO.UpdateComboFoodDetail(comboFoodDetail);
 
