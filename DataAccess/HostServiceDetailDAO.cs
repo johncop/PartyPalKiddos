@@ -111,7 +111,7 @@ namespace DataAccess
             {
                 using (var context = new PartyPalKiddosDBContext())
                 {
-                    var p1 = context.HostServiceDetails.SingleOrDefault(x => x.HostId == HostServiceDetail.HostId && x.FoodId == HostServiceDetail.FoodId);
+                    var p1 = context.HostServiceDetails.SingleOrDefault(x => x.HostId == HostServiceDetail.HostId && x.ServiceId == HostServiceDetail.ServiceId);
                     context.HostServiceDetails.Remove(p1);
                     context.SaveChanges();
                 }

@@ -55,7 +55,7 @@ namespace PartyPalKiddosAPI.Controllers
             HostServicePackageDetail hcd = new HostServicePackageDetail
             {
                 HostId = hostId,
-                FoodId = HostServicePackageDetail.FoodId
+                ServicePackageId = HostServicePackageDetail.ServicePackageId
             };
             repository.UpdateHostServicePackageDetail(hcd);
             return Ok(new { success = true, message = "Combo Updated successfully." });
