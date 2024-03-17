@@ -29,7 +29,7 @@ namespace PartyPalKiddosAPI.Controllers
                 VenueFoodDetail hcd = new VenueFoodDetail(detail.VenueId, detail.FoodId);
                 repository.addVenueFoodDetail(hcd);
             }
-            return Ok(new { success = true, message = "Combo added successfully." });           
+            return Ok(new { success = true, message = "Food added successfully." });           
         }
 
         [HttpDelete("VenueFoodDetails")]

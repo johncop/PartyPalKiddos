@@ -418,7 +418,7 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.ImageUrl)
                     .HasColumnType("text")
-                    .HasColumnName("image_url");
+                    .HasColumnName("Img_url");
 
                 entity.Property(e => e.Price)
                     .HasColumnType("decimal(10, 2)")
@@ -475,7 +475,7 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Service)
                     .WithMany()
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK_PackageDetail_Service1");
+                    .HasConstraintName("FK_PackageDetail_Service");
 
                 entity.HasOne(d => d.ServicePackage)
                     .WithMany()
