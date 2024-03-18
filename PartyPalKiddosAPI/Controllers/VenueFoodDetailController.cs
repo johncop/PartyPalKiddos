@@ -29,9 +29,30 @@ namespace PartyPalKiddosAPI.Controllers
                 VenueFoodDetail hcd = new VenueFoodDetail(detail.VenueId, detail.FoodId);
                 repository.addVenueFoodDetail(hcd);
             }
-            return Ok(new { success = true, message = "Combo added successfully." });           
+            return Ok(new { success = true, message = "Combo added successfully." });
         }
+        [HttpPost("VenueFoodDetails/CategoryId")]
+        public ActionResult<VenueFoodDetail> CreateByCategory(int categoryId, int venueId)
+        {
 
+            repository.addVenueFoodDetailByCategory(categoryId, venueId);
+
+            return Ok(new { success = true, message = "VenueFoodDetails added successfully." });
+        }
+        [HttpPost("VenueFoodDetails/CategoryId,VenueName")]
+        public ActionResult<VenueFoodDetail> CreateByCategoryAndVenueName(int categoryId, string venueName)
+        {
+
+            repository.addVenueFoodDetailByCategoryAndVenueName(venueName, categoryId);
+
+            return Ok(new { success = true, message = "VenueFoodDetails added successfully." });
+        }
+        [HttpDelete("VenueFoodDetails/id")]
+        public IActionResult DeleteCombo(int VenueId)
+        {
+            repository.removeVenueFoodDetailById(VenueId);
+            return Ok(new { success = true, message = "Deleted successfully." });
+        }
         [HttpDelete("VenueFoodDetails")]
         public IActionResult DeleteCombo(int VenueId, int comboId)
         {
