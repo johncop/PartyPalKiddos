@@ -16,6 +16,7 @@ namespace BusinessObject.Models
             Quantity = quantity;
         }
 
+
         public int ServicePackageId { get; set; }
         public int? ServiceId { get; set; }
         public int? Quantity { get; set; }

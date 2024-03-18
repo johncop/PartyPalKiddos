@@ -19,6 +19,8 @@ namespace DataAccess
                 using (var context = new PartyPalKiddosDBContext())
                 {
                     listServicePackageDetails = context.ServicePackageDetails
+                        .Include(p=>p.ServicePackage)
+                        .Include(p=>p.Service)
                 .Select(ServicePackageDetail => new ServicePackageDetail
                 {
                     ServicePackageId = ServicePackageDetail.ServicePackageId,
