@@ -45,5 +45,7 @@ namespace BusinessObject.Models
         public virtual Coupon? Coupon { get; set; }
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Payment> Payments { get; set; }
+        public virtual ICollection<BookingFoodDetail> BookingFoodDetails { get; set; }
+        public virtual ICollection<BookingServiceDetail> BookingServiceDetails { get; set; }
     }
 }

@@ -117,6 +117,13 @@ namespace BusinessObject.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Orders__user_id__76969D2E");
+                entity.HasMany(e => e.BookingFoodDetails)
+          .WithOne() // Specify the inverse navigation here if exists
+          .HasForeignKey(d => d.BookingId);
+
+                entity.HasMany(e => e.BookingServiceDetails)
+                      .WithOne() // Specify the inverse navigation here if exists
+                      .HasForeignKey(d => d.BookingId);
             });
 
             modelBuilder.Entity<BookingFoodDetail>(entity =>
