@@ -10,13 +10,11 @@ namespace PartyKid;
 public class VenuesController : BaseApi
 {
     private readonly IBaseServices<Venue> _venueService;
-    private readonly IMapper _mapper;
     private readonly AutoMapper.IConfigurationProvider _config;
 
-    public VenuesController(IBaseServices<Venue> venueService, IMapper mapper, AutoMapper.IConfigurationProvider config)
+    public VenuesController(IBaseServices<Venue> venueService, IMapper mapper, AutoMapper.IConfigurationProvider config) : base(mapper)
     {
         _venueService = venueService;
-        _mapper = mapper;
         _config = config;
     }
 

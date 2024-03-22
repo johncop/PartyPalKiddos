@@ -8,25 +8,9 @@ namespace PartyKid;
 
 public class CustomAuthorizeAttribute : AuthorizeAttribute
 {
-    // public void OnAuthorization(AuthorizationFilterContext context)
-    // {
-    //     var user = context.HttpContext.Items["User"];
-    //     if (user == null)
-    //     {
-    //         // not logged in
-    //         context.Result = new JsonResult(new
-    //         {
-    //             Status = (int)HttpStatusCode.Unauthorized,
-    //             Title = Constants.AuthHandling.Messages.UnAuthorized,
-    //             message = Constants.AuthHandling.Messages.UnAuthorized
-    //         })
-    //         { StatusCode = StatusCodes.Status401Unauthorized };
-    //     }
-    // }
-
-    public CustomAuthorizeAttribute()
+    public CustomAuthorizeAttribute(params RoleCollection[] roles)
     {
         this.AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme;
-        // this.Roles = string.Join(",", roles.Select(r => Enum.GetName(r.GetType(), r)));
+        this.Roles = string.Join(",", roles.Select(r => Enum.GetName(r.GetType(), r)));
     }
 }

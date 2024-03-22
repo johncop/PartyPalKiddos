@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PartyKid;
@@ -7,11 +9,9 @@ namespace PartyKid;
 public class ServicesController : BaseApi
 {
     private readonly IBaseServices<Service> _serviceService;
-    private readonly IMapper _mapper;
-    public ServicesController(IBaseServices<Service> serviceService, IMapper mapper)
+    public ServicesController(IBaseServices<Service> serviceService, IMapper mapper) : base(mapper)
     {
         _serviceService = serviceService;
-        _mapper = mapper;
     }
 
     #region Query
@@ -32,6 +32,7 @@ public class ServicesController : BaseApi
 
     #region Command
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(RoleCollection.Admin))]
     [HttpPost]
     public async Task<IResponse> Create([FromBody] CreateServiceBindingModel request)
     {
@@ -39,6 +40,7 @@ public class ServicesController : BaseApi
         return Success(message: result);
     }
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(RoleCollection.Admin))]
     [HttpPut]
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServiceBindingModel request)
@@ -48,6 +50,7 @@ public class ServicesController : BaseApi
         return Success<ServiceResponseDTO>(data: _mapper.Map<ServiceResponseDTO>(entity));
     }
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(RoleCollection.Admin))]
     [HttpDelete]
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)

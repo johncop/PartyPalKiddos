@@ -10,15 +10,17 @@ public class AuthController : BaseApi
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IMapper _mapper;
     private readonly AppSettings _appSettings;
 
-    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper mapper, IOptions<AppSettings> appSettings)
+    public AuthController(UserManager<ApplicationUser> userManager,
+                          SignInManager<ApplicationUser> signInManager,
+                          IMapper mapper,
+                          IOptions<AppSettings> appSettings)
+        : base(mapper)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _appSettings = appSettings.Value;
-        _mapper = mapper;
     }
 
     [HttpPost]

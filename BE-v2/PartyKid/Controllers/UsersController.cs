@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,17 +11,15 @@ public class UsersController : BaseApi
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IMapper _mapper;
 
-    public UsersController(IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager, IMapper mapper)
+    public UsersController(IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager, IMapper mapper) : base(mapper)
     {
         _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
-        _mapper = mapper;
     }
 
     #region Query
-    [CustomAuthorize(Roles = nameof(RoleCollection.Admin))]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(RoleCollection.Admin))]
     [HttpGet]
     public async Task<IResponse> GetAll()
     {

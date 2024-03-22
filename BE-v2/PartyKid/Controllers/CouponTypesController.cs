@@ -9,17 +9,14 @@ namespace PartyKid;
 public class CouponTypesController : BaseApi
 {
     protected readonly IBaseServices<CouponType> _couponTypeServices;
-    private readonly IMapper _mapper;
 
-    public CouponTypesController(IBaseServices<CouponType> couponTypeServices, IMapper mapper)
+    public CouponTypesController(IBaseServices<CouponType> couponTypeServices, IMapper mapper) : base(mapper)
     {
         _couponTypeServices = couponTypeServices;
-        _mapper = mapper;
     }
 
     #region Queries
     [HttpGet]
-    [CustomAuthorize]
     public async Task<IResponse> GetAll() => Success<IList<CouponTypesResponseDTO>>(data:
                  await _couponTypeServices.GetAllAsync<CouponTypesResponseDTO>());
     #endregion
@@ -34,7 +31,7 @@ public class CouponTypesController : BaseApi
         return Success(message: Constants.Transactions.Messages.AddComplete);
     }
 
-    [CustomAuthorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPut]
     [Route("{Id}")]
     public async Task<IResponse> Update([FromBody] UpdateCouponTypeRequest request, [FromRoute(Name = "Id")] int id)
@@ -44,7 +41,7 @@ public class CouponTypesController : BaseApi
         return Success<CouponTypesResponseDTO>(data: _mapper.Map<CouponTypesResponseDTO>(entity));
     }
 
-    [CustomAuthorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpDelete]
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)

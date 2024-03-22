@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,9 @@ namespace PartyKid;
 public class ServiceCategoriesController : BaseApi
 {
     private readonly IBaseServices<ServiceCategory> _serviceCategoryService;
-    private readonly IMapper _mapper;
-    public ServiceCategoriesController(IBaseServices<ServiceCategory> serviceCategoryService, IMapper mapper)
+    public ServiceCategoriesController(IBaseServices<ServiceCategory> serviceCategoryService, IMapper mapper) : base(mapper)
     {
         _serviceCategoryService = serviceCategoryService;
-        _mapper = mapper;
     }
 
     #region Query
@@ -42,7 +41,7 @@ public class ServiceCategoriesController : BaseApi
 
     #region Command
 
-    [CustomAuthorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost]
     public async Task<IResponse> Create([FromBody] CreateServiceBindingModel request)
     {
@@ -50,7 +49,7 @@ public class ServiceCategoriesController : BaseApi
         return Success(message: result);
     }
 
-    [CustomAuthorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPut]
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServiceBindingModel request)
@@ -60,7 +59,7 @@ public class ServiceCategoriesController : BaseApi
         return Success<ServiceCategoryResponseDTO>(data: _mapper.Map<ServiceCategoryResponseDTO>(entity));
     }
 
-    [CustomAuthorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpDelete]
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)

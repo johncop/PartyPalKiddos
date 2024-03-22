@@ -65,25 +65,11 @@ public static class ServiceCollectionExtensions
 
         AppSettings appSettings = appSettingsSection.Get<AppSettings>();
         byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
-        services.AddAuthentication(x =>
-        {
-            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(x =>
             {
                 x.Events = new JwtBearerEvents
                 {
-                    OnTokenValidated = async context =>
-                    {
-                        IUserServices userServices = context.HttpContext.RequestServices.GetService<IUserServices>();
-                        ApplicationUser user = await userServices.GetById(context.Principal.Identity.Name);
-                        if (user == null)
-                        {
-                            context.Fail(new Exception("Unauthorized"));
-                        }
-                        return;
-                    },
                     OnChallenge = async context =>
                     {
                         context.HandleResponse();

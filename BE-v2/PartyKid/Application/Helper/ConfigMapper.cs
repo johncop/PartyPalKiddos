@@ -16,8 +16,16 @@ public class ConfigMapper : Profile
 
     private void CouponConfiguration()
     {
+        //CouponType
         CreateMap<CouponType, CouponTypesResponseDTO>().ReverseMap();
         CreateMap<AddCouponTypeRequest, CouponType>().ReverseMap();
+
+        //Coupon
+        CreateMap<Coupon, CouponResponseDTO>()
+        .ForMember(x => x.CouponType, opt => opt.MapFrom(src => src.CouponType))
+        .ReverseMap();
+        CreateMap<Coupon, AddCouponBindingModel>().ReverseMap();
+        CreateMap<Coupon, UpdateCouponBindingModel>().ReverseMap();
     }
 
     private void AuthConfiguration()
