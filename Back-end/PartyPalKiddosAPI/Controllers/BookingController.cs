@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface;
 using Repository.Repository;
@@ -15,6 +16,19 @@ namespace PartyPalKiddosAPI.Controllers
         {
             Booking booking = new Booking(bookingDate, userId, paymentId, couponId, numberOfKids, numberOfAdults, bookingStatus);
             repository.addBooking(booking);
+            return Ok(new { success = true, message = "Booking Added successfully." });
+        }
+        [HttpPost("BookingFirst")]
+        public IActionResult PostBookingFirst(DateTime bookingDate, int userId, int? numberOfKids, int? numberOfAdults, int availableId)
+        {
+            Booking booking = new Booking
+            {
+                BookingDate = bookingDate,
+                UserId = userId,
+                NumberOfAdults = numberOfAdults,
+                NumberOfKids = numberOfKids,
+            };
+            BookingDAO.SaveBookingFirst(booking, availableId);
             return Ok(new { success = true, message = "Booking Added successfully." });
         }
         [HttpPut("Bookings")]

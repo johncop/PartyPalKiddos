@@ -61,6 +61,7 @@ namespace BusinessObject.Models
         {
             modelBuilder.Entity<AvailableTimeSlot>(entity =>
             {
+                
                 entity.ToTable("AvailableTimeSlot");
 
                 entity.Property(e => e.Status)
@@ -185,7 +186,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<BookingTimeSlot>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(hfd => new { hfd.AvailableTimeslotId, hfd.BookingId });
 
                 entity.ToTable("BookingTimeSlot");
 
