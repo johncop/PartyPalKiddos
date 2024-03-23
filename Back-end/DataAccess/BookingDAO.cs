@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace DataAccess
                 {
                     var listBooking = new List<Booking>();
                     listBooking = context.Bookings
+                        .Include(booking => booking.BookingTimeSlots) // Include BookingTimeSlots
+                        .Include(booking => booking.BookingFoodDetails)
+                        .Include(booking => booking.BookingServiceDetails)
                 .Select(booking => new Booking
                 {
                     Id = booking.Id,
@@ -27,7 +31,9 @@ namespace DataAccess
                     NumberOfAdults = booking.NumberOfAdults,
                     NumberOfKids = booking.NumberOfKids,
                     BookingStatus = booking.BookingStatus,
-
+                    BookingTimeSlots = booking.BookingTimeSlots,
+                    BookingFoodDetails = booking.BookingFoodDetails,
+                    BookingServiceDetails= booking.BookingServiceDetails,
                 }).ToList();
                     return listBooking;
                 }
