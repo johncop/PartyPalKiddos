@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models
 {
     public partial class Booking
     {
+        
         public Booking()
         {
             Payments = new HashSet<Payment>();
+            BookingTimeSlots = new HashSet<BookingTimeSlot>();
+            BookingFoodDetails = new HashSet<BookingFoodDetail>();
+            BookingServiceDetails = new HashSet<BookingServiceDetail>();
         }
 
         public Booking(DateTime bookingDate, int userId, int? paymentId, int? couponId, int? numberOfKids, int? numberOfAdults, string? bookingStatus)
@@ -32,7 +37,6 @@ namespace BusinessObject.Models
             NumberOfAdults = numberOfAdults;
             BookingStatus = bookingStatus;
         }
-
         public int Id { get; set; }
         public DateTime BookingDate { get; set; }
         public int UserId { get; set; }
@@ -45,5 +49,8 @@ namespace BusinessObject.Models
         public virtual Coupon? Coupon { get; set; }
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Payment> Payments { get; set; }
+        public virtual ICollection<BookingTimeSlot> BookingTimeSlots { get; set; }
+        public virtual ICollection<BookingFoodDetail> BookingFoodDetails { get; set; }
+        public virtual ICollection<BookingServiceDetail> BookingServiceDetails { get; set; }
     }
 }
