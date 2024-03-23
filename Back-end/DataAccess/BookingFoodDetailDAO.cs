@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace DataAccess
                             FoodId = detail.FoodId,
                             ComboId = detail.ComboId,
                             FoodQuantity = detail.FoodQuantity,
-                            ComboQuantity = detail.ComboQuantity
+                            ComboQuantity = detail.ComboQuantity,
                         }).ToList();
 
                     return list; // This now correctly matches the method signature
