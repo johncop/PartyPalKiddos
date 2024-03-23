@@ -117,18 +117,23 @@ namespace BusinessObject.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Orders__user_id__76969D2E");
+
                 entity.HasMany(e => e.BookingFoodDetails)
-          .WithOne() // Specify the inverse navigation here if exists
-          .HasForeignKey(d => d.BookingId);
+                    .WithOne() // Specify the inverse navigation here if exists
+                    .HasForeignKey(d => d.BookingId);
 
                 entity.HasMany(e => e.BookingServiceDetails)
                       .WithOne() // Specify the inverse navigation here if exists
                       .HasForeignKey(d => d.BookingId);
+                entity.HasMany(e => e.BookingTimeSlots)
+               .WithOne() // Replace with the navigation property if it exists in BookingTimeSlot back to Booking
+               .HasForeignKey(ts => ts.BookingId); // ForeignKey in BookingTimeSlot pointing back to Booking
             });
 
             modelBuilder.Entity<BookingFoodDetail>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
+                entity.HasKey(bfd => new { bfd.BookingId, bfd.FoodId, bfd.ComboId });
 
                 entity.ToTable("BookingFoodDetail");
 
@@ -143,9 +148,9 @@ namespace BusinessObject.Models
                 entity.Property(e => e.FoodQuantity).HasColumnName("food_quantity");
 
                 entity.HasOne(d => d.Booking)
-                    .WithMany()
-                    .HasForeignKey(d => d.BookingId)
-                    .HasConstraintName("FK_BookingFoodDetail_Booking");
+                .WithMany(b => b.BookingFoodDetails) // Assuming Booking has a collection of BookingFoodDetails
+                .HasForeignKey(d => d.BookingId)
+                .HasConstraintName("FK_BookingFoodDetail_Booking");
 
                 entity.HasOne(d => d.Combo)
                     .WithMany()
@@ -160,7 +165,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<BookingServiceDetail>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(bfd => new { bfd.BookingId, bfd.ServiceId, bfd.ServicePackageId });
 
                 entity.ToTable("BookingServiceDetail");
 
@@ -175,7 +180,7 @@ namespace BusinessObject.Models
                 entity.Property(e => e.ServiceQuantity).HasColumnName("service_quantity");
 
                 entity.HasOne(d => d.Booking)
-                    .WithMany()
+                    .WithMany(d => d.BookingServiceDetails)
                     .HasForeignKey(d => d.BookingId)
                     .HasConstraintName("FK_BookingServiceDetail_Booking");
 
@@ -192,7 +197,8 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<BookingTimeSlot>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
+                entity.HasKey(ts => new { ts.BookingId, ts.AvailableTimeslotId }); // Composite key
 
                 entity.ToTable("BookingTimeSlot");
 
@@ -206,7 +212,7 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK_BookingTimeSlot_AvailableTimeSlot");
 
                 entity.HasOne(d => d.Booking)
-                    .WithMany()
+                    .WithMany(d => d.BookingTimeSlots)
                     .HasForeignKey(d => d.BookingId)
                     .HasConstraintName("FK_BookingTimeSlot_Booking");
             });
