@@ -1,4 +1,5 @@
 import Layout from "./components/layout/layout";
+import { AdminLayout } from "./components/layout/Admin";
 import "./styles/css/style.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -22,9 +23,15 @@ import PageNotFound from "./components/layout/PageNotFound";
 import Profile from "./components/common/Profile";
 import Login from "./components/common/modal/Login";
 import SignUp from "./components/common/modal/SignUp";
+import { Charts } from "./components/admin/charts";
+import { HomePage } from "./components/admin/home";
 import { Cart } from "./components/layout/Cart";
 import Search from "./components/layout/Search";
 import { useState } from "react";
+import axios from "./middleware/axios";
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+Chart.register(CategoryScale);
 
 export const App = () => {
   // Popup
@@ -47,50 +54,101 @@ export const App = () => {
   });
   //#endregion
   return (
-    <Layout handlePopup={handlePopup}>
+    <>
       <BrowserRouter basename="/">
         <Routes>
-          {MENU_PAGE(isPopup).map((item) => (
             <Route
-              key={item.element + item.name + item.url}
-              path={item.url}
-              element={item.element}
+              path="/admin/charts"
+              element={
+                <AdminLayout>
+                  <Charts />
+                </AdminLayout>
+              }
             />
-          ))}
-          <Route
-            path="/profile/:id"
-            element={<Profile />}
-          />
-          <Route
-            path="/profile/edit/:id"
-            element={<Profile />}
-          />
-          <Route
-            path="/:category/:id"
-            element={<Details />}
-          />
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-          <Route
-            path="/sign-up"
-            element={<SignUp />}
-          />
-          <Route
-            path="/cart"
-            element={<Cart />}
-          />
-          <Route
-            path="/"
-            element={<Search />}
-          />
-          <Route
-            path="*"
-            element={<PageNotFound />}
-          />
+            <Route
+              path="/admin"
+              element={
+                <AdminLayout>
+                  <HomePage />
+                </AdminLayout>
+              }
+            />
+
+            {MENU_PAGE(isPopup).map((item) => (
+              <Route
+                key={item.element + item.name + item.url}
+                path={item.url}
+                element={
+                  <Layout handlePopup={handlePopup}>{item.element}</Layout>
+                }
+              />
+            ))}
+            <Route
+              path="/profile/:id"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <Profile />
+                </Layout>
+              }
+            />
+            <Route
+              path="/profile/edit/:id"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <Profile />
+                </Layout>
+              }
+            />
+            <Route
+              path="/:category/:id"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <Details />
+                </Layout>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <Login />
+                </Layout>
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <SignUp />
+                </Layout>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <Cart />
+                </Layout>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <Search />
+                </Layout>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <Layout handlePopup={handlePopup}>
+                  <PageNotFound />
+                </Layout>
+              }
+            />
         </Routes>
       </BrowserRouter>
-    </Layout>
+    </>
   );
 };
