@@ -1,11 +1,9 @@
 {
   "dependencies": {
-    "mssql1": {
+    "mssql2": {
       "secretStore": "AzureAppSettings",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/partypalkiddosapidbserver/databases/PartyPalKiddosDB",
-      "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:PartyKid",
-      "dynamicId": null
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings"
     }
   }
 }
