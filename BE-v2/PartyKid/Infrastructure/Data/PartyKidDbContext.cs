@@ -57,8 +57,8 @@ public class PartyKidDbContext : IdentityDbContext<ApplicationUser, IdentityRole
     public DbSet<VenueServicePackage> VenueServicePackages { get; set; }
 
     //Service
-    public DbSet<Service> Service { get; set; }
-    public DbSet<ServiceCategory> ServiceCategory { get; set; }
+    public DbSet<Service> Services { get; set; }
+    public DbSet<ServiceCategory> ServiceCategories { get; set; }
 
     //Service Package
     public DbSet<ServicePackage> ServicePackages { get; set; }
