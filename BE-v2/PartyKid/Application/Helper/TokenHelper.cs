@@ -23,7 +23,7 @@ public static class TokenHelper
             Issuer = "PartyKid",
             //Audience = user.Id,
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(0.5),
+            Expires = DateTime.UtcNow.AddMinutes(10),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
