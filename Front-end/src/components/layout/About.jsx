@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import BannerAbout from "../common/bannerAbout";
 import Funfacts from "../common/funfacts";
 import StartPlanningBanner from "../common/startPlanningBanner";

@@ -17,10 +17,6 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    if (error.code === "ERR_NETWORK") {
-      window.location.href = "/page-not-found";
-    }
-
     return Promise.reject(error);
   }
 );

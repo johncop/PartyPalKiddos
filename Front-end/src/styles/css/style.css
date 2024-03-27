@@ -5252,7 +5252,7 @@ ul.category-widget-list li.active i {
 	color: #fff;
 	background: transparent;
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	flex-direction: column;
 	z-index: 999;
 	backdrop-filter: blur(40px);

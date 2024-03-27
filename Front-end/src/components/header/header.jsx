@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "../common/modal/Login";
 import Menu from "../layout/Menu";
 import MobileMenu from "../layout/MobileMenu";
@@ -15,7 +15,16 @@ export default function Header({
 }) {
   const [isLogin, setIsLogin] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const isLoginDone = true;
+  const [isLoginDone, setLoginIsDone] = useState("");
+  useEffect(() => {
+    setLoginIsDone(localStorage.getItem("token"));
+  }, []);
+
+  function logout() {
+    localStorage.removeItem("token");
+    setLoginIsDone("");
+  }
+
   return (
     <>
       <div className="header-top-1">
@@ -33,7 +42,7 @@ export default function Header({
             </div>
             <div className="header-top-1-right-column d-flex align-items-center gap-3 header-top-1-user">
               {isLoginDone ? (
-                <OptionProfile />
+                <OptionProfile logout={logout} />
               ) : (
                 <>
                   {" "}
@@ -104,7 +113,10 @@ export default function Header({
                         type="button"
                         className="theme-btn search-toggler ps-3"
                       >
-                        <span onClick={handlePopup} className="search-box-outer search-toggler">
+                        <span
+                          onClick={handlePopup}
+                          className="search-box-outer search-toggler"
+                        >
                           <i className="icon-1"></i>
                         </span>
                       </button>
@@ -163,7 +175,10 @@ export default function Header({
                         type="button"
                         className="theme-btn search-toggler ps-3"
                       >
-                        <span onClick={handlePopup} className="search-box-outer search-toggler">
+                        <span
+                          onClick={handlePopup}
+                          className="search-box-outer search-toggler"
+                        >
                           <i className="icon-1"></i>
                         </span>
                       </button>
