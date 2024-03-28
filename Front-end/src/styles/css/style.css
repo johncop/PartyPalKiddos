@@ -5458,3 +5458,21 @@ ul.category-widget-list li.active i {
 	border-radius: 10px;
 	padding: 10px;
 }
+
+
+.fa-pen-to-square,
+.fa-trash {
+	transition: all 0.15s linear;
+}
+
+.fa-trash:hover {
+	color: rgb(250, 69, 69);
+	cursor: pointer;
+	transition: all 0.15s linear;
+}
+
+.fa-pen-to-square:hover {
+	color: blue;
+	cursor: pointer;
+	transition: all 0.15s linear;
+}
