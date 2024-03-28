@@ -25,6 +25,9 @@ import Login from "./components/common/modal/Login";
 import SignUp from "./components/common/modal/SignUp";
 import { Charts } from "./components/admin/charts";
 import { HomePage } from "./components/admin/home";
+import { VenuePage } from "./components/admin/venue";
+import { EditVenuePage } from "./components/admin/venue/edit";
+import { DistrictPage } from "./components/admin/district";
 import { Cart } from "./components/layout/Cart";
 import Search from "./components/layout/Search";
 import { useState } from "react";
@@ -57,96 +60,128 @@ export const App = () => {
     <>
       <BrowserRouter basename="/">
         <Routes>
-            <Route
-              path="/admin/charts"
-              element={
-                <AdminLayout>
-                  <Charts />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <AdminLayout>
-                  <HomePage />
-                </AdminLayout>
-              }
-            />
+          <Route
+            path="/admin/charts"
+            element={
+              <AdminLayout>
+                <Charts />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/venue"
+            element={
+              <AdminLayout>
+                <VenuePage />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/editvenue"
+            element={
+              <AdminLayout>
+                <EditVenuePage />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/district"
+            element={
+              <AdminLayout>
+                <DistrictPage />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/district"
+            element={
+              <AdminLayout>
+                <VenuePage />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <AdminLayout>
+                <HomePage />
+              </AdminLayout>
+            }
+          />
 
-            {MENU_PAGE(isPopup).map((item) => (
-              <Route
-                key={item.element + item.name + item.url}
-                path={item.url}
-                element={
-                  <Layout handlePopup={handlePopup}>{item.element}</Layout>
-                }
-              />
-            ))}
+          {MENU_PAGE(isPopup).map((item) => (
             <Route
-              path="/profile/:id"
+              key={item.element + item.name + item.url}
+              path={item.url}
               element={
-                <Layout handlePopup={handlePopup}>
-                  <Profile />
-                </Layout>
+                <Layout handlePopup={handlePopup}>{item.element}</Layout>
               }
             />
-            <Route
-              path="/profile/edit/:id"
-              element={
-                <Layout handlePopup={handlePopup}>
-                  <Profile />
-                </Layout>
-              }
-            />
-            <Route
-              path="/:category/:id"
-              element={
-                <Layout handlePopup={handlePopup}>
-                  <Details />
-                </Layout>
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <Layout handlePopup={handlePopup}>
-                  <Login />
-                </Layout>
-              }
-            />
-            <Route
-              path="/sign-up"
-              element={
-                <Layout handlePopup={handlePopup}>
-                  <SignUp />
-                </Layout>
-              }
-            />
-            <Route
-              path="/cart"
-              element={
-                <Layout handlePopup={handlePopup}>
-                  <Cart />
-                </Layout>
-              }
-            />
-            <Route
-              path="/"
-              element={
-                <Layout handlePopup={handlePopup}>
-                  <Search />
-                </Layout>
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <Layout handlePopup={handlePopup}>
-                  <PageNotFound />
-                </Layout>
-              }
-            />
+          ))}
+          <Route
+            path="/profile/:id"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <Profile />
+              </Layout>
+            }
+          />
+          <Route
+            path="/profile/edit/:id"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <Profile />
+              </Layout>
+            }
+          />
+          <Route
+            path="/:category/:id"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <Details />
+              </Layout>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <Login />
+              </Layout>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <SignUp />
+              </Layout>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <Cart />
+              </Layout>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <Search />
+              </Layout>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <PageNotFound />
+              </Layout>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,19 +1,14 @@
-import "../../styles/css/styles-admin.css"
+import "../../styles/css/styles-admin.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const AdminLayout = ({ children }) => {
   return (
     <>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a className="navbar-brand ps-3" href="/admin">
-          Start Bootstrap
+          Admin
         </a>
-        <button
-          className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
-          id="sidebarToggle"
-          href="#!"
-        >
-          <i className="fas fa-bars"></i>
-        </button>
         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
           <div className="input-group">
             <input
@@ -23,7 +18,11 @@ export const AdminLayout = ({ children }) => {
               aria-label="Search for..."
               aria-describedby="btnNavbarSearch"
             />
-            <button className="btn btn-primary" id="btnNavbarSearch" type="button">
+            <button
+              className="btn btn-primary"
+              id="btnNavbarSearch"
+              type="button"
+            >
               <i className="fas fa-search"></i>
             </button>
           </div>
@@ -58,7 +57,13 @@ export const AdminLayout = ({ children }) => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <a className="dropdown-item" href="#!">
+                <a
+                  className="dropdown-item"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    window.location.reload();
+                  }}
+                >
                   Logout
                 </a>
               </li>
@@ -74,14 +79,14 @@ export const AdminLayout = ({ children }) => {
           >
             <div className="sb-sidenav-menu">
               <div className="nav">
-                <div className="sb-sidenav-menu-heading">Core</div>
+                <div className="sb-sidenav-menu-heading">Overview</div>
                 <a className="nav-link" href="/admin">
                   <div className="sb-nav-link-icon">
                     <i className="fas fa-tachometer-alt"></i>
                   </div>
                   Dashboard
                 </a>
-                <div className="sb-sidenav-menu-heading">Interface</div>
+                <div className="sb-sidenav-menu-heading">Data Management</div>
                 <a
                   className="nav-link collapsed"
                   href="#"
@@ -93,7 +98,7 @@ export const AdminLayout = ({ children }) => {
                   <div className="sb-nav-link-icon">
                     <i className="fas fa-columns"></i>
                   </div>
-                  Layouts
+                  Tables
                   <div className="sb-sidenav-collapse-arrow">
                     <i className="fas fa-angle-down"></i>
                   </div>
@@ -105,104 +110,15 @@ export const AdminLayout = ({ children }) => {
                   data-bs-parent="#sidenavAccordion"
                 >
                   <nav className="sb-sidenav-menu-nested nav">
-                    <a className="nav-link" href="layout-static.html">
-                      Static Navigation
+                    <a className="nav-link" href="/admin/venue">
+                      Venue
                     </a>
-                    <a className="nav-link" href="layout-sidenav-light.html">
-                      Light Sidenav
+                    <a className="nav-link" href="/admin/district">
+                      District
                     </a>
                   </nav>
                 </div>
-                <a
-                  className="nav-link collapsed"
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapsePages"
-                  aria-expanded="false"
-                  aria-controls="collapsePages"
-                >
-                  <div className="sb-nav-link-icon">
-                    <i className="fas fa-book-open"></i>
-                  </div>
-                  Pages
-                  <div className="sb-sidenav-collapse-arrow">
-                    <i className="fas fa-angle-down"></i>
-                  </div>
-                </a>
-                <div
-                  className="collapse"
-                  id="collapsePages"
-                  aria-labelledby="headingTwo"
-                  data-bs-parent="#sidenavAccordion"
-                >
-                  <nav
-                    className="sb-sidenav-menu-nested nav accordion"
-                    id="sidenavAccordionPages"
-                  >
-                    <a
-                      className="nav-link collapsed"
-                      href="#"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#pagesCollapseAuth"
-                      aria-expanded="false"
-                      aria-controls="pagesCollapseAuth"
-                    >
-                      Authentication
-                      <div className="sb-sidenav-collapse-arrow">
-                        <i className="fas fa-angle-down"></i>
-                      </div>
-                    </a>
-                    <div
-                      className="collapse"
-                      id="pagesCollapseAuth"
-                      aria-labelledby="headingOne"
-                      data-bs-parent="#sidenavAccordionPages"
-                    >
-                      <nav className="sb-sidenav-menu-nested nav">
-                        <a className="nav-link" href="login.html">
-                          Login
-                        </a>
-                        <a className="nav-link" href="register.html">
-                          Register
-                        </a>
-                        <a className="nav-link" href="password.html">
-                          Forgot Password
-                        </a>
-                      </nav>
-                    </div>
-                    <a
-                      className="nav-link collapsed"
-                      href="#"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#pagesCollapseError"
-                      aria-expanded="false"
-                      aria-controls="pagesCollapseError"
-                    >
-                      Error
-                      <div className="sb-sidenav-collapse-arrow">
-                        <i className="fas fa-angle-down"></i>
-                      </div>
-                    </a>
-                    <div
-                      className="collapse"
-                      id="pagesCollapseError"
-                      aria-labelledby="headingOne"
-                      data-bs-parent="#sidenavAccordionPages"
-                    >
-                      <nav className="sb-sidenav-menu-nested nav">
-                        <a className="nav-link" href="401.html">
-                          401 Page
-                        </a>
-                        <a className="nav-link" href="404.html">
-                          404 Page
-                        </a>
-                        <a className="nav-link" href="500.html">
-                          500 Page
-                        </a>
-                      </nav>
-                    </div>
-                  </nav>
-                </div>
+
                 <div className="sb-sidenav-menu-heading">Addons</div>
                 <a className="nav-link" href="/admin/charts">
                   <div className="sb-nav-link-icon">
@@ -210,36 +126,15 @@ export const AdminLayout = ({ children }) => {
                   </div>
                   Charts
                 </a>
-                <a className="nav-link" href="tables.html">
-                  <div className="sb-nav-link-icon">
-                    <i className="fas fa-table"></i>
-                  </div>
-                  Tables
-                </a>
               </div>
-            </div>
-            <div className="sb-sidenav-footer">
-              <div className="small">Logged in as:</div>
-              Start Bootstrap
             </div>
           </nav>
         </div>
         <div id="layoutSidenav_content">
           <main>{children}</main>
-          <footer className="py-4 bg-light mt-auto">
-            <div className="container-fluid px-4">
-              <div className="d-flex align-items-center justify-content-between small">
-                <div className="text-muted">Copyright &copy; Your Website 2023</div>
-                <div>
-                  <a href="#">Privacy Policy</a>
-                  &middot;
-                  <a href="#">Terms &amp; Conditions</a>
-                </div>
-              </div>
-            </div>
-          </footer>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
