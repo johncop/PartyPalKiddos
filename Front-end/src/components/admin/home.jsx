@@ -419,7 +419,7 @@ export const HomePage = () => {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <label for="exampleDataList" class="form-label">Datalist example</label>
+                <label for="exampleDataList" class="form-label mb-0">Datalist example</label>
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..."></input>
                 <datalist id="datalistOptions">
                   <option value="San Francisco"></option>
@@ -429,7 +429,7 @@ export const HomePage = () => {
                   <option value="Chicago"></option>
                 </datalist>
 
-                <label for="exampleDataList" class="form-label">Datalist example</label>
+                <label for="exampleDataList" class="form-label mb-0 mt-1">Datalist example</label>
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..."></input>
                 <datalist id="datalistOptions">
                   <option value="San Francisco"></option>
@@ -439,7 +439,7 @@ export const HomePage = () => {
                   <option value="Chicago"></option>
                 </datalist>
 
-                <label for="exampleDataList" class="form-label">Datalist example</label>
+                <label for="exampleDataList" class="form-label mb-0 mt-1">Datalist example</label>
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..."></input>
                 <datalist id="datalistOptions">
                   <option value="San Francisco"></option>
