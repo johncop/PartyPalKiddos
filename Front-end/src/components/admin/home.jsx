@@ -136,7 +136,7 @@ export const HomePage = () => {
             </div>
           </div>
         </div>
-        <TableAdmin btnDataAdd={[]}/>
+        <TableAdmin btnDataAdd={[]} data={[]} columns={[]}/>
       </div>
     </>
   );

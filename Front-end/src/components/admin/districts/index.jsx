@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 export const DistrictPage = () => {
   const [data, setData] = useState([]);
+  const [ render, setRender] = useState(false);
 
   useEffect(() => {
     axios
@@ -16,7 +17,7 @@ export const DistrictPage = () => {
       .catch((error) => {
         return error;
       });
-  }, []);
+  }, [render]);
 
   const btnDataAdd = [
     {
@@ -25,6 +26,8 @@ export const DistrictPage = () => {
       type: "text",
       requried: "true",
       items: [],
+      key: "description",
+      disabled: false,
     },
   ];
 
@@ -39,6 +42,50 @@ export const DistrictPage = () => {
           position: "bottom-center",
           autoClose: 2000,
         });
+        setRender(!render);
+        return response;
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        return error;
+      });
+  }
+
+  function handleEdit(e, id) {
+    e.preventDefault();
+    axios
+      .put(`${process.env.REACT_APP_API_BASE_URL}/districts/${id}`, {
+        description: e.target[1].value,
+      })
+      .then((response) => {
+        toast.info("Update Success", {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        setRender(!render);
+        return response;
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        return error;
+      });
+  }
+
+  function handleDelete(id) {
+    axios
+      .delete(`${process.env.REACT_APP_API_BASE_URL}/districts/${id}`)
+      .then((response) => {
+        toast.info("Delete Success", {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        setRender(!render);
         return response;
       })
       .catch((error) => {
@@ -61,6 +108,8 @@ export const DistrictPage = () => {
           data={data}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
+          handleEdit={handleEdit}
+          handleRemove={handleDelete}
         />
       </div>
     </>

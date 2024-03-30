@@ -116,6 +116,12 @@ export const AdminLayout = ({ children }) => {
                     <a className="nav-link" href="/admin/district">
                       District
                     </a>
+                    <a className="nav-link" href="/admin/service-category">
+                      Service Category
+                    </a>
+                    <a className="nav-link" href="/admin/service">
+                      Service
+                    </a>
                   </nav>
                 </div>
 

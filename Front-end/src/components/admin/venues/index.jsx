@@ -8,16 +8,18 @@ export const VenuePage = () => {
   const [districts, setDictrics] = useState({
     title: "Districts",
     type: "text",
-    placeholder: "type to select",
+    placeholder: "Type to select",
     requried: "true",
     items: [],
+    key: "district.id",
+    disabled: true,
   });
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/venues`)
       .then((response) => {
-        console.log(response);
         if (response.data.data) {
           setData(response.data.data);
         }
@@ -26,16 +28,13 @@ export const VenuePage = () => {
       .catch((error) => {
         return error;
       });
-  }, []);
+  }, [render]);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/districts`)
       .then((response) => {
         setDictrics({
-          title: "Districts",
-          type: "text",
-          placeholder: "type to select",
-          requried: "true",
+          ...districts,
           items: [
             ...response.data.data.map((item) => {
               return {
@@ -58,6 +57,8 @@ export const VenuePage = () => {
       placeholder: "",
       requried: "true",
       items: [],
+      key: "name",
+      disabled: false,
     },
     {
       title: "Description",
@@ -65,6 +66,8 @@ export const VenuePage = () => {
       placeholder: "",
       requried: "true",
       items: [],
+      key: "description",
+      disabled: false,
     },
     {
       title: "Address",
@@ -72,6 +75,8 @@ export const VenuePage = () => {
       placeholder: "",
       requried: "true",
       items: [],
+      key: "address",
+      disabled: false,
     },
     {
       title: "Capacity",
@@ -79,6 +84,8 @@ export const VenuePage = () => {
       placeholder: "",
       requried: "true",
       items: [],
+      key: "capacity",
+      disabled: false,
     },
     {
       title: "Price",
@@ -86,6 +93,8 @@ export const VenuePage = () => {
       placeholder: "",
       requried: "true",
       items: [],
+      key: "price",
+      disabled: false,
     },
     {
       title: "Open Hours",
@@ -93,6 +102,8 @@ export const VenuePage = () => {
       placeholder: "",
       requried: "true",
       items: [],
+      key: "openHour",
+      disabled: false,
     },
     {
       title: "Close Hours",
@@ -100,6 +111,8 @@ export const VenuePage = () => {
       placeholder: "",
       requried: "true",
       items: [],
+      key: "closeHour",
+      disabled: false,
     },
     districts,
   ];
@@ -113,12 +126,8 @@ export const VenuePage = () => {
         address: e.target[3].value,
         capacity: e.target[4].value,
         price: e.target[5].value,
-        openHour: {
-          ticks: e.target[6].value,
-        },
-        closeHour: {
-          ticks: e.target[7].value,
-        },
+        openHour: e.target[6].value,
+        closeHour: e.target[7].value,
         disctrictId: e.target[8].value,
       })
       .then((response) => {
@@ -126,9 +135,62 @@ export const VenuePage = () => {
           position: "bottom-center",
           autoClose: 2000,
         });
+        setRender(!render);
         return response;
       })
       .catch((error) => {
+        toast.error(error.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        return error;
+      });
+  }
+
+  function handleEdit(e, id) {
+    e.preventDefault();
+    axios
+      .put(`${process.env.REACT_APP_API_BASE_URL}/venues/${id}`, {
+        id: id,
+        name: e.target[1].value,
+        description: e.target[2].value,
+        address: e.target[3].value,
+        capacity: e.target[4].value,
+        price: e.target[5].value,
+        openHour: e.target[6].value,
+        closeHour: e.target[7].value,
+        disctrictId: e.target[8].value,
+      })
+      .then((response) => {
+        toast.info("Update Success", {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        setRender(!render);
+        return response;
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        return error;
+      });
+  }
+
+  function handleDelete(id) {
+    axios
+      .delete(`${process.env.REACT_APP_API_BASE_URL}/venues/${id}`)
+      .then((response) => {
+        toast.info("Delete Success", {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        setRender(!render);
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
         toast.error(error.message, {
           position: "bottom-center",
           autoClose: 2000,
@@ -149,6 +211,8 @@ export const VenuePage = () => {
           data={data}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
+          handleEdit={handleEdit}
+          handleRemove={handleDelete}
         />
       </div>
     </>

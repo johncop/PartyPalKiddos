@@ -46,6 +46,7 @@ export const AddButton = ({ fields, handleSubmit }) => {
                     id={"exampleDataList" + index}
                     placeholder={field.placeholder}
                     required={field.required}
+                    style={{width: "100%"}}
                   ></input>
                   <datalist id={"datalistOptions" + index}>
                     {field.items.map((item, i) => (

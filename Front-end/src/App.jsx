@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   UPDATE_SUGGEST_ACTION,
-  UPDATE_PACKAGE_ACTION,
   UPDATE_CATEGORY_ACTION,
   UPDATE_LOCATION_ACTION,
   UPDATE_POPULAR_ACTION,
@@ -25,15 +24,16 @@ import Login from "./components/common/modal/Login";
 import SignUp from "./components/common/modal/SignUp";
 import { Charts } from "./components/admin/charts";
 import { HomePage } from "./components/admin/home";
-import { VenuePage } from "./components/admin/venue";
-import { EditVenuePage } from "./components/admin/venue/edit";
-import { DistrictPage } from "./components/admin/district";
+import { VenuePage } from "./components/admin/venues";
+import { DistrictPage } from "./components/admin/districts";
 import { Cart } from "./components/layout/Cart";
 import Search from "./components/layout/Search";
 import { useState } from "react";
 import axios from "./middleware/axios";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
+import { ServiceCategoryPage } from "./components/admin/serviceCategory";
+import { ServicesPage } from "./components/admin/services";
 Chart.register(CategoryScale);
 
 export const App = () => {
@@ -77,14 +77,6 @@ export const App = () => {
             }
           />
           <Route
-            path="/admin/editvenue"
-            element={
-              <AdminLayout>
-                <EditVenuePage />
-              </AdminLayout>
-            }
-          />
-          <Route
             path="/admin/district"
             element={
               <AdminLayout>
@@ -93,10 +85,18 @@ export const App = () => {
             }
           />
           <Route
-            path="/admin/district"
+            path="/admin/service-category"
             element={
               <AdminLayout>
-                <VenuePage />
+                <ServiceCategoryPage />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/service"
+            element={
+              <AdminLayout>
+                <ServicesPage />
               </AdminLayout>
             }
           />
