@@ -28,7 +28,7 @@ export const handleUpload = (path, image, callback) => {
     `${path}/${new Date()
       .toISOString()
       .replace(/:/g, "_")
-      .replace(/\..+/, "")}}_${image.name}`
+      .replace(/\..+/, "")}_${image.name}`
   );
 
   // 'file' comes from the Blob or File API
