@@ -1,5 +1,5 @@
 import { DataTable } from "simple-datatables";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AddButton } from "../button/addItem";
 
 export const TableAdmin = ({
@@ -10,6 +10,7 @@ export const TableAdmin = ({
   handleEdit,
   handleRemove,
 }) => {
+  const [image, setImage] = useState(null);
   useEffect(() => {
     new DataTable("#datatablesSimple");
   }, [data]);
@@ -21,6 +22,11 @@ export const TableAdmin = ({
     });
     return result;
   }
+
+  function changeImage(e) {
+    setImage(e.target.files[0]);
+  }
+
   return (
     <div className="card mb-4">
       <div className="card-header">
@@ -69,7 +75,10 @@ export const TableAdmin = ({
                   <div className="modal-dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <h5 className="modal-title" id={"removeModalLabel" + item.id}>
+                        <h5
+                          className="modal-title"
+                          id={"removeModalLabel" + item.id}
+                        >
                           Remove Item
                         </h5>
                         <button
@@ -117,7 +126,10 @@ export const TableAdmin = ({
                       onSubmit={(e) => handleEdit(e, item.id)}
                     >
                       <div className="modal-header">
-                        <h5 className="modal-title" id={"editModalLabel" + item.id}>
+                        <h5
+                          className="modal-title"
+                          id={"editModalLabel" + item.id}
+                        >
                           Edit
                         </h5>
                         <button
@@ -125,6 +137,7 @@ export const TableAdmin = ({
                           className="btn-close"
                           data-bs-dismiss="modal"
                           aria-label="Close"
+                          onClick={() => setImage(null)}
                         ></button>
                       </div>
                       <div className="modal-body">
@@ -149,7 +162,22 @@ export const TableAdmin = ({
                               required={field.required}
                               defaultValue={getValue(field.key, item)}
                               style={{ width: "100%" }}
+                              onChange={
+                                field.type === "file" ? changeImage : null
+                              }
                             ></input>
+                            {field.type === "file" && (
+                              <img
+                                src={
+                                  image
+                                    ? URL.createObjectURL(image)
+                                    : field.getImageUrls(item) ||
+                                      "https://th.bing.com/th/id/OIP.N-IegjWZz_67sr8v2233mwHaFO?w=283&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                                }
+                                className="img-fluid"
+                                alt=""
+                              ></img>
+                            )}
                             <datalist id={"datalistOptions" + indexBtn}>
                               {field.items.map((item, i) => (
                                 <option
@@ -168,6 +196,7 @@ export const TableAdmin = ({
                           type="button"
                           className="btn btn-secondary"
                           data-bs-dismiss="modal"
+                          onClick={() => setImage(null)}
                         >
                           Close
                         </button>

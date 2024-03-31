@@ -2,6 +2,7 @@ import { TableAdmin } from "../../common/table/tableAdmin";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { handleUpload } from "../../../firebase";
 
 export const VenuePage = () => {
   const [data, setData] = useState([]);
@@ -9,7 +10,7 @@ export const VenuePage = () => {
     title: "Districts",
     type: "text",
     placeholder: "Type to select",
-    requried: "true",
+    requried: true,
     items: [],
     key: "district.id",
     disabled: true,
@@ -55,7 +56,7 @@ export const VenuePage = () => {
       title: "Name",
       type: "text",
       placeholder: "",
-      requried: "true",
+      requried: true,
       items: [],
       key: "name",
       disabled: false,
@@ -64,7 +65,7 @@ export const VenuePage = () => {
       title: "Description",
       type: "text",
       placeholder: "",
-      requried: "true",
+      requried: true,
       items: [],
       key: "description",
       disabled: false,
@@ -73,7 +74,7 @@ export const VenuePage = () => {
       title: "Address",
       type: "text",
       placeholder: "",
-      requried: "true",
+      requried: true,
       items: [],
       key: "address",
       disabled: false,
@@ -82,7 +83,7 @@ export const VenuePage = () => {
       title: "Capacity",
       type: "number",
       placeholder: "",
-      requried: "true",
+      requried: true,
       items: [],
       key: "capacity",
       disabled: false,
@@ -91,7 +92,7 @@ export const VenuePage = () => {
       title: "Price",
       type: "number",
       placeholder: "",
-      requried: "true",
+      requried: true,
       items: [],
       key: "price",
       disabled: false,
@@ -100,7 +101,7 @@ export const VenuePage = () => {
       title: "Open Hours",
       type: "time",
       placeholder: "",
-      requried: "true",
+      requried: true,
       items: [],
       key: "openHour",
       disabled: false,
@@ -109,42 +110,55 @@ export const VenuePage = () => {
       title: "Close Hours",
       type: "time",
       placeholder: "",
-      requried: "true",
+      requried: true,
       items: [],
       key: "closeHour",
       disabled: false,
     },
     districts,
+    {
+      title: "Poster Images",
+      type: "file",
+      placeholder: "",
+      requried: false,
+      items: [],
+      key: "imageUrls",
+      disabled: false,
+      getImageUrls: (value) => value.venueImages[0]?.imageUrl,
+    },
   ];
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post(`${process.env.REACT_APP_API_BASE_URL}/venues`, {
-        name: e.target[1].value,
-        description: e.target[2].value,
-        address: e.target[3].value,
-        capacity: e.target[4].value,
-        price: e.target[5].value,
-        openHour: e.target[6].value,
-        closeHour: e.target[7].value,
-        disctrictId: e.target[8].value,
-      })
-      .then((response) => {
-        toast.info("Create Success", {
-          position: "bottom-center",
-          autoClose: 2000,
+    handleUpload("images/venue", e.target[9].files[0], (res) => {
+      axios
+        .post(`${process.env.REACT_APP_API_BASE_URL}/venues`, {
+          name: e.target[1].value,
+          description: e.target[2].value,
+          address: e.target[3].value,
+          capacity: e.target[4].value,
+          price: e.target[5].value,
+          openHour: e.target[6].value,
+          closeHour: e.target[7].value,
+          disctrictId: e.target[8].value,
+          imageUrls: [res],
+        })
+        .then((response) => {
+          toast.info("Create Success", {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          setRender(!render);
+          return response;
+        })
+        .catch((error) => {
+          toast.error(error.message, {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          return error;
         });
-        setRender(!render);
-        return response;
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: "bottom-center",
-          autoClose: 2000,
-        });
-        return error;
-      });
+    });
   }
 
   function handleEdit(e, id) {
@@ -190,7 +204,6 @@ export const VenuePage = () => {
         return response;
       })
       .catch((error) => {
-        console.log(error);
         toast.error(error.message, {
           position: "bottom-center",
           autoClose: 2000,

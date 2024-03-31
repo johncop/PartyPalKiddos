@@ -1,4 +1,11 @@
+import { useState } from "react";
+
 export const AddButton = ({ fields, handleSubmit }) => {
+  const [image, setImage] = useState(null);
+
+  function changeImage(e) {
+    setImage(e.target.files[0]);
+  }
   return (
     <>
       <button
@@ -46,14 +53,25 @@ export const AddButton = ({ fields, handleSubmit }) => {
                     id={"exampleDataList" + index}
                     placeholder={field.placeholder}
                     required={field.required}
-                    style={{width: "100%"}}
+                    style={{ width: "100%" }}
+                    onChange={field.type === "file" ? changeImage : null}
                   ></input>
+                  {field.type === "file" && (
+                    <img
+                      src={
+                        image
+                          ? URL.createObjectURL(image)
+                          : "https://th.bing.com/th/id/OIP.N-IegjWZz_67sr8v2233mwHaFO?w=283&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                      }
+                      className="img-fluid"
+                      alt=""
+                    ></img>
+                  )}
                   <datalist id={"datalistOptions" + index}>
                     {field.items.map((item, i) => (
-                      <option
-                        key={"field-add-item" + i}
-                        value={item.id}
-                      >{item.value}</option>
+                      <option key={"field-add-item" + i} value={item.id}>
+                        {item.value}
+                      </option>
                     ))}
                   </datalist>
                 </div>
@@ -67,10 +85,7 @@ export const AddButton = ({ fields, handleSubmit }) => {
               >
                 Close
               </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-              >
+              <button type="submit" className="btn btn-primary">
                 Save changes
               </button>
             </div>
