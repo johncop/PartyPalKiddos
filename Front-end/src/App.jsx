@@ -34,6 +34,7 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import { ServiceCategoryPage } from "./components/admin/serviceCategory";
 import { ServicesPage } from "./components/admin/services";
+import { ForgotPassword } from "./components/common/modal/ForgotPassword";
 Chart.register(CategoryScale);
 
 export const App = () => {
@@ -171,6 +172,14 @@ export const App = () => {
             element={
               <Layout handlePopup={handlePopup}>
                 <Search />
+              </Layout>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <ForgotPassword />
               </Layout>
             }
           />

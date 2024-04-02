@@ -5232,7 +5232,6 @@ ul.category-widget-list li.active i {
 	background: url("https://png.pngtree.com/thumb_back/fw800/background/20190123/pngtree-happy-birthday-background-for-black-gold-minimalist-party-image_1385.jpg") no-repeat;
 	background-position: center;
 	background-size: cover;
-	height: 100vh;
 	width: 100%;
 }
 
@@ -5252,7 +5251,6 @@ ul.category-widget-list li.active i {
 	color: #fff;
 	background: transparent;
 	display: flex;
-	justify-content: center;
 	flex-direction: column;
 	z-index: 999;
 	backdrop-filter: blur(40px);
@@ -5281,6 +5279,18 @@ ul.category-widget-list li.active i {
 	cursor: pointer;
 	transition: .5s ease;
 	padding: 5px;
+}
+
+.social-icon div {
+	background-color: #fff;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.social-icon div:hover {
+	opacity: 0.9;
 }
 
 .social-icon a:hover i {

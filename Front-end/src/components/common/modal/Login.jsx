@@ -59,21 +59,31 @@ export default function Login(props) {
                 aperiam nihil vel labore reiciendis ex, culpa harum dolorem non.
                 Voluptates, dolore.
               </p>
-              <div className="social-icon mb-3">
+              <div className="social-icon mb-3 d-flex gap-2">
                 <a href="#">
-                  <i className="fab fa-facebook-f"></i>
+                  <div>
+                    <i className="fab fa-facebook-f"></i>
+                  </div>
                 </a>
                 <a href="#">
-                  <i className="fab fa-twitter"></i>
+                  <div>
+                    <i className="fab fa-twitter"></i>
+                  </div>
                 </a>
                 <a href="#">
-                  <i className="fab fa-youtube"></i>
+                  <div>
+                    <i className="fab fa-youtube"></i>
+                  </div>
                 </a>
                 <a href="#">
-                  <i className="fab fa-instagram"></i>
+                  <div>
+                    <i className="fab fa-instagram"></i>
+                  </div>
                 </a>
                 <a href="#">
-                  <i className="fab fa-linkedin"></i>
+                  <div>
+                    <i className="fab fa-linkedin"></i>
+                  </div>
                 </a>
               </div>
             </div>
@@ -114,7 +124,7 @@ export default function Login(props) {
                     ></input>
                     Remember Me
                   </label>
-                  {/* <a href="#">Forget Password</a> */}
+                  <a href="/forgot-password">Forgot Password</a>
                 </div>
                 <button className="btn-login-custom">Login In</button>
                 <div className="create-account">
