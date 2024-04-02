@@ -10,7 +10,6 @@ public class VenueResponseDTO
     public decimal Price { get; set; }
     public TimeSpan OpenHour { get; set; }
     public TimeSpan CloseHour { get; set; }
-
     public DistrictDTO District { get; set; }
     public IList<VenueImageDTO> VenueImages { get; set; }
 }

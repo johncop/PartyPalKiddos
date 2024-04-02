@@ -12,11 +12,7 @@ public class AuthController : BaseApi
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly AppSettings _appSettings;
 
-    public AuthController(UserManager<ApplicationUser> userManager,
-                          SignInManager<ApplicationUser> signInManager,
-                          IMapper mapper,
-                          IOptions<AppSettings> appSettings)
-        : base(mapper)
+    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper mapper, IOptions<AppSettings> appSettings) : base(mapper)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -34,6 +30,20 @@ public class AuthController : BaseApi
             throw new Exception("Register Error");
         }
         await _userManager.AddToRoleAsync(user, nameof(RoleCollection.User));
+        return Constants.Transactions.Messages.AddComplete;
+    }
+
+    [HttpPost]
+    [Route("register-admin")]
+    public async Task<string> RegisterAdmin([FromBody] RegisterRequestDTO request)
+    {
+        ApplicationUser user = _mapper.Map<ApplicationUser>(request);
+        IdentityResult registerResult = await _userManager.CreateAsync(user, request.Password);
+        if (!registerResult.Succeeded)
+        {
+            throw new Exception("Register Error");
+        }
+        await _userManager.AddToRoleAsync(user, nameof(RoleCollection.Admin));
         return Constants.Transactions.Messages.AddComplete;
     }
 

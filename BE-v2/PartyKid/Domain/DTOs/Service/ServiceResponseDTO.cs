@@ -7,4 +7,5 @@ public class ServiceResponseDTO
     public string Description { get; set; }
     public string ImageUrl { get; set; }
     public decimal Price { get; set; }
+    public ServiceCategoryResponseDTO ServiceCategory { get; set; }
 }

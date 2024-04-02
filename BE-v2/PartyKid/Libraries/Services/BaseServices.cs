@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PartyKid;
 
-public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : BaseEntity
+public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : BaseEntity<int>
 {
     protected readonly IQueryRepository<TEntity> _queryRepository;
     protected readonly ICommandRepository<TEntity> _commandRepository;
@@ -68,7 +68,7 @@ public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : Base
         var entity = _queryRepository.Find(x => x.Id == id).FirstOrDefault();
         if (entity == null)
         {
-            throw new Exception(Constants.Transactions.Messages.NotFound);
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
         try

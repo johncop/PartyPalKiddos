@@ -1,6 +1,6 @@
 ﻿namespace PartyKid;
 
-public class VenueImage : BaseEntity
+public class VenueImage : BaseEntity<int>
 {
     public string ImageUrl { get; set; }
 

@@ -39,6 +39,18 @@ public static class ServiceCollectionExtensions
 
         return mvcBuilder;
     }
+
+    public static IServiceCollection AddCORS(this IServiceCollection services)
+    {
+        services.AddCors(p => p.AddPolicy("corspolicy", build =>
+        {
+            build
+            .WithOrigins("*")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        }));
+        return services;
+    }
     #endregion
 
     #region Configuration Authentication And Authorization
@@ -65,44 +77,31 @@ public static class ServiceCollectionExtensions
 
         AppSettings appSettings = appSettingsSection.Get<AppSettings>();
         byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(x =>
-            {
-                x.Events = new JwtBearerEvents
-                {
-                    OnChallenge = async context =>
-                    {
-                        context.HandleResponse();
 
-                        // Write to the response in any way you wish
-                        context.Response.StatusCode = 401;
-                        context.Response.ContentType = "application/json";
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(new
-                        {
-                            Status = (int)HttpStatusCode.Unauthorized,
-                            Title = "UnAuthorized",
-                            message = Constants.AuthHandling.Messages.UnAuthorized
-                        }));
-                    }
-                };
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = false;
-                x.TokenValidationParameters = new TokenValidationParameters
+        services
+            .AddAuthentication(opt =>
+            {
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateAudience = false,
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
             });
 
         services.AddAuthorization(options =>
         {
             options.AddPolicy(nameof(RoleCollection.Admin), policy => policy.RequireRole(nameof(RoleCollection.Admin)));
-            //options.AddPolicy(Roles.user, policy => policy.RequireRole(Roles.user));
-            options.AddPolicy(nameof(RoleCollection.User), policy => policy.RequireAssertion(context =>
-                                                                        context.User.HasClaim(c => c.Type == ClaimTypes.Role &&
-                                                                                                (c.Value == nameof(RoleCollection.Admin) || c.Value == nameof(RoleCollection.User)))));
+            options.AddPolicy(nameof(RoleCollection.User), policy => policy.RequireRole(nameof(RoleCollection.User)));
         });
         return services;
     }
@@ -112,6 +111,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserServices, UserServices>();
+        services.AddScoped<IEmailServices, EmailServices>();
         services.AddScoped(typeof(IBaseServices<>), typeof(BaseServices<>));
         return services;
     }
@@ -138,6 +138,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped(typeof(IExceptionHandler<FluentValidation.ValidationException, ProblemDetails>), typeof(ValidationExceptionHandler));
         services.AddScoped(typeof(IExceptionHandler<Exception, ProblemDetails>), typeof(UnhandledExceptionHandler));
+        services.AddScoped(typeof(IExceptionHandler<DomainException, ProblemDetails>), typeof(DomainExceptionHandler));
         return services;
     }
     #endregion
@@ -171,6 +172,7 @@ public static class ServiceCollectionExtensions
             config.SignIn.RequireConfirmedEmail = false;
             config.Password.RequiredLength = 8;
         })
+        .AddRoles<IdentityRole<int>>()
         .AddEntityFrameworkStores<PartyKidDbContext>()
         .AddDefaultTokenProviders();
         return services;

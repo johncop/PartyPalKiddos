@@ -16,14 +16,18 @@ public static class TokenHelper
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
             };
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        //claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        foreach (var userRole in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
 
         SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
         {
             Issuer = "PartyKid",
             //Audience = user.Id,
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(10),
+            Expires = DateTime.UtcNow.AddDays(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);

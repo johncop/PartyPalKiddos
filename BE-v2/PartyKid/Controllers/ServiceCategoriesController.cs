@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,30 +17,30 @@ public class ServiceCategoriesController : BaseApi
     #region Query
     [HttpGet]
     public async Task<IResponse> GetAll() => Success<IList<ServiceCategoryResponseDTO>>(data:
-                                                await _serviceCategoryService.GetAllAsync<ServiceCategoryResponseDTO>());
+                                                await _serviceCategoryService.GetAllAsync<ServiceCategoryResponseDTO>(filter: x => !x.IsDeleted));
 
     [HttpGet]
     [Route("search")]
     public async Task<IResponse> Search([FromQuery] SearchServiceCategoryBindingModel request)
     {
-        Expression<Func<ServiceCategory, bool>>? query = null;
+        Expression<Func<ServiceCategory, bool>>? filter = null;
         if (request.Id.HasValue)
         {
-            query = x => x.Id == request.Id;
+            filter = x => x.Id == request.Id;
         }
 
         if (request.Name != null)
         {
-            query = x => x.Name.ToLower().Contains(request.Name.ToLower());
+            filter = x => x.Name.ToLower().Contains(request.Name.ToLower());
         }
 
-        return Success<IList<ServiceCategoryResponseDTO>>(data: await _serviceCategoryService.Search<ServiceCategoryResponseDTO>(filter: query));
+        return Success<IList<ServiceCategoryResponseDTO>>(data: await _serviceCategoryService.Search<ServiceCategoryResponseDTO>(filter: filter));
     }
     #endregion
 
     #region Command
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpPost]
     public async Task<IResponse> Create([FromBody] CreateServiceBindingModel request)
     {
@@ -49,17 +48,23 @@ public class ServiceCategoriesController : BaseApi
         return Success(message: result);
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpPut]
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServiceBindingModel request)
     {
-        request.Id = id;
-        ServiceCategory? entity = await _serviceCategoryService.Update(_mapper.Map<ServiceCategory>(request));
-        return Success<ServiceCategoryResponseDTO>(data: _mapper.Map<ServiceCategoryResponseDTO>(entity));
+        ServiceCategory serviceCategory = await _serviceCategoryService.Find(id);
+        if (serviceCategory is null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
+        serviceCategory = _mapper.Map<ServiceCategory>(request);
+        ServiceCategoryResponseDTO response = _mapper.Map<ServiceCategoryResponseDTO>(await _serviceCategoryService.Update(serviceCategory));
+        return Success<ServiceCategoryResponseDTO>(data: response);
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpDelete]
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)

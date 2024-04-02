@@ -9,10 +9,9 @@ namespace PartyKid;
 public class CouponsController : BaseApi
 {
     private readonly IBaseServices<Coupon> _couponServices;
-
-    public CouponsController(IBaseServices<Coupon> couponService, IMapper mapper) : base(mapper)
+    public CouponsController(IBaseServices<Coupon> couponServices, IMapper mapper) : base(mapper)
     {
-        _couponServices = couponService;
+        _couponServices = couponServices;
     }
 
     #region Queries
@@ -33,24 +32,38 @@ public class CouponsController : BaseApi
     #endregion
 
     #region Commands
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(RoleCollection.Admin))]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpPost]
     public async Task<IResponse> Create([FromBody] AddCouponBindingModel request)
     {
         Coupon coupon = _mapper.Map<Coupon>(request);
-        var result = await _couponServices.Create(coupon);
+        string result = await _couponServices.Create(coupon);
         return Success(message: result);
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(RoleCollection.Admin))]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpPut]
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateCouponBindingModel request)
     {
-        request.Id = id;
-        CouponResponseDTO result = _mapper.Map<CouponResponseDTO>(await _couponServices.Update(_mapper.Map<Coupon>(request)));
+        Coupon coupon = await _couponServices.Find(id);
+        if (coupon is null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
+        coupon = _mapper.Map<Coupon>(request);
+        CouponResponseDTO result = _mapper.Map<CouponResponseDTO>(await _couponServices.Update(coupon));
         return Success<CouponResponseDTO>(data: result);
 
+    }
+
+    [Authorize(nameof(RoleCollection.Admin))]
+    [HttpDelete]
+    [Route("{Id}")]
+    public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
+    {
+        return Success(message: await _couponServices.Delete(id));
     }
     #endregion
 }

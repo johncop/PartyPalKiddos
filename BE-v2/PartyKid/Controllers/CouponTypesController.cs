@@ -23,7 +23,7 @@ public class CouponTypesController : BaseApi
 
     #region Commands
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpPost]
     public async Task<IResponse> Create([FromBody] AddCouponTypeRequest request)
     {
@@ -31,17 +31,23 @@ public class CouponTypesController : BaseApi
         return Success(message: Constants.Transactions.Messages.AddComplete);
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpPut]
     [Route("{Id}")]
     public async Task<IResponse> Update([FromBody] UpdateCouponTypeRequest request, [FromRoute(Name = "Id")] int id)
     {
-        request.Id = id;
-        CouponType entity = await _couponTypeServices.Update(_mapper.Map<CouponType>(request));
-        return Success<CouponTypesResponseDTO>(data: _mapper.Map<CouponTypesResponseDTO>(entity));
+        CouponType couponType = await _couponTypeServices.Find(id);
+        if (couponType is null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
+        couponType = _mapper.Map<CouponType>(request);
+        CouponTypesResponseDTO response = _mapper.Map<CouponTypesResponseDTO>(await _couponTypeServices.Update(_mapper.Map<CouponType>(couponType)));
+        return Success<CouponTypesResponseDTO>(data: response);
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpDelete]
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)

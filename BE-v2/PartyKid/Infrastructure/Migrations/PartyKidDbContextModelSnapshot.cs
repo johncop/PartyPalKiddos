@@ -375,6 +375,21 @@ namespace PartyKid.Infrastructure.Migrations
                     b.ToTable("BookingDetails");
                 });
 
+            modelBuilder.Entity("PartyKid.BookingTimeSlot", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AvailableTimeSlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingId", "AvailableTimeSlotId");
+
+                    b.HasIndex("AvailableTimeSlotId");
+
+                    b.ToTable("BookingTimeSlot");
+                });
+
             modelBuilder.Entity("PartyKid.Combo", b =>
                 {
                     b.Property<int>("Id")
@@ -906,22 +921,12 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -1096,6 +1101,25 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Navigation("ServicePackage");
                 });
 
+            modelBuilder.Entity("PartyKid.BookingTimeSlot", b =>
+                {
+                    b.HasOne("PartyKid.AvailableTimeSlot", "AvailableTimeSlot")
+                        .WithMany()
+                        .HasForeignKey("AvailableTimeSlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PartyKid.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AvailableTimeSlot");
+
+                    b.Navigation("Booking");
+                });
+
             modelBuilder.Entity("PartyKid.ComboFood", b =>
                 {
                     b.HasOne("PartyKid.Combo", "Combo")
@@ -1198,7 +1222,7 @@ namespace PartyKid.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("PartyKid.Venue", "Venue")
-                        .WithMany()
+                        .WithMany("VenueCombos")
                         .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1328,6 +1352,8 @@ namespace PartyKid.Infrastructure.Migrations
             modelBuilder.Entity("PartyKid.Venue", b =>
                 {
                     b.Navigation("AvailableTimeSlots");
+
+                    b.Navigation("VenueCombos");
 
                     b.Navigation("VenueFoods");
 

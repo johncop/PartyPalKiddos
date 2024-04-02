@@ -10,8 +10,8 @@ public static class Constants
             public const string ServiceAssembliesPattern = "AllowedAssemblyPattern";
             public const string UserId = "36d92587-988b-4e5c-8d9c-0e8aef7a9f0e";
 
-            public const string EmailBaseUrl = "";
-            public const string FromEmail = "";
+            public const string EmailBaseUrl = "https://api.mailgun.net/v3";
+            public const string FromEmail = "Party Kid Booking System<phamhoangdung4@gmail.com>";
 
             public const string ConfirmEmailUrl = "";
 
@@ -124,6 +124,7 @@ public static class Constants
             public const string IsValid = "Username/Email or password is incorrect. Please try again";
             public const string IsNotAllowed = "You need confirm your email and login again!";
             public const string UnAuthorized = "You need login to perform this operation.";
+            public const string Forbidden = "You cannot access this feature.";
         }
     }
 
@@ -131,14 +132,14 @@ public static class Constants
     {
         public static class Messages
         {
-            public const string Banned = "Banned user";
-            public const string UnBanned = "Unbanned user";
-            public const string NotFoundActivity = "User don't have any activity";
             public const string ChangePassworSuccess = "Password is changed. Please login again.";
             public const string ChangePasswordFailed = "Change password have something wrong. Please try again.";
             public const string ResetPasswordSuccess = "Password is reset. Please check mail to get new password";
+            public const string ResetPasswordFailed = "Something wrong when reset your password. Please try again.";
             public const string UpdateUserFailure = "Can't Update User. Please check information again and try again.";
             public const string UpdateUserSucceed = "Update Succeed.";
+            public const string ForgotPassword = "New password was sent your email. Please check and login again.";
+            public const string EmailEmpty = "Please enter your email.";
         }
     }
 }

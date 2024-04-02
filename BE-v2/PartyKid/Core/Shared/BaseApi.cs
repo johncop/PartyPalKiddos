@@ -12,7 +12,6 @@ public class BaseApi : ControllerBase
     {
         _mapper = mapper;
     }
-
     protected Response<T> Success<T>(string message = Constants.RequestHandling.Messages.Success, HttpStatusCode statusCode = HttpStatusCode.OK, T data = default)
     {
         return new Response<T>(message, statusCode, data: data);

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,58 +8,58 @@ namespace PartyKid;
 [Route("api/[controller]")]
 public class UsersController : BaseApi
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserServices _userServices;
 
-    public UsersController(IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager, IMapper mapper) : base(mapper)
+    public UsersController(IUserServices userServices, IMapper mapper) : base(mapper)
     {
-        _httpContextAccessor = httpContextAccessor;
-        _userManager = userManager;
+        _userServices = userServices;
     }
 
     #region Query
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(RoleCollection.Admin))]
+    [Authorize(nameof(RoleCollection.Admin))]
     [HttpGet]
     public async Task<IResponse> GetAll()
     {
-        return Success();
+        return Success<IList<UserDTO>>(data: await _userServices.GetAll());
     }
 
     [HttpGet]
     [Route("{Id}")]
     public async Task<IResponse> Get([FromRoute(Name = "Id")] int id)
     {
-        ApplicationUser user = await _userManager.FindByIdAsync(id.ToString());
+        ApplicationUser user = await _userServices.GetById(id.ToString());
         return Success<UserDTO>(data: _mapper.Map<UserDTO>(user));
     }
 
+    [Authorize]
     [HttpGet]
     [Route("current")]
     public async Task<IResponse> GetCurrentUser()
     {
-        ApplicationUser currUser = await _userManager.FindByIdAsync(_httpContextAccessor.HttpContext.User.Identity.Name);
-        return Success<UserDTO>(data: _mapper.Map<UserDTO>(currUser));
+        return Success<UserDTO>(data: _mapper.Map<UserDTO>(await _userServices.GetCurrentUser()));
     }
     #endregion
 
     #region Command
 
-    [HttpPut]
-    [Route("{Id}")]
-    public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateUserBindingModel request)
+    [HttpPost]
+    [Route("forgot-password")]
+    public async Task<IResponse> ForgotPassword([FromBody] ForgotPasswordBindingModel request)
     {
-        ApplicationUser user = await _userManager.FindByIdAsync(id.ToString());
-        if (user == null)
+        if (string.IsNullOrEmpty(request.Email))
         {
-            throw new Exception(Constants.AuthHandling.Messages.NotFoundUser);
+            throw new DomainException(Constants.UserHandling.Messages.EmailEmpty);
         }
+        return Success(message: await _userServices.ForgotPassword(request.Email));
+    }
 
-        IdentityResult ressult = await _userManager.UpdateAsync(_mapper.Map<ApplicationUser>(request));
-        if (!ressult.Succeeded)
-        {
-            throw new Exception(Constants.UserHandling.Messages.UpdateUserFailure);
-        }
-        return Success(message: Constants.UserHandling.Messages.UpdateUserSucceed);
+    [Authorize]
+    [HttpPut]
+    public async Task<IResponse> Update([FromBody] UpdateUserBindingModel request)
+    {
+        UserDTO currUser = await _userServices.GetCurrentUser();
+        UserDTO user = await _userServices.Update(currUser.Id.ToString(), request);
+        return Success<UserDTO>(data: user);
     }
     #endregion
 }

@@ -16,17 +16,17 @@ public class TokenHandleMiddleware
         _appSettings = appSettings.Value;
     }
 
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(HttpContext context, IUserServices userServices)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
         if (token != null)
-            attachUserToContext(context, token);
+            attachUserToContext(context, userServices, token);
 
         await _next(context);
     }
 
-    private void attachUserToContext(HttpContext context, string token)
+    private void attachUserToContext(HttpContext context, IUserServices userServices, string token)
     {
         try
         {
@@ -44,9 +44,10 @@ public class TokenHandleMiddleware
 
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
-
+            var userRole = jwtToken.Claims.First(x => x.Type == "role").Value;
             // attach user to context on successful jwt validation
             context.Items["User"] = userId;
+            context.Items["Role"] = userRole;
         }
         catch
         {
