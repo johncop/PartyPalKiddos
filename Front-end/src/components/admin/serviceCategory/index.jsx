@@ -44,7 +44,8 @@ export const ServiceCategoryPage = () => {
     e.preventDefault();
     axios
       .post(`${process.env.REACT_APP_API_BASE_URL}/service-categories`, {
-        description: e.target[1].value,
+        name: e.target[1].value,
+        description: e.target[2].value,
       })
       .then((response) => {
         toast.info("Create Success", {
@@ -63,11 +64,13 @@ export const ServiceCategoryPage = () => {
       });
   }
 
-  function handleEdit(e, id) {
+  function handleEdit(e, item) {
     e.preventDefault();
     axios
-      .put(`${process.env.REACT_APP_API_BASE_URL}/service-categories/${id}`, {
-        description: e.target[1].value,
+      .put(`${process.env.REACT_APP_API_BASE_URL}/service-categories/${item.id}`, {
+        id: item.id,
+        name: e.target[1].value,
+        description: e.target[2].value,
       })
       .then((response) => {
         toast.info("Update Success", {
@@ -113,7 +116,7 @@ export const ServiceCategoryPage = () => {
           <li className="breadcrumb-item active">Service Category</li>
         </ol>
         <TableAdmin
-          columns={["id", "description"]}
+          columns={["id", "name", "description"]}
           data={data}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}

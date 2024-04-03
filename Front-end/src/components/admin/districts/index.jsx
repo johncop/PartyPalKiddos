@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 export const DistrictPage = () => {
   const [data, setData] = useState([]);
-  const [ render, setRender] = useState(false);
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     axios
@@ -54,11 +54,12 @@ export const DistrictPage = () => {
       });
   }
 
-  function handleEdit(e, id) {
+  function handleEdit(e, item) {
     e.preventDefault();
     axios
-      .put(`${process.env.REACT_APP_API_BASE_URL}/districts/${id}`, {
+      .put(`${process.env.REACT_APP_API_BASE_URL}/districts/${item.id}`, {
         description: e.target[1].value,
+        id: item.id,
       })
       .then((response) => {
         toast.info("Update Success", {

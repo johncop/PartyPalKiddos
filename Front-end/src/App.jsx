@@ -1,40 +1,48 @@
-import Layout from "./components/layout/layout";
-import { AdminLayout } from "./components/layout/Admin";
-import "./styles/css/style.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CategoryScale } from "chart.js";
+import Chart from "chart.js/auto";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  UPDATE_SUGGEST_ACTION,
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
+import { Charts } from "./components/admin/charts";
+import { DistrictPage } from "./components/admin/districts";
+import { HomePage } from "./components/admin/home";
+import { ServiceCategoryPage } from "./components/admin/serviceCategory";
+import { ServicePackagePage } from "./components/admin/servicePackage";
+import { ServicesPage } from "./components/admin/services";
+import { VenuePage } from "./components/admin/venues";
+import Details from "./components/common/Details";
+import Profile from "./components/common/Profile";
+import { ForgotPassword } from "./components/common/modal/ForgotPassword";
+import Login from "./components/common/modal/Login";
+import SignUp from "./components/common/modal/SignUp";
+import { AdminLayout } from "./components/layout/Admin";
+import { Cart } from "./components/layout/Cart";
+import PageNotFound from "./components/layout/PageNotFound";
+import Search from "./components/layout/Search";
+import Layout from "./components/layout/layout";
+import {
+  BIRTHDAY_BANNER_VALUE,
+  CATEGORY_LIST,
+  LOCATION_LIST,
+  MENU_PAGE,
+  REVIEWER_LIST,
+  SUGGESTION_LIST,
+  UPDATE_BIRTHDAY_ACTION,
   UPDATE_CATEGORY_ACTION,
   UPDATE_LOCATION_ACTION,
   UPDATE_POPULAR_ACTION,
-  UPDATE_BIRTHDAY_ACTION,
   UPDATE_REVIEWERS_ACTION,
-  SUGGESTION_LIST,
-  CATEGORY_LIST,
-  LOCATION_LIST,
-  BIRTHDAY_BANNER_VALUE,
-  REVIEWER_LIST,
-  MENU_PAGE,
+  UPDATE_SUGGEST_ACTION,
 } from "./constants";
-import Details from "./components/common/Details";
-import PageNotFound from "./components/layout/PageNotFound";
-import Profile from "./components/common/Profile";
-import Login from "./components/common/modal/Login";
-import SignUp from "./components/common/modal/SignUp";
-import { Charts } from "./components/admin/charts";
-import { HomePage } from "./components/admin/home";
-import { VenuePage } from "./components/admin/venues";
-import { DistrictPage } from "./components/admin/districts";
-import { Cart } from "./components/layout/Cart";
-import Search from "./components/layout/Search";
-import { useState } from "react";
 import axios from "./middleware/axios";
-import Chart from "chart.js/auto";
-import { CategoryScale } from "chart.js";
-import { ServiceCategoryPage } from "./components/admin/serviceCategory";
-import { ServicesPage } from "./components/admin/services";
-import { ForgotPassword } from "./components/common/modal/ForgotPassword";
+import "./styles/css/style.css";
+
 Chart.register(CategoryScale);
 
 export const App = () => {
@@ -57,58 +65,90 @@ export const App = () => {
     reviewers: REVIEWER_LIST,
   });
   //#endregion
+
+  const ProtectedRoute = ({ redirectPath = "/landing", children }) => {
+    const [restult, setResult] = useState(null);
+
+    useEffect(() => {
+      axios
+        .get(`${process.env.REACT_APP_API_BASE_URL}users/current`)
+        .then((response) => {
+          if (response.data.data.roles.includes("Admin")) {
+            setResult(children ? children : <Outlet />);
+          } else {
+            setResult(<Navigate to={redirectPath} replace />);
+          }
+        })
+        .catch((error) => {
+          setResult(<Navigate to={redirectPath} replace />);
+        });
+    }, []);
+
+    return restult;
+  };
+
   return (
     <>
       <BrowserRouter basename="/">
         <Routes>
-          <Route
-            path="/admin/charts"
-            element={
-              <AdminLayout>
-                <Charts />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin/venue"
-            element={
-              <AdminLayout>
-                <VenuePage />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin/district"
-            element={
-              <AdminLayout>
-                <DistrictPage />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin/service-category"
-            element={
-              <AdminLayout>
-                <ServiceCategoryPage />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin/service"
-            element={
-              <AdminLayout>
-                <ServicesPage />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <AdminLayout>
-                <HomePage />
-              </AdminLayout>
-            }
-          />
+          <Route element={<ProtectedRoute redirectPath="/forbbiden" />}>
+            <Route
+              path="/admin/charts"
+              element={
+                <AdminLayout>
+                  <Charts />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/venue"
+              element={
+                <AdminLayout>
+                  <VenuePage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/district"
+              element={
+                <AdminLayout>
+                  <DistrictPage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/service-category"
+              element={
+                <AdminLayout>
+                  <ServiceCategoryPage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/service"
+              element={
+                <AdminLayout>
+                  <ServicesPage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/service-package"
+              element={
+                <AdminLayout>
+                  <ServicePackagePage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <AdminLayout>
+                  <HomePage />
+                </AdminLayout>
+              }
+            />
+          </Route>
 
           {MENU_PAGE(isPopup).map((item) => (
             <Route
@@ -120,7 +160,7 @@ export const App = () => {
             />
           ))}
           <Route
-            path="/profile/:id"
+            path="/profile"
             element={
               <Layout handlePopup={handlePopup}>
                 <Profile />
@@ -168,10 +208,10 @@ export const App = () => {
             }
           />
           <Route
-            path="/"
+            path="/forbbiden"
             element={
               <Layout handlePopup={handlePopup}>
-                <Search />
+                <PageNotFound path={"assets/images/403-forbbiden.png"} />
               </Layout>
             }
           />
@@ -184,10 +224,18 @@ export const App = () => {
             }
           />
           <Route
+            path="/"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <Search />
+              </Layout>
+            }
+          />
+          <Route
             path="*"
             element={
               <Layout handlePopup={handlePopup}>
-                <PageNotFound />
+                <PageNotFound path={"assets/images/404-page-not-found.png"} />
               </Layout>
             }
           />

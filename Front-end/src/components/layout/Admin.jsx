@@ -61,7 +61,7 @@ export const AdminLayout = ({ children }) => {
                   className="dropdown-item"
                   onClick={() => {
                     localStorage.removeItem("token");
-                    window.location.reload();
+                    window.location.href = "/";
                   }}
                 >
                   Logout
@@ -115,6 +115,9 @@ export const AdminLayout = ({ children }) => {
                     </a>
                     <a className="nav-link" href="/admin/district">
                       District
+                    </a>
+                    <a className="nav-link" href="/admin/service-package">
+                      Service Package
                     </a>
                     <a className="nav-link" href="/admin/service-category">
                       Service Category

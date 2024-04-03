@@ -23,32 +23,36 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
 export const handleUpload = (path, image, callback) => {
-  const storageRef = ref(
-    storage,
-    `${path}/${new Date()
-      .toISOString()
-      .replace(/:/g, "_")
-      .replace(/\..+/, "")}_${image.name}`
-  );
+  if (image) {
+    const storageRef = ref(
+      storage,
+      `${path}/${new Date()
+        .toISOString()
+        .replace(/:/g, "_")
+        .replace(/\..+/, "")}_${image.name}`
+    );
 
-  // 'file' comes from the Blob or File API
-  uploadBytes(storageRef, image)
-    .then((snapshot) => {
-      getDownloadURL(snapshot.ref)
-        .then((downloadURL) => {
-          callback(downloadURL);
-        })
-        .catch((error) => {
-          toast.error(error.message, {
-            position: "bottom-center",
-            autoClose: 2000,
+    // 'file' comes from the Blob or File API
+    uploadBytes(storageRef, image)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            callback(downloadURL);
+          })
+          .catch((error) => {
+            toast.error(error.message, {
+              position: "bottom-center",
+              autoClose: 2000,
+            });
           });
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "bottom-center",
+          autoClose: 2000,
         });
-    })
-    .catch((error) => {
-      toast.error(error.message, {
-        position: "bottom-center",
-        autoClose: 2000,
       });
-    });
+  } else {
+    callback(null);
+  }
 };

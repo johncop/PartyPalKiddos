@@ -123,7 +123,7 @@ export const TableAdmin = ({
                   <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <form
                       className="modal-content"
-                      onSubmit={(e) => handleEdit(e, item.id)}
+                      onSubmit={(e) => handleEdit(e, item)}
                     >
                       <div className="modal-header">
                         <h5
@@ -141,55 +141,71 @@ export const TableAdmin = ({
                         ></button>
                       </div>
                       <div className="modal-body">
-                        {btnDataAdd.map((field, indexBtn) => (
-                          <div key={"field-eidt" + item.id + indexBtn}>
-                            <label
-                              htmlFor={"editDataList" + indexBtn}
-                              className="form-label mb-0"
-                              style={{
-                                paddingTop: 2,
-                              }}
-                            >
-                              {field.title}
-                            </label>
-                            <input
-                              type={field.type}
-                              disabled={field.disabled}
-                              className="form-control"
-                              list={"datalistOptions" + indexBtn}
-                              id={"editDataList" + indexBtn}
-                              placeholder={field.placeholder}
-                              required={field.required}
-                              defaultValue={getValue(field.key, item)}
-                              style={{ width: "100%" }}
-                              onChange={
-                                field.type === "file" ? changeImage : null
-                              }
-                            ></input>
-                            {field.type === "file" && (
-                              <img
-                                src={
-                                  image
-                                    ? URL.createObjectURL(image)
-                                    : field.getImageUrls(item) ||
-                                      "https://th.bing.com/th/id/OIP.N-IegjWZz_67sr8v2233mwHaFO?w=283&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                        {btnDataAdd.map((field, indexBtn) =>
+                          field.type === "checkbox" ? (
+                            <div class="form-check form-switch">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id={"flexSwitchCheckEdit" + index}
+                              />
+                              <label
+                                class="form-check-label"
+                                for={"flexSwitchCheckEdit" + index}
+                              >
+                                {field.title}
+                              </label>
+                            </div>
+                          ) : (
+                            <div key={"field-eidt" + item.id + indexBtn}>
+                              <label
+                                htmlFor={"editDataList" + indexBtn}
+                                className="form-label mb-0"
+                                style={{
+                                  paddingTop: 2,
+                                }}
+                              >
+                                {field.title}
+                              </label>
+                              <input
+                                type={field.type}
+                                disabled={field.disabled}
+                                className="form-control"
+                                list={"datalistOptions" + indexBtn}
+                                id={"editDataList" + indexBtn}
+                                placeholder={field.placeholder}
+                                required={field.required}
+                                defaultValue={getValue(field.key, item)}
+                                style={{ width: "100%" }}
+                                onChange={
+                                  field.type === "file" ? changeImage : null
                                 }
-                                className="img-fluid"
-                                alt=""
-                              ></img>
-                            )}
-                            <datalist id={"datalistOptions" + indexBtn}>
-                              {field.items.map((item, i) => (
-                                <option
-                                  key={"field-edit-item" + item.id + i}
-                                  value={item.id}
-                                >
-                                  {item.value}
-                                </option>
-                              ))}
-                            </datalist>
-                          </div>
-                        ))}
+                              ></input>
+                              {field.type === "file" && (
+                                <img
+                                  src={
+                                    image
+                                      ? URL.createObjectURL(image)
+                                      : field.getImageUrls(item) ||
+                                        "https://th.bing.com/th/id/OIP.N-IegjWZz_67sr8v2233mwHaFO?w=283&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                                  }
+                                  className="img-fluid"
+                                  alt=""
+                                ></img>
+                              )}
+                              <datalist id={"datalistOptions" + indexBtn}>
+                                {field.items.map((item, i) => (
+                                  <option
+                                    key={"field-edit-item" + item.id + i}
+                                    value={item.id}
+                                  >
+                                    {item.value}
+                                  </option>
+                                ))}
+                              </datalist>
+                            </div>
+                          )
+                        )}
                       </div>
                       <div className="modal-footer">
                         <button

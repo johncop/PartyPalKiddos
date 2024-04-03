@@ -13,7 +13,7 @@ export const VenuePage = () => {
     requried: true,
     items: [],
     key: "district.id",
-    disabled: true,
+    disabled: false,
   });
   const [render, setRender] = useState(false);
 
@@ -161,35 +161,38 @@ export const VenuePage = () => {
     });
   }
 
-  function handleEdit(e, id) {
+  function handleEdit(e, item) {
     e.preventDefault();
-    axios
-      .put(`${process.env.REACT_APP_API_BASE_URL}/venues/${id}`, {
-        id: id,
-        name: e.target[1].value,
-        description: e.target[2].value,
-        address: e.target[3].value,
-        capacity: e.target[4].value,
-        price: e.target[5].value,
-        openHour: e.target[6].value,
-        closeHour: e.target[7].value,
-        disctrictId: e.target[8].value,
-      })
-      .then((response) => {
-        toast.info("Update Success", {
-          position: "bottom-center",
-          autoClose: 2000,
+    handleUpload("images/venue", e.target[9].files[0], (res) => {
+      axios
+        .put(`${process.env.REACT_APP_API_BASE_URL}/venues/${item.id}`, {
+          id: item.id,
+          name: e.target[1].value,
+          description: e.target[2].value,
+          address: e.target[3].value,
+          capacity: Number(e.target[4].value),
+          price: Number(e.target[5].value),
+          openHour: e.target[6].value,
+          closeHour: e.target[7].value,
+          disctrictId: e.target[8].value,
+          imageUrls: [res || item.venueImages[0]?.imageUrl],
+        })
+        .then((response) => {
+          toast.info("Update Success", {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          setRender(!render);
+          return response;
+        })
+        .catch((error) => {
+          toast.error(error.message, {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          return error;
         });
-        setRender(!render);
-        return response;
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: "bottom-center",
-          autoClose: 2000,
-        });
-        return error;
-      });
+    });
   }
 
   function handleDelete(id) {
