@@ -15,7 +15,10 @@ export const TableAdmin = ({
     new DataTable("#datatablesSimple");
   }, [data]);
 
-  function getValue(key, data) {
+  function getValue(type, key, data) {
+    if (type === "file") {
+      return null;
+    }
     let result = data;
     key.split(".").forEach((element) => {
       result = result[element];
@@ -143,15 +146,15 @@ export const TableAdmin = ({
                       <div className="modal-body">
                         {btnDataAdd.map((field, indexBtn) =>
                           field.type === "checkbox" ? (
-                            <div class="form-check form-switch">
+                            <div className="form-check form-switch" key={"field-eidt" + item.id + indexBtn}>
                               <input
-                                class="form-check-input"
+                                className="form-check-input"
                                 type="checkbox"
                                 id={"flexSwitchCheckEdit" + index}
                               />
                               <label
-                                class="form-check-label"
-                                for={"flexSwitchCheckEdit" + index}
+                                className="form-check-label"
+                                htmlFor={"flexSwitchCheckEdit" + index}
                               >
                                 {field.title}
                               </label>
@@ -175,7 +178,7 @@ export const TableAdmin = ({
                                 id={"editDataList" + indexBtn}
                                 placeholder={field.placeholder}
                                 required={field.required}
-                                defaultValue={getValue(field.key, item)}
+                                defaultValue={getValue(field.type, field.key, item)}
                                 style={{ width: "100%" }}
                                 onChange={
                                   field.type === "file" ? changeImage : null

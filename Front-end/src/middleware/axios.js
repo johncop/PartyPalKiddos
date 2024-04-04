@@ -3,7 +3,9 @@ import axios from "axios";
 // Add a request interceptor
 axios.interceptors.request.use(
   function (config) {
-    config.headers["Authorization"] = `bearer ${localStorage.getItem("token")}`;
+    config.headers["Authorization"] = `bearer ${
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+    }`;
     return config;
   },
   function (error) {

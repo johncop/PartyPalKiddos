@@ -4,24 +4,24 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { handleUpload } from "../../../firebase";
 
-export const ServicesPage = () => {
+export const FoodPage = () => {
   const [data, setData] = useState([]);
   const [render, setRender] = useState(false);
-  const [serviceCategory, setServiceCategory] = useState({
-    title: "Service Category",
+  const [foodCategory, setFoodCategory] = useState({
+    title: "Food Category",
     type: "text",
     placeholder: "Type to select",
     requried: "true",
     items: [],
-    key: "serviceCategory.id",
+    key: "foodCategory.id",
     disabled: false,
   });
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_BASE_URL}/service-categories`)
+      .get(`${process.env.REACT_APP_API_BASE_URL}/food-categories`)
       .then((response) => {
-        setServiceCategory({
-          ...serviceCategory,
+        setFoodCategory({
+          ...foodCategory,
           items: [
             ...response.data.data.map((item) => {
               return {
@@ -40,7 +40,7 @@ export const ServicesPage = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_BASE_URL}/services`)
+      .get(`${process.env.REACT_APP_API_BASE_URL}/foods`)
       .then((response) => {
         if (response.data.data) {
           setData(response.data.data);
@@ -80,7 +80,7 @@ export const ServicesPage = () => {
       key: "price",
       disabled: false,
     },
-    serviceCategory,
+    foodCategory,
     {
       title: "Image URL",
       type: "file",
@@ -89,19 +89,19 @@ export const ServicesPage = () => {
       items: [],
       key: "imageUrl",
       disabled: false,
-      getImageUrls: (value) => value?.image,
+      getImageUrls: (value) => value?.imageUrl,
     },
   ];
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/service", e.target[5].files[0], (res) => {
+    handleUpload("images/food", e.target[5].files[0], (res) => {
       axios
-        .post(`${process.env.REACT_APP_API_BASE_URL}/services`, {
+        .post(`${process.env.REACT_APP_API_BASE_URL}/foods`, {
           name: e.target[1].value,
           description: e.target[2].value,
           price: e.target[3].value,
-          serviceCategoryId: e.target[4].value,
-          image: res,
+          foodCategoryId: e.target[4].value,
+          imageUrl: res,
         })
         .then((response) => {
           toast.info("Create Success", {
@@ -123,15 +123,15 @@ export const ServicesPage = () => {
 
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/service", e.target[5].files[0], (res) => {
+    handleUpload("images/food", e.target[5].files[0], (res) => {
       axios
-        .put(`${process.env.REACT_APP_API_BASE_URL}/services/${item.id}`, {
+        .put(`${process.env.REACT_APP_API_BASE_URL}/foods/${item.id}`, {
           id: item.id,
           name: e.target[1].value,
           description: e.target[2].value,
           price: e.target[3].value,
-          serviceCategoryId: e.target[4].value,
-          image: res || item.image,
+          foodCategoryId: e.target[4].value,
+          imageUrl: res || item.imageUrl,
         })
         .then((response) => {
           toast.info("Update Success", {
@@ -153,7 +153,7 @@ export const ServicesPage = () => {
 
   function handleDelete(id) {
     axios
-      .delete(`${process.env.REACT_APP_API_BASE_URL}/services/${id}`)
+      .delete(`${process.env.REACT_APP_API_BASE_URL}/foods/${id}`)
       .then((response) => {
         toast.info("Delete Success", {
           position: "bottom-center",
@@ -174,12 +174,12 @@ export const ServicesPage = () => {
   return (
     <>
       <div className="container-fluid px-4">
-        <h4 className="mt-4">Service</h4>
+        <h4 className="mt-4">Food</h4>
         <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item active">Service</li>
+          <li className="breadcrumb-item active">Food</li>
         </ol>
         <TableAdmin
-          columns={["name", "description", "address", "capacity", "price"]}
+          columns={["id", "name", "description", "price"]}
           data={data}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}

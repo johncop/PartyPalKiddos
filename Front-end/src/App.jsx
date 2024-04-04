@@ -12,6 +12,8 @@ import {
 import { Charts } from "./components/admin/charts";
 import { DistrictPage } from "./components/admin/districts";
 import { HomePage } from "./components/admin/home";
+import { FoodCategoryPage } from "./components/admin/foodCategory";
+import { FoodPage } from "./components/admin/food";
 import { ServiceCategoryPage } from "./components/admin/serviceCategory";
 import { ServicePackagePage } from "./components/admin/servicePackage";
 import { ServicesPage } from "./components/admin/services";
@@ -113,6 +115,22 @@ export const App = () => {
               element={
                 <AdminLayout>
                   <DistrictPage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/food"
+              element={
+                <AdminLayout>
+                  <FoodPage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/food-category"
+              element={
+                <AdminLayout>
+                  <FoodCategoryPage />
                 </AdminLayout>
               }
             />

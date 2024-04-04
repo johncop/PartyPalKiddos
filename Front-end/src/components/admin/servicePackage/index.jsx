@@ -31,6 +31,15 @@ export const ServicePackagePage = () => {
       disabled: false,
     },
     {
+      title: "Description",
+      placeholder: "",
+      type: "text",
+      requried: "true",
+      items: [],
+      key: "description",
+      disabled: false,
+    },
+    {
       title: "Price",
       placeholder: "",
       type: "number",
@@ -62,12 +71,13 @@ export const ServicePackagePage = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/service", e.target[4].files[0], (res) => {
+    handleUpload("images/service", e.target[5].files[0], (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/service-packages`, {
           name: e.target[1].value,
-          price: e.target[2].value,
-          status: e.target[3].checked ? 1 : 0,
+          description: e.target[2].value,
+          price: e.target[3].value,
+          status: e.target[4].checked ? 1 : 0,
           images: [res],
         })
         .then((response) => {
@@ -90,16 +100,17 @@ export const ServicePackagePage = () => {
 
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/service", e.target[4].files[0], (res) => {
+    handleUpload("images/service", e.target[5].files[0], (res) => {
       axios
         .put(
           `${process.env.REACT_APP_API_BASE_URL}/service-packages/${item.id}`,
           {
             id: item.id,
             name: e.target[1].value,
-            price: e.target[2].value,
-            status: e.target[3].checked ? 1 : 0,
-            images: [res],
+            description: e.target[2].value,
+            price: e.target[3].value,
+            status: e.target[4].checked ? 1 : 0,
+            images: [res || item.images[0]?.imageUrl],
           }
         )
         .then((response) => {
@@ -143,12 +154,12 @@ export const ServicePackagePage = () => {
   return (
     <>
       <div className="container-fluid px-4">
-        <h4 className="mt-4">Service Category</h4>
+        <h4 className="mt-4">Service Package</h4>
         <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item active">Service Category</li>
+          <li className="breadcrumb-item active">Service Package</li>
         </ol>
         <TableAdmin
-          columns={["id", "name", "price"]}
+          columns={["id", "name", "description", "price"]}
           data={data}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}

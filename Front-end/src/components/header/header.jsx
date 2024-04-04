@@ -17,11 +17,14 @@ export default function Header({
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoginDone, setLoginIsDone] = useState("");
   useEffect(() => {
-    setLoginIsDone(localStorage.getItem("token"));
+    setLoginIsDone(
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+    );
   }, []);
 
   function logout() {
     localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     setLoginIsDone("");
   }
 

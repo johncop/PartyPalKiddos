@@ -58,9 +58,11 @@ export const AdminLayout = ({ children }) => {
               </li>
               <li>
                 <a
+                  href="#"
                   className="dropdown-item"
                   onClick={() => {
                     localStorage.removeItem("token");
+                    sessionStorage.removeItem("token");
                     window.location.href = "/";
                   }}
                 >
@@ -115,6 +117,12 @@ export const AdminLayout = ({ children }) => {
                     </a>
                     <a className="nav-link" href="/admin/district">
                       District
+                    </a>
+                    <a className="nav-link" href="/admin/food">
+                      Food
+                    </a>
+                    <a className="nav-link" href="/admin/food-category">
+                      Food Category
                     </a>
                     <a className="nav-link" href="/admin/service-package">
                       Service Package

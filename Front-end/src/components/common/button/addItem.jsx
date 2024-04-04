@@ -40,15 +40,15 @@ export const AddButton = ({ fields, handleSubmit }) => {
             <div className="modal-body">
               {fields.map((field, index) =>
                 field.type === "checkbox" ? (
-                  <div class="form-check form-switch">
+                  <div className="form-check form-switch" key={"field-add" + index}>
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       id={"flexSwitchCheckChecked" + index}
                     />
                     <label
-                      class="form-check-label"
-                      for={"flexSwitchCheckChecked" + index}
+                      className="form-check-label"
+                      htmlFor={"flexSwitchCheckChecked" + index}
                     >
                       {field.title}
                     </label>

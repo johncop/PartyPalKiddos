@@ -15,7 +15,12 @@ export default function Login(props) {
       })
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem("token", response.data.token);
+          console.log(e.target[2].checked);
+          if (e.target[2].checked) {
+            localStorage.setItem("token", response.data.token);
+          } else {
+            sessionStorage.setItem("token", response.data.token);
+          }
 
           if (response.data.roles.includes("admin")) {
             window.location.href = "/admin";
