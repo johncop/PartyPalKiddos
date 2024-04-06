@@ -104,6 +104,7 @@ export const TableAdmin = ({
                         </button>
                         <button
                           type="button"
+                          data-bs-dismiss="modal"
                           className="btn btn-danger"
                           onClick={() => handleRemove(item.id)}
                         >
