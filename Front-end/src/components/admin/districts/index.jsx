@@ -2,6 +2,7 @@ import { TableAdmin } from "../../common/table/tableAdmin";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { handleUpload } from "../../../firebase";
 
 export const DistrictPage = () => {
   const [data, setData] = useState([]);
@@ -29,53 +30,69 @@ export const DistrictPage = () => {
       key: "description",
       disabled: false,
     },
+    {
+      title: "Image URL",
+      type: "file",
+      placeholder: "",
+      requried: "true",
+      items: [],
+      key: "imageUrl",
+      disabled: false,
+      getImageUrls: (value) => value?.imageUrl,
+    },
   ];
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post(`${process.env.REACT_APP_API_BASE_URL}/districts`, {
-        description: e.target[1].value,
-      })
-      .then((response) => {
-        toast.info("Create Success", {
-          position: "bottom-center",
-          autoClose: 2000,
+    handleUpload("images/district", e.target[2].files[0], (res) => {
+      axios
+        .post(`${process.env.REACT_APP_API_BASE_URL}/districts`, {
+          description: e.target[1].value,
+          imageUrl: res,
+        })
+        .then((response) => {
+          toast.info("Create Success", {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          setRender(!render);
+          return response;
+        })
+        .catch((error) => {
+          toast.error(error.message, {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          return error;
         });
-        setRender(!render);
-        return response;
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: "bottom-center",
-          autoClose: 2000,
-        });
-        return error;
-      });
+    });
   }
 
   function handleEdit(e, item) {
     e.preventDefault();
-    axios
-      .put(`${process.env.REACT_APP_API_BASE_URL}/districts/${item.id}`, {
-        description: e.target[1].value,
-        id: item.id,
-      })
-      .then((response) => {
-        toast.info("Update Success", {
-          position: "bottom-center",
-          autoClose: 2000,
+    handleUpload("images/district", e.target[2].files[0], (res) => {
+      axios
+        .put(`${process.env.REACT_APP_API_BASE_URL}/districts/${item.id}`, {
+          description: e.target[1].value,
+          imageUrl: res || item.imageUrl,
+          id: item.id,
+        })
+        .then((response) => {
+          toast.info("Update Success", {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          setRender(!render);
+          return response;
+        })
+        .catch((error) => {
+          toast.error(error.message, {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          return error;
         });
-        setRender(!render);
-        return response;
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: "bottom-center",
-          autoClose: 2000,
-        });
-        return error;
-      });
+    });
   }
 
   function handleDelete(id) {

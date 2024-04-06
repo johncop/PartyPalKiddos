@@ -179,7 +179,7 @@ export const ServicesPage = () => {
           <li className="breadcrumb-item active">Service</li>
         </ol>
         <TableAdmin
-          columns={["name", "description", "address", "capacity", "price"]}
+          columns={["name", "description", "price"]}
           data={data}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
