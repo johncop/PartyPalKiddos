@@ -22,7 +22,7 @@ export default function Login(props) {
             sessionStorage.setItem("token", response.data.token);
           }
 
-          if (response.data.roles.includes("admin")) {
+          if (response.data.roles.includes("Admin")) {
             window.location.href = "/admin";
           } else {
             window.location.href = "/";
