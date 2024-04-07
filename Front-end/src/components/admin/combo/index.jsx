@@ -153,7 +153,15 @@ export const ComboPage = () => {
           name: e.target[1].value,
           description: e.target[2].value,
           price: e.target[3].value,
-          comboFoods: selectValues,
+          comboFoods:
+            selectValues.length === 0
+              ? item.foods.map((food) => {
+                  return {
+                    foodId: food.id,
+                    quantity: 1,
+                  };
+                })
+              : selectValues,
           status: e.target[5].checked ? 1 : 0,
           imageUrl: res || item.image,
         })

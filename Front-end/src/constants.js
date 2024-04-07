@@ -105,9 +105,9 @@ export const MENU_PAGE = (isPopup) => [
 export const LIST_CATE = {
   CATEGORY: "category",
   SERVICES: "services",
-  PARTY_SERVICES: "party-services",
-  PARTY_PACKAGES: "party-packages",
-  VENUE: "venue",
+  PARTY_SERVICES: "services",
+  PARTY_PACKAGES: "packages",
+  VENUE: "venues",
 }
 export const LIST_SHOW_BOOK = [LIST_CATE.CATEGORY, LIST_CATE.SERVICES, LIST_CATE.PARTY_PACKAGES, LIST_CATE.VENUE]
 export const IMG_DEFAULT = "https://images.squarespace-cdn.com/content/v1/54b7b93ce4b0a3e130d5d232/1519986430884-H1GYNRLHN0VFRF6W5TAN/icon.png?format=500w"

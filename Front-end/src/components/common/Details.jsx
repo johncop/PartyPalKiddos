@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { Product } from "./Product";
 import { CountProduct } from "./modal/CountProduct";
 import { toast } from "react-toastify";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCreative, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCreative, Navigation, Pagination } from "swiper/modules";
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/effect-creative';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/effect-creative";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 
 export default function Details() {
   let { category, id } = useParams();
@@ -19,6 +21,7 @@ export default function Details() {
   const [numberOfKids, setNumberOfKids] = useState(0);
   const [numberOfAdults, setNumberOfAdults] = useState(0);
   const [venueId, setVenueId] = useState(0);
+  const [subProducts, setSubProducts] = useState([]);
   const [combos, setCombos] = useState([]);
   const [foods, setFoods] = useState([]);
   const [services, setServices] = useState([]);
@@ -27,6 +30,7 @@ export default function Details() {
   const [isShowCount, setIsShowCount] = useState(false);
   const [expand, setExpand] = useState(false);
   const [titleModal, setTitleModal] = useState("Add Product");
+  const [dataModal, setDataModal] = useState({});
 
   useEffect(() => {
     if (category === LIST_CATE.PARTY_SERVICES && !data.id) {
@@ -40,15 +44,17 @@ export default function Details() {
         });
     } else if (category === LIST_CATE.VENUE) {
       axios
-        .get(`${process.env.REACT_APP_API_BASE_URL}venues/search?${id}`)
+        .get(`${process.env.REACT_APP_API_BASE_URL}venues/${id}`)
         .then((response) => {
-          const temp = response.data.data.find(
-            (item) => item.id === Number(id)
-          );
+          const temp = response.data.data;
           setData({
             address: temp.address,
             name: temp.name,
             description: temp.description,
+            foods: temp.foods,
+            services: temp.services,
+            servicePackages: temp.servicePackages,
+            combos: temp.combos,
           });
           setVenueId(id);
         })
@@ -75,10 +81,28 @@ export default function Details() {
         });
     }
   }, [category, id]);
-
   function handleSelectTimeZone(e) {}
 
-  function handleDeleteProduct() {}
+  function handleDeleteProduct(item) {
+    console.log(item);
+    setSubProducts(
+      subProducts.filter(
+        (product) => !(product.id === item.id && product.type === item.type)
+      )
+    );
+
+    if (item.type === "packages") {
+      setServicePackages(
+        servicePackages.filter((product) => product.id !== item.id)
+      );
+    } else if (item.type === "services") {
+      setServices(services.filter((product) => product.id !== item.id));
+    } else if (item.type === "combos") {
+      setCombos(combos.filter((product) => product.id !== item.id));
+    } else if (item.type === "foods") {
+      setFoods(foods.filter((product) => product.id !== item.id));
+    }
+  }
   function handleClick(e) {
     e.preventDefault();
     if (numberOfAdults < 0 || numberOfKids < 0) {
@@ -118,15 +142,204 @@ export default function Details() {
     setIsShowCount(false);
   }
 
-  function handleEditCountProduct() {
+  function handleEditCountProduct(product) {
     setIsShowCount(true);
-    setTitleModal("Edit Product");
+    setTitleModal("Edit " + product.type);
+    setDataModal({
+      type: product.type,
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      image: product.image,
+      isEdit: true,
+      quantity: product.quantity,
+    });
   }
 
+  function handleAddProduct(type, item) {
+    setIsShowCount(true);
+    if (type === "packages") {
+      setTitleModal("Add Packages");
+      setDataModal({
+        type: type,
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        image: item.images && item.images[0]?.imageUrl,
+        isEdit: false,
+      });
+    } else if ("services") {
+      setTitleModal("Add Services");
+      setDataModal({
+        type: type,
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        image: item.image,
+        isEdit: false,
+      });
+    } else if ("combos") {
+      setTitleModal("Add Combos");
+      setDataModal({
+        type: type,
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        image: item.image,
+        isEdit: false,
+      });
+    } else if ("foods") {
+      setTitleModal("Add Foods");
+      setDataModal({
+        type: type,
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        image: item.imageUrl,
+        isEdit: false,
+      });
+    }
+  }
+  function handleAddSubProduct(
+    type,
+    id,
+    quantity,
+    name,
+    price,
+    image,
+    description,
+    isEdit
+  ) {
+    let temp = { id: Number(id), quantity: Number(quantity) };
+    if (type === "packages") {
+      const checkValue = servicePackages.find((item) => item.id === temp.id);
+      if (checkValue) {
+        if (isEdit) {
+          checkValue.quantity = temp.quantity;
+        } else {
+          checkValue.quantity = checkValue.quantity + temp.quantity;
+        }
+
+        const subPrd = subProducts.find(
+          (item) => item.id === temp.id && item.type === "packages"
+        );
+        subPrd.quantity = checkValue.quantity;
+      } else {
+        servicePackages.push(temp);
+        subProducts.push({
+          id,
+          quantity,
+          price,
+          name,
+          type,
+          image,
+          description,
+        });
+      }
+      setServicePackages(servicePackages);
+    } else if (type === "services") {
+      const checkValue = services.find((item) => item.id === temp.id);
+      if (checkValue) {
+        if (isEdit) {
+          checkValue.quantity = temp.quantity;
+        } else {
+          checkValue.quantity = checkValue.quantity + temp.quantity;
+        }
+
+        const subPrd = subProducts.find(
+          (item) => item.id === temp.id && item.type === "services"
+        );
+        subPrd.quantity = checkValue.quantity;
+      } else {
+        services.push(temp);
+        subProducts.push({
+          id,
+          quantity,
+          price,
+          name,
+          type,
+          image,
+          description,
+        });
+      }
+      setServices(services);
+    } else if (type === "combos") {
+      const checkValue = combos.find((item) => item.id === temp.id);
+      if (checkValue) {
+        if (isEdit) {
+          checkValue.quantity = temp.quantity;
+        } else {
+          checkValue.quantity = checkValue.quantity + temp.quantity;
+        }
+
+        const subPrd = subProducts.find(
+          (item) => item.id === temp.id && item.type === "combos"
+        );
+        subPrd.quantity = checkValue.quantity;
+      } else {
+        combos.push(temp);
+        subProducts.push({
+          id,
+          quantity,
+          price,
+          name,
+          type,
+          image,
+          description,
+        });
+      }
+      setCombos(combos);
+    } else if (type === "foods") {
+      const checkValue = foods.find((item) => item.id === temp.id);
+      if (checkValue) {
+        if (isEdit) {
+          checkValue.quantity = temp.quantity;
+        } else {
+          checkValue.quantity = checkValue.quantity + temp.quantity;
+        }
+
+        const subPrd = subProducts.find(
+          (item) => item.id === temp.id && item.type === "foods"
+        );
+        subPrd.quantity = checkValue.quantity;
+      } else {
+        foods.push(temp);
+        subProducts.push({
+          id,
+          quantity,
+          price,
+          name,
+          type,
+          image,
+          description,
+        });
+      }
+      setFoods(foods);
+    }
+
+    setSubProducts(subProducts);
+  }
   return (
     <>
       {isShowCount && (
-        <CountProduct closeModal={closeModal} titleModal={titleModal} />
+        <CountProduct
+          id={dataModal.id}
+          type={dataModal.type}
+          name={dataModal.name}
+          description={dataModal.description}
+          image={dataModal.image}
+          price={dataModal.price}
+          isEdit={dataModal.isEdit}
+          defaultValue={dataModal.quantity}
+          closeModal={closeModal}
+          titleModal={titleModal}
+          handleAddSubProduct={handleAddSubProduct}
+        />
       )}
       <section className="section-padding gray-bg">
         <div className="auto-container">
@@ -139,21 +352,21 @@ export default function Details() {
                 ></div>
                 <div className="about-1-image-1 hvr-img-zoom-1">
                   <Swiper
-                    effect={'creative'}
+                    effect={"creative"}
                     pagination={{
-                      type: 'progressbar',
+                      type: "progressbar",
                     }}
-                    loop = {true}
+                    loop={true}
                     creativeEffect={{
                       prev: {
                         shadow: true,
-                        origin: 'left center',
-                        translate: ['-5%', 0, -200],
+                        origin: "left center",
+                        translate: ["-5%", 0, -200],
                         rotate: [0, 100, 0],
                       },
                       next: {
-                        origin: 'right center',
-                        translate: ['5%', 0, -200],
+                        origin: "right center",
+                        translate: ["5%", 0, -200],
                         rotate: [0, -100, 0],
                       },
                     }}
@@ -161,51 +374,69 @@ export default function Details() {
                     modules={[EffectCreative, Pagination, Navigation]}
                     className="mySwiper"
                   >
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
-                    <SwiperSlide><img
-                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                      style={{ maxHeight: "400px" }}
-                      alt=""
-                    /></SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                      <img
+                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                        style={{ maxHeight: "400px" }}
+                        alt=""
+                      />
+                    </SwiperSlide>
                   </Swiper>
                 </div>
                 {LIST_SHOW_BOOK.includes(category) && (
@@ -379,45 +610,105 @@ export default function Details() {
           {isAddProducts && (
             <div className="row mt-5 bg-white border-5 p-2">
               <div className={expand ? "col-lg-0" : "col-lg-8"}>
-                <div className="pb-3 pt-2 fs-2">Add Products</div>
-                <div className="row">
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                  <div className="p-2 col-md-3 col-sm-4">
-                    <Product setIsShowCount={setIsShowCount} />
-                  </div>
-                </div>
+                <Tabs>
+                  <TabList>
+                    <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                      <Tab>Service Packages</Tab>
+                      <Tab>Services</Tab>
+                      <Tab>Combos</Tab>
+                      <Tab>Foods</Tab>
+                    </div>
+                  </TabList>
+                  <TabPanel>
+                    <div className="row">
+                      {data?.servicePackages.map((item, index) => (
+                        <div
+                          className="p-2 col-md-3 col-sm-4"
+                          key={"detail-service-package-item" + index}
+                        >
+                          <Product
+                            name={item.name}
+                            price={item.price}
+                            item={item}
+                            image={
+                              item.images
+                                ? item.images[0]?.imageUrl
+                                : "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                            }
+                            type="packages"
+                            handleClick={handleAddProduct}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </TabPanel>
+                  <TabPanel>
+                    <div className="row">
+                      {data?.services.map((item, index) => (
+                        <div
+                          className="p-2 col-md-3 col-sm-4"
+                          key={"detail-services-item" + index}
+                        >
+                          <Product
+                            name={item.name}
+                            price={item.price}
+                            item={item}
+                            image={
+                              item.image ||
+                              "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                            }
+                            type="services"
+                            handleClick={handleAddProduct}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </TabPanel>
+                  <TabPanel>
+                    <div className="row">
+                      {data?.combos.map((item, index) => (
+                        <div
+                          className="p-2 col-md-3 col-sm-4"
+                          key={"detail-combos-item" + index}
+                        >
+                          <Product
+                            name={item.name}
+                            price={item.price}
+                            item={item}
+                            image={
+                              item.image ||
+                              "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                            }
+                            type="combos"
+                            handleClick={handleAddProduct}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </TabPanel>
+                  <TabPanel>
+                    <div className="row">
+                      {data?.foods.map((item, index) => (
+                        <div
+                          className="p-2 col-md-3 col-sm-4"
+                          key={"detail-food-item" + index}
+                        >
+                          <Product
+                            name={item.name}
+                            price={item.price}
+                            item={item}
+                            image={
+                              item.imageUrl ||
+                              "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                            }
+                            type="foods"
+                            handleClick={handleAddProduct}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </TabPanel>
+                </Tabs>
               </div>
               <div
                 className={
@@ -435,22 +726,30 @@ export default function Details() {
                 <div className="info-payment-content p-3">
                   <div>
                     <b>Event:</b>
-                    <p className="mb-1">Lorem, ipsum dolor.</p>
+                    <p className="mb-1">{data?.name}</p>
                   </div>
                   <div>
-                    <b>Category:</b>
-                    <p className="mb-1">Lorem, ipsum.</p>
+                    <b>Packages:</b>
+                    {servicePackages.map((item, index) => {
+                      <p
+                        className="mb-1"
+                        key={"added-service-packages" + index}
+                      >
+                        {item.name}
+                      </p>;
+                    })}
                   </div>
                   <div>
-                    <b>Package:</b>
-                    <p className="mb-1">Lorem ipsum dolor sit amet.</p>
+                    <b>Services:</b>
+                    {services.map((item, index) => {
+                      <p className="mb-1" key={"added-service" + index}>
+                        {item.name}
+                      </p>;
+                    })}
                   </div>
                   <div>
                     <b>Location:</b>
-                    <p className="mb-1">
-                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                      Possimus nesciunt hic eos! Totam, impedit ipsum?
-                    </p>
+                    <p className="mb-1">{data.address}</p>
                   </div>
                   <div>
                     <b>Time:</b>
@@ -459,13 +758,13 @@ export default function Details() {
                   <div>
                     <div className="d-flex gap-2">
                       <b>Adults: </b>
-                      <p className="mb-1">5</p>
+                      <p className="mb-1">{numberOfAdults}</p>
                     </div>
                   </div>
                   <div>
                     <div className="d-flex gap-2">
                       <b>Kids: </b>
-                      <p className="mb-1">5</p>
+                      <p className="mb-1">{numberOfKids}</p>
                     </div>
                   </div>
                   <hr />
@@ -487,100 +786,49 @@ export default function Details() {
                       <tbody>
                         <tr>
                           <th scope="row">1</th>
-                          <td>Lorem ipsum dolor</td>
-                          <td>4</td>
-                          <td>25.000đ</td>
-                          <td>100.000đ</td>
+                          <td>{data.name}</td>
+                          <td>1</td>
+                          <td>{data.price?.toLocaleString() || 0}đ</td>
+                          <td>{data.price?.toLocaleString() || 0}đ</td>
                           <td className="text-center">
                             {" "}
-                            <i
-                              className="fa fa-edit me-1"
-                              onClick={() => handleEditCountProduct()}
-                            ></i>
-                            <i
-                              className="fa fa-trash"
-                              onClick={() => handleDeleteProduct()}
-                            ></i>
+                            <i className="fa fa-edit me-1" disabled></i>
+                            <i className="fa fa-trash" disabled></i>
                           </td>
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Lorem.</td>
-                          <td>4</td>
-                          <td>25.000đ</td>
-                          <td>100.000đ</td>
-                          <td className="text-center">
-                            {" "}
-                            <i
-                              className="fa fa-edit me-1"
-                              onClick={() => handleEditCountProduct()}
-                            ></i>
-                            <i
-                              className="fa fa-trash"
-                              onClick={() => handleDeleteProduct()}
-                            ></i>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>Lorem.</td>
-                          <td>4</td>
-                          <td>25.000đ</td>
-                          <td>100.000đ</td>
-                          <td className="text-center">
-                            {" "}
-                            <i
-                              className="fa fa-edit me-1"
-                              onClick={() => handleEditCountProduct()}
-                            ></i>
-                            <i
-                              className="fa fa-trash"
-                              onClick={() => handleDeleteProduct()}
-                            ></i>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">4</th>
-                          <td>Lorem.</td>
-                          <td>4</td>
-                          <td>25.000đ</td>
-                          <td>100.000đ</td>
-                          <td className="text-center">
-                            {" "}
-                            <i
-                              className="fa fa-edit me-1"
-                              onClick={() => handleEditCountProduct()}
-                            ></i>
-                            <i
-                              className="fa fa-trash"
-                              onClick={() => handleDeleteProduct()}
-                            ></i>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">5</th>
-                          <td>Lorem.</td>
-                          <td>4</td>
-                          <td>25.000đ</td>
-                          <td>100.000đ</td>
-                          <td className="text-center">
-                            {" "}
-                            <i
-                              className="fa fa-edit me-1"
-                              onClick={() => handleEditCountProduct()}
-                            ></i>
-                            <i
-                              className="fa fa-trash"
-                              onClick={() => handleDeleteProduct()}
-                            ></i>
-                          </td>
-                        </tr>
+                        {subProducts.map((item, index) => (
+                          <tr key={"sub-product" + index}>
+                            <th scope="row">{index + 2}</th>
+                            <td>{item.name}</td>
+                            <td>{item.quantity}</td>
+                            <td>{item.price?.toLocaleString()}đ</td>
+                            <td>
+                              {(item.price * item.quantity).toLocaleString()}đ
+                            </td>
+                            <td className="text-center" width={50} height={20}>
+                              <button
+                                onClick={() => handleEditCountProduct(item)}
+                              >
+                                <i className="fa fa-edit me-1"></i>
+                              </button>
+                              <button onClick={() => handleDeleteProduct(item)}>
+                                <i className="fa fa-trash"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
                         <tr>
                           <th scope="row" colSpan={4}>
                             Total
                           </th>
                           <td colSpan={2} className="fw-bold text-danger">
-                            100.000đ
+                            {(
+                              subProducts.reduce(
+                                (accum, item) => accum + item.price,
+                                0
+                              ) + (data.price ? data.price : 0)
+                            )?.toLocaleString()}
+                            đ
                           </td>
                         </tr>
                       </tbody>
@@ -590,7 +838,7 @@ export default function Details() {
                 {isAddProducts === true &&
                   LIST_SHOW_BOOK.includes(category) && (
                     <div className="about-1-btn mb_30 mt-3 text-center">
-                      <a href={`/cart`} className="btn-1 px-5">
+                      <a href="#" onClick={handleClick} className="btn-1 px-5">
                         Book<span></span>
                       </a>
                     </div>

@@ -174,6 +174,7 @@ export const TableAdmin = ({
                       image={image}
                       index={index}
                       items={field.items}
+                      handleChange={field.onChange}
                       id={"edit-field-item" + indexBtn}
                       multiple={field.multiple}
                       defaultValue={getValue(
