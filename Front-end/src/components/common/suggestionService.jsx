@@ -6,20 +6,12 @@ import { LIST_CATE } from "../../constants";
 
 export default function SuggestionService() {
   const state = useSelector((state) => state);
-  const viewportCount = 2;
-  const [repos, setRepos] = useState([]);
-  const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [suggestions, setSuggetions] = useState([]);
 
   useEffect(() => {
     setSuggetions(state.uiState.suggest);
   }, [state.uiState.suggest]);
-
-  useEffect(() => {
-    setCount(state.uiState.suggest.length);
-    setRepos(state.uiState.suggest);
-  }, [page]);
 
   const onChangePage = useCallback((next) => {
     setPage(next);
@@ -36,10 +28,11 @@ export default function SuggestionService() {
             {suggestions.map((suggestion, index) => (
               <div className="col-lg-3 col-md-6" key={"suggestion-" + index}>
                 <SuggestionServiceItem
-                  imageUrl={suggestion.ImageUrl}
-                  title={suggestion.Title}
-                  description={suggestion.Description}
+                  imageUrl={suggestion.image}
+                  title={suggestion.name}
+                  description={suggestion.description}
                   category={LIST_CATE.SERVICES}
+                  price={suggestion.price}
                   id={345}
                 />
               </div>
@@ -48,7 +41,7 @@ export default function SuggestionService() {
               page={page}
               between={3}
               limit={1}
-              total={Math.ceil(count / viewportCount)}
+              total={Math.ceil(suggestions.length / 12)}
               ellipsis={4}
               changePage={onChangePage}
             />

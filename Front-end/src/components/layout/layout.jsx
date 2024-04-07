@@ -3,6 +3,8 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import SearchPopup from "../common/searchPopup";
 import BackToTop from "../common/backToTop";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Layout({
   children,
@@ -56,6 +58,7 @@ export default function Layout({
         {window.location.pathname !== "/" && <Footer />}
       </div>
       <BackToTop scroll={scroll} />
+      <ToastContainer />
     </>
   );
 }

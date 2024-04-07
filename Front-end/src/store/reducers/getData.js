@@ -44,6 +44,8 @@ const getDataReducer = (state = defaultStore, action) => {
       return setReviewers(state, action.reviewers);
     case UPDATE_POPULAR_ACTION:
       return setPopular(state, action.popular);
+    case UPDATE_LASTEST_PACKAGES_ACTION:
+      return setLastestPackages(state, action.lastestPackages);
     case UPDATE_VENUE_LIST:
       return setVenues(state, action.venues);
     default:

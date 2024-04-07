@@ -15,7 +15,6 @@ export default function Login(props) {
       })
       .then((response) => {
         if (response.status === 200) {
-          console.log(e.target[2].checked);
           if (e.target[2].checked) {
             localStorage.setItem("token", response.data.token);
           } else {

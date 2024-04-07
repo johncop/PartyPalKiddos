@@ -13,6 +13,7 @@ import { Charts } from "./components/admin/charts";
 import { DistrictPage } from "./components/admin/districts";
 import { HomePage } from "./components/admin/home";
 import { FoodCategoryPage } from "./components/admin/foodCategory";
+import { ComboPage } from "./components/admin/combo";
 import { FoodPage } from "./components/admin/food";
 import { ServiceCategoryPage } from "./components/admin/serviceCategory";
 import { ServicePackagePage } from "./components/admin/servicePackage";
@@ -34,13 +35,11 @@ import {
   LOCATION_LIST,
   MENU_PAGE,
   REVIEWER_LIST,
-  SUGGESTION_LIST,
   UPDATE_BIRTHDAY_ACTION,
   UPDATE_CATEGORY_ACTION,
   UPDATE_LOCATION_ACTION,
   UPDATE_POPULAR_ACTION,
   UPDATE_REVIEWERS_ACTION,
-  UPDATE_SUGGEST_ACTION,
 } from "./constants";
 import axios from "./middleware/axios";
 import "./styles/css/style.css";
@@ -54,7 +53,6 @@ export const App = () => {
 
   //#region This is just a sample data set, so when calling from the api, it must be moved to the main page
   const dispatch = useDispatch();
-  dispatch({ type: UPDATE_SUGGEST_ACTION, suggestions: SUGGESTION_LIST });
   dispatch({ type: UPDATE_CATEGORY_ACTION, categories: CATEGORY_LIST });
   dispatch({ type: UPDATE_LOCATION_ACTION, locations: LOCATION_LIST });
   dispatch({ type: UPDATE_POPULAR_ACTION, popular: CATEGORY_LIST });
@@ -115,6 +113,14 @@ export const App = () => {
               element={
                 <AdminLayout>
                   <DistrictPage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/combo"
+              element={
+                <AdminLayout>
+                  <ComboPage />
                 </AdminLayout>
               }
             />

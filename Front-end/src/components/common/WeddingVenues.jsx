@@ -93,7 +93,11 @@ export default function WeddingVenues() {
                 return (
                   <div className="col-lg-3 col-md-6 mb-3 ps-2 pe-2">
                     <Card
-                      data={venue}
+                      data={{
+                        ...venue,
+                        image: venue.venueImages[0].imageUrl,
+                        district: venue.district.description,
+                      }}
                       category={LIST_CATE.VENUE}
                       id={venue.id}
                     />
@@ -125,7 +129,11 @@ export default function WeddingVenues() {
                 return (
                   <div className="col-lg-3 col-md-6 mb-3 ps-2 pe-2">
                     <Card
-                      data={venue}
+                      data={{
+                        ...venue,
+                        image: venue.venueImages[0].imageUrl,
+                        district: venue.district.description,
+                      }}
                       category={LIST_CATE.VENUE}
                       id={venue.id}
                     />

@@ -5489,7 +5489,6 @@ ul.category-widget-list li.active i {
 
 .not-wrap-text {
 	white-space: nowrap;
-    width: 280px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

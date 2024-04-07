@@ -1,20 +1,27 @@
 import { useParams } from "react-router-dom";
-import BannerAbout from "./bannerAbout";
 import { LIST_CATE, LIST_SHOW_BOOK } from "../../constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Product } from "./Product";
 import { CountProduct } from "./modal/CountProduct";
+import { toast } from "react-toastify";
 
 export default function Details() {
   let { category, id } = useParams();
   const [data, setData] = useState({});
-  const [isAddProducts, setIsAddProducts] = useState(false)
-  const [isShowCount, setIsShowCount] = useState(false)
-  const [expand, setExpand] = useState(false)
-  const [titleModal, setTitleModal] = useState("Add Product")
+  const [numberOfKids, setNumberOfKids] = useState(0);
+  const [numberOfAdults, setNumberOfAdults] = useState(0);
+  const [venueId, setVenueId] = useState(0);
+  const [combos, setCombos] = useState([]);
+  const [foods, setFoods] = useState([]);
+  const [services, setServices] = useState([]);
+  const [servicePackages, setServicePackages] = useState([]);
+  const [isAddProducts, setIsAddProducts] = useState(false);
+  const [isShowCount, setIsShowCount] = useState(false);
+  const [expand, setExpand] = useState(false);
+  const [titleModal, setTitleModal] = useState("Add Product");
 
-  useEffect(()=> {
+  useEffect(() => {
     if (category === LIST_CATE.PARTY_SERVICES && !data.id) {
       axios
         .get(process.env.REACT_APP_API_BASE_URL + "Service/services/" + id)
@@ -28,25 +35,76 @@ export default function Details() {
       axios
         .get(`${process.env.REACT_APP_API_BASE_URL}venues/search?${id}`)
         .then((response) => {
-          const temp = response.data.data.find(item => item.id === Number(id));
+          const temp = response.data.data.find(
+            (item) => item.id === Number(id)
+          );
           setData({
             address: temp.address,
             name: temp.name,
-            description: temp.description
+            description: temp.description,
+          });
+          setVenueId(id);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else if (category === LIST_CATE.PARTY_PACKAGES) {
+      axios
+        .get(`${process.env.REACT_APP_API_BASE_URL}service-packages/${id}`)
+        .then((response) => {
+          const temp = response.data.data;
+          setData({
+            address: temp.address,
+            name: temp.name,
+            description: temp.description,
+          });
+          setServicePackages({
+            id,
+            quantity: 1,
           });
         })
         .catch((error) => {
           console.log(error.message);
         });
     }
-  }, [category, id])
+  }, [category, id]);
 
-  function handleSelectTimeZone(e) {
+  function handleSelectTimeZone(e) {}
 
-  }
+  function handleDeleteProduct() {}
+  function handleClick(e) {
+    e.preventDefault();
+    if (numberOfAdults < 0 || numberOfKids < 0) {
+      toast.error("The number of adults and kids must be greater than 0", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
 
-  function handleDeleteProduct() {
-
+      return;
+    }
+    axios
+      .post(`${process.env.REACT_APP_API_BASE_URL}bookings`, {
+        bookingDate: new Date().toISOString(),
+        numberOfKids: numberOfKids,
+        numberOfAdults: numberOfAdults,
+        bookingStatus: "string",
+        venueId: venueId,
+        combos: combos,
+        foods: foods,
+        services: services,
+        servicePackages: servicePackages,
+      })
+      .then((response) => {
+        window.location.href = "/cart";
+        return response;
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
+        return error;
+      });
   }
 
   function closeModal() {
@@ -55,14 +113,14 @@ export default function Details() {
 
   function handleEditCountProduct() {
     setIsShowCount(true);
-    setTitleModal("Edit Product")
+    setTitleModal("Edit Product");
   }
 
   return (
     <>
-      {
-        isShowCount && <CountProduct closeModal={closeModal} titleModal={titleModal} />
-      }
+      {isShowCount && (
+        <CountProduct closeModal={closeModal} titleModal={titleModal} />
+      )}
       <section className="section-padding gray-bg">
         <div className="auto-container">
           <div className="row">
@@ -81,7 +139,7 @@ export default function Details() {
                 </div>
                 {LIST_SHOW_BOOK.includes(category) && (
                   <div className="about-1-btn mb_30 mt-3 text-center">
-                    <a href={`/${category}/booking/${id}`} className="btn-1">
+                    <a href="#" onClick={handleClick} className="btn-1">
                       Book<span></span>
                     </a>
                   </div>
@@ -104,49 +162,150 @@ export default function Details() {
               <hr />
               <div className="d-flex p-0 align-items-center gap-3 mb-1">
                 <p className="mb-0">Select Event Date:</p>
-                <input type="date" style={{ width: 150 }} className="form-control" min="<?php echo date('2024-m-d'); ?>"></input>
+                <input
+                  type="date"
+                  style={{ width: 150 }}
+                  className="form-control"
+                  min="<?php echo date('2024-m-d'); ?>"
+                ></input>
               </div>
-              <p>Time Zone: <b>MST</b></p>
-              <div className="btn-group mb-4 d-flex gap-2 flex-wrap" role="group" aria-label="Basic radio toggle button group">
+              <p>
+                Time Zone: <b>MST</b>
+              </p>
+              <div
+                className="btn-group mb-4 d-flex gap-2 flex-wrap"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
                 <div>
-                  <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off"></input>
-                  <label className="btn btn-outline-primary" style={{ width: 100 }} htmlFor="btnradio1">11:10pm</label>
+                  <input
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio1"
+                    autoComplete="off"
+                  ></input>
+                  <label
+                    className="btn btn-outline-primary"
+                    style={{ width: 100 }}
+                    htmlFor="btnradio1"
+                  >
+                    11:10pm
+                  </label>
                 </div>
                 <div>
-                  <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off"></input>
-                  <label className="btn btn-outline-primary" style={{ width: 100 }} htmlFor="btnradio2">12:10pm</label>
+                  <input
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio2"
+                    autoComplete="off"
+                  ></input>
+                  <label
+                    className="btn btn-outline-primary"
+                    style={{ width: 100 }}
+                    htmlFor="btnradio2"
+                  >
+                    12:10pm
+                  </label>
                 </div>
                 <div>
-                  <input type="radio" className="btn-check" name="btnradio" id="btnradio3" autoComplete="off"></input>
-                  <label className="btn btn-outline-primary" style={{ width: 100 }} htmlFor="btnradio3">00:00am</label>
+                  <input
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio3"
+                    autoComplete="off"
+                  ></input>
+                  <label
+                    className="btn btn-outline-primary"
+                    style={{ width: 100 }}
+                    htmlFor="btnradio3"
+                  >
+                    00:00am
+                  </label>
                 </div>
                 <div>
-                  <input type="radio" className="btn-check" name="btnradio" id="btnradio4" autoComplete="off"></input>
-                  <label className="btn btn-outline-primary" style={{ width: 100 }} htmlFor="btnradio4">01:00am</label>
+                  <input
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio4"
+                    autoComplete="off"
+                  ></input>
+                  <label
+                    className="btn btn-outline-primary"
+                    style={{ width: 100 }}
+                    htmlFor="btnradio4"
+                  >
+                    01:00am
+                  </label>
                 </div>
                 <div>
-                  <input type="radio" className="btn-check" name="btnradio" id="btnradio5" autoComplete="off"></input>
-                  <label className="btn btn-outline-primary" style={{ width: 100 }} htmlFor="btnradio5">03:00am</label>
+                  <input
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio5"
+                    autoComplete="off"
+                  ></input>
+                  <label
+                    className="btn btn-outline-primary"
+                    style={{ width: 100 }}
+                    htmlFor="btnradio5"
+                  >
+                    03:00am
+                  </label>
                 </div>
               </div>
 
               <div className="row mb-4">
-                <div className="fw-600 fs-5" style={{ color: "var(--theme-color)" }}>Select Tickets:</div>
+                <div
+                  className="fw-600 fs-5"
+                  style={{ color: "var(--theme-color)" }}
+                >
+                  Select Tickets:
+                </div>
                 <span># of adults (Max. Room Seating = 16)</span>
-                <div className="input-group input-group-sm" style={{ width: 200 }}>
-                  <input type="number" className="form-control w-100" aria-label="Sizing example input" defaultValue={0} aria-describedby="inputGroup-sizing-sm"></input>
+                <div
+                  className="input-group input-group-sm"
+                  style={{ width: 200 }}
+                >
+                  <input
+                    type="number"
+                    className="form-control w-100"
+                    aria-label="Sizing example input"
+                    defaultValue={numberOfAdults}
+                    onChange={(event) => setNumberOfAdults(event.target.value)}
+                    min={0}
+                    aria-describedby="inputGroup-sizing-sm"
+                  ></input>
                 </div>
                 <span>How many kids will be attending?</span>
-                <div className="input-group input-group-sm" style={{ width: 200 }}>
-                  <input type="number" className="form-control" aria-label="Sizing example input" defaultValue={0} aria-describedby="inputGroup-sizing-sm"></input>
+                <div
+                  className="input-group input-group-sm"
+                  style={{ width: 200 }}
+                >
+                  <input
+                    type="number"
+                    className="form-control"
+                    aria-label="Sizing example input"
+                    defaultValue={numberOfKids}
+                    onChange={(event) => setNumberOfKids(event.target.value)}
+                    aria-describedby="inputGroup-sizing-sm"
+                    min={0}
+                  ></input>
                 </div>
               </div>
-              <button className="btn btn-primary form-control" onClick={() => setIsAddProducts(!isAddProducts)}>{isAddProducts ? "Hide Products" : "Add Products"}</button>
-
+              <button
+                className="btn btn-primary form-control"
+                onClick={() => setIsAddProducts(!isAddProducts)}
+              >
+                {isAddProducts ? "Hide Products" : "Add Products"}
+              </button>
             </div>
           </div>
-          {
-            isAddProducts &&
+          {isAddProducts && (
             <div className="row mt-5 bg-white border-5 p-2">
               <div className={expand ? "col-lg-0" : "col-lg-8"}>
                 <div className="pb-3 pt-2 fs-2">Add Products</div>
@@ -156,51 +315,52 @@ export default function Details() {
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
-
                   </div>
                   <div className="p-2 col-md-3 col-sm-4">
                     <Product setIsShowCount={setIsShowCount} />
                   </div>
                 </div>
               </div>
-              <div className={(expand ? "col-lg-12" : "col-lg-4") + " info-payment-container px-0"}>
-                <div className="pb-3 pt-2 fs-2 d-flex justify-content-between"><span>Summary</span> <i className="fa fa-expand cursor-pointer" onClick={() => setExpand(!expand)}></i></div>
+              <div
+                className={
+                  (expand ? "col-lg-12" : "col-lg-4") +
+                  " info-payment-container px-0"
+                }
+              >
+                <div className="pb-3 pt-2 fs-2 d-flex justify-content-between">
+                  <span>Summary</span>{" "}
+                  <i
+                    className="fa fa-expand cursor-pointer"
+                    onClick={() => setExpand(!expand)}
+                  ></i>
+                </div>
                 <div className="info-payment-content p-3">
                   <div>
                     <b>Event:</b>
@@ -216,17 +376,26 @@ export default function Details() {
                   </div>
                   <div>
                     <b>Location:</b>
-                    <p className="mb-1">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus nesciunt hic eos! Totam, impedit ipsum?</p>
+                    <p className="mb-1">
+                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                      Possimus nesciunt hic eos! Totam, impedit ipsum?
+                    </p>
                   </div>
                   <div>
                     <b>Time:</b>
                     <p className="mb-1">Lorem, ipsum dolor.</p>
                   </div>
                   <div>
-                    <div className="d-flex gap-2"><b>Adults: </b><p className="mb-1">5</p></div>
+                    <div className="d-flex gap-2">
+                      <b>Adults: </b>
+                      <p className="mb-1">5</p>
+                    </div>
                   </div>
                   <div>
-                    <div className="d-flex gap-2"><b>Kids: </b><p className="mb-1">5</p></div>
+                    <div className="d-flex gap-2">
+                      <b>Kids: </b>
+                      <p className="mb-1">5</p>
+                    </div>
                   </div>
                   <hr />
                   <h5>List Products</h5>
@@ -239,7 +408,9 @@ export default function Details() {
                           <th scope="col">SL</th>
                           <th scope="col">Price</th>
                           <th scope="col">Total</th>
-                          <th scope="col" className="text-center">Action</th>
+                          <th scope="col" className="text-center">
+                            Action
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -249,7 +420,17 @@ export default function Details() {
                           <td>4</td>
                           <td>25.000đ</td>
                           <td>100.000đ</td>
-                          <td className="text-center"> <i className="fa fa-edit me-1" onClick={() => handleEditCountProduct()}></i><i className="fa fa-trash" onClick={() => handleDeleteProduct()}></i></td>
+                          <td className="text-center">
+                            {" "}
+                            <i
+                              className="fa fa-edit me-1"
+                              onClick={() => handleEditCountProduct()}
+                            ></i>
+                            <i
+                              className="fa fa-trash"
+                              onClick={() => handleDeleteProduct()}
+                            ></i>
+                          </td>
                         </tr>
                         <tr>
                           <th scope="row">2</th>
@@ -257,7 +438,17 @@ export default function Details() {
                           <td>4</td>
                           <td>25.000đ</td>
                           <td>100.000đ</td>
-                          <td className="text-center"> <i className="fa fa-edit me-1" onClick={() => handleEditCountProduct()}></i><i className="fa fa-trash" onClick={() => handleDeleteProduct()}></i></td>
+                          <td className="text-center">
+                            {" "}
+                            <i
+                              className="fa fa-edit me-1"
+                              onClick={() => handleEditCountProduct()}
+                            ></i>
+                            <i
+                              className="fa fa-trash"
+                              onClick={() => handleDeleteProduct()}
+                            ></i>
+                          </td>
                         </tr>
                         <tr>
                           <th scope="row">3</th>
@@ -265,7 +456,17 @@ export default function Details() {
                           <td>4</td>
                           <td>25.000đ</td>
                           <td>100.000đ</td>
-                          <td className="text-center"> <i className="fa fa-edit me-1" onClick={() => handleEditCountProduct()}></i><i className="fa fa-trash" onClick={() => handleDeleteProduct()}></i></td>
+                          <td className="text-center">
+                            {" "}
+                            <i
+                              className="fa fa-edit me-1"
+                              onClick={() => handleEditCountProduct()}
+                            ></i>
+                            <i
+                              className="fa fa-trash"
+                              onClick={() => handleDeleteProduct()}
+                            ></i>
+                          </td>
                         </tr>
                         <tr>
                           <th scope="row">4</th>
@@ -273,7 +474,17 @@ export default function Details() {
                           <td>4</td>
                           <td>25.000đ</td>
                           <td>100.000đ</td>
-                          <td className="text-center"> <i className="fa fa-edit me-1" onClick={() => handleEditCountProduct()}></i><i className="fa fa-trash" onClick={() => handleDeleteProduct()}></i></td>
+                          <td className="text-center">
+                            {" "}
+                            <i
+                              className="fa fa-edit me-1"
+                              onClick={() => handleEditCountProduct()}
+                            ></i>
+                            <i
+                              className="fa fa-trash"
+                              onClick={() => handleDeleteProduct()}
+                            ></i>
+                          </td>
                         </tr>
                         <tr>
                           <th scope="row">5</th>
@@ -281,30 +492,43 @@ export default function Details() {
                           <td>4</td>
                           <td>25.000đ</td>
                           <td>100.000đ</td>
-                          <td className="text-center"> <i className="fa fa-edit me-1" onClick={() => handleEditCountProduct()}></i><i className="fa fa-trash" onClick={() => handleDeleteProduct()}></i></td>
+                          <td className="text-center">
+                            {" "}
+                            <i
+                              className="fa fa-edit me-1"
+                              onClick={() => handleEditCountProduct()}
+                            ></i>
+                            <i
+                              className="fa fa-trash"
+                              onClick={() => handleDeleteProduct()}
+                            ></i>
+                          </td>
                         </tr>
                         <tr>
-                          <th scope="row" colSpan={4}>Total</th>
-                          <td colSpan={2} className="fw-bold text-danger">100.000đ</td>
+                          <th scope="row" colSpan={4}>
+                            Total
+                          </th>
+                          <td colSpan={2} className="fw-bold text-danger">
+                            100.000đ
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
-                {isAddProducts === true && LIST_SHOW_BOOK.includes(category) && (
-                  <div className="about-1-btn mb_30 mt-3 text-center">
-                    <a href={`/cart`} className="btn-1 px-5">
-                      Book<span></span>
-                    </a>
-                  </div>
-                )}
+                {isAddProducts === true &&
+                  LIST_SHOW_BOOK.includes(category) && (
+                    <div className="about-1-btn mb_30 mt-3 text-center">
+                      <a href={`/cart`} className="btn-1 px-5">
+                        Book<span></span>
+                      </a>
+                    </div>
+                  )}
               </div>
             </div>
-          }
-
+          )}
         </div>
       </section>
-
     </>
   );
 }

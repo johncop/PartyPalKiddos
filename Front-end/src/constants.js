@@ -16,79 +16,6 @@ export const UPDATE_LASTEST_PACKAGES_ACTION = "update-lastest-packages-action";
 export const UPDATE_VENUE_LIST = "update-venue-action";
 
 //#region Sample Data
-export const SUGGESTION_LIST = [
-  {
-    name: "Lorem ipsum dolor sit.1",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-    description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque, quae.",
-  },
-  {
-    name: "Lorem ipsum dolor sit.2",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-    description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque, quae.",
-  },
-  {
-    name: "Lorem ipsum dolor sit.3",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-    description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque, quae.",
-  },
-  {
-    name: "Lorem ipsum dolor sit.4",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-    description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque, quae.",
-  },
-];
-
-export const PACKAGE_LIST = [
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-  {
-    name: "Lorem, ipsum",
-    image:
-      "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg",
-  },
-];
 export const CATEGORY_LIST = [
   { value: 1, name: "DESTINATION BIRTHDAY" },
   { value: 2, name: "TRAVEL BIRTHDAY" },
@@ -179,7 +106,8 @@ export const LIST_CATE = {
   CATEGORY: "category",
   SERVICES: "services",
   PARTY_SERVICES: "party-services",
+  PARTY_PACKAGES: "party-packages",
   VENUE: "venue",
 }
-export const LIST_SHOW_BOOK = [LIST_CATE.CATEGORY, LIST_CATE.SERVICES]
+export const LIST_SHOW_BOOK = [LIST_CATE.CATEGORY, LIST_CATE.SERVICES, LIST_CATE.PARTY_PACKAGES, LIST_CATE.VENUE]
 export const IMG_DEFAULT = "https://images.squarespace-cdn.com/content/v1/54b7b93ce4b0a3e130d5d232/1519986430884-H1GYNRLHN0VFRF6W5TAN/icon.png?format=500w"

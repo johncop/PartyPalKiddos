@@ -9,13 +9,13 @@ export default function Card(props) {
             <img
               className="card-img-top"
               style={{ height: 200 }}
-              src={data.venueImages[0]?.imageUrl}
+              src={data.image}
               alt={data.name}
             ></img>
           </div>
           <div className="card-body">
             <div className="card-title text-black mb-0 not-wrap-text">
-              {data.district.description}, <b>{data.name}</b>{" "}
+              {data.district}, <b>{data.name}</b>{" "}
             </div>
             <div className="info-rating d-flex gap-2">
               <div className="rating-star">
