@@ -13,6 +13,7 @@ export const UPDATE_BIRTHDAY_ACTION = "update-birthday-action";
 export const UPDATE_REVIEWERS_ACTION = "update-reviewer-action";
 export const UPDATE_POPULAR_ACTION = "update-popular-action";
 export const UPDATE_LASTEST_PACKAGES_ACTION = "update-lastest-packages-action";
+export const UPDATE_VENUE_LIST = "update-venue-action";
 
 //#region Sample Data
 export const SUGGESTION_LIST = [

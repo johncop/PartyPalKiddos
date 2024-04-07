@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import BannerAbout from "./bannerAbout";
 import { LIST_CATE, LIST_SHOW_BOOK } from "../../constants";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "./Product";
 import { CountProduct } from "./modal/CountProduct";
 
@@ -14,16 +14,32 @@ export default function Details() {
   const [expand, setExpand] = useState(false)
   const [titleModal, setTitleModal] = useState("Add Product")
 
-  if (category === LIST_CATE.PARTY_SERVICES && !data.id) {
-    axios
-      .get(process.env.REACT_APP_API_BASE_URL + "Service/services/" + id)
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  }
+  useEffect(()=> {
+    if (category === LIST_CATE.PARTY_SERVICES && !data.id) {
+      axios
+        .get(process.env.REACT_APP_API_BASE_URL + "Service/services/" + id)
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else if (category === LIST_CATE.VENUE) {
+      axios
+        .get(`${process.env.REACT_APP_API_BASE_URL}venues/search?${id}`)
+        .then((response) => {
+          const temp = response.data.data.find(item => item.id === Number(id));
+          setData({
+            address: temp.address,
+            name: temp.name,
+            description: temp.description
+          });
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+  }, [category, id])
 
   function handleSelectTimeZone(e) {
 
@@ -47,7 +63,6 @@ export default function Details() {
       {
         isShowCount && <CountProduct closeModal={closeModal} titleModal={titleModal} />
       }
-      <BannerAbout />
       <section className="section-padding gray-bg">
         <div className="auto-container">
           <div className="row">
@@ -76,15 +91,14 @@ export default function Details() {
             <div className="col-lg-7 ps-lg-5">
               <div className="section_heading mb_20">
                 <span className="section_heading_title_small">
-                  About PartyPal Kiddos
+                  {data.address}
                 </span>
                 <h3 className="section_heading_title_big">
-                  Lorem, ipsum dolor sit
+                  {data.name}
                   {data.serviceName}
                 </h3>
               </div>
               <p className="aboout-1-desc mb_30 position-relative z-index-99">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo quod sed, error eos vitae natus unde deserunt eaque maiores enim tempora earum voluptatibus? Cupiditate dolor sed sint minus rerum nihil.
                 {data.description}
               </p>
               <hr />

@@ -5486,3 +5486,10 @@ ul.category-widget-list li.active i {
 	cursor: pointer;
 	transition: all 0.15s linear;
 }
+
+.not-wrap-text {
+	white-space: nowrap;
+    width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -7,6 +7,7 @@ import {
   UPDATE_BIRTHDAY_ACTION,
   UPDATE_REVIEWERS_ACTION,
   UPDATE_LASTEST_PACKAGES_ACTION,
+  UPDATE_VENUE_LIST,
 } from "../../constants";
 import {
   getPackagesFormApi,
@@ -17,6 +18,7 @@ import {
   setBirthdayBanner,
   setReviewers,
   setLastestPackages,
+  setVenues,
 } from "../handlers";
 import { defaultStore } from "..";
 
@@ -42,8 +44,8 @@ const getDataReducer = (state = defaultStore, action) => {
       return setReviewers(state, action.reviewers);
     case UPDATE_POPULAR_ACTION:
       return setPopular(state, action.popular);
-    case UPDATE_LASTEST_PACKAGES_ACTION:
-      return setLastestPackages(state, action.lastestPackages);
+    case UPDATE_VENUE_LIST:
+      return setVenues(state, action.venues);
     default:
       return state;
   }

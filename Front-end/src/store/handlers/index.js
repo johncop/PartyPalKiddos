@@ -93,3 +93,15 @@ export function setLastestPackages(state, value) {
     lastestPackages: value,
   };
 }
+
+/**
+ * set a new venues list into the state
+ * @param {*} state current state
+ * @returns new venues
+ */
+export function setVenues(state, value) {
+  return {
+    ...state,
+    venues: value,
+  };
+}

@@ -10,6 +10,7 @@ export const defaultStore = {
     locations: [],
     popular: [],
     reviewers: [],
+    venues: [],
     birthdayBanner: {
       name: "",
       title: "",
