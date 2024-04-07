@@ -5,6 +5,13 @@ import { useEffect, useState } from "react";
 import { Product } from "./Product";
 import { CountProduct } from "./modal/CountProduct";
 import { toast } from "react-toastify";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCreative, Navigation, Pagination } from 'swiper/modules';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-creative';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 export default function Details() {
   let { category, id } = useParams();
@@ -131,11 +138,75 @@ export default function Details() {
                   data-parallax='{"y": -50}'
                 ></div>
                 <div className="about-1-image-1 hvr-img-zoom-1">
-                  <img
-                    src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                    style={{ maxHeight: "400px" }}
-                    alt=""
-                  />
+                  <Swiper
+                    effect={'creative'}
+                    pagination={{
+                      type: 'progressbar',
+                    }}
+                    loop = {true}
+                    creativeEffect={{
+                      prev: {
+                        shadow: true,
+                        origin: 'left center',
+                        translate: ['-5%', 0, -200],
+                        rotate: [0, 100, 0],
+                      },
+                      next: {
+                        origin: 'right center',
+                        translate: ['5%', 0, -200],
+                        rotate: [0, -100, 0],
+                      },
+                    }}
+                    navigation={true}
+                    modules={[EffectCreative, Pagination, Navigation]}
+                    className="mySwiper"
+                  >
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                    <SwiperSlide><img
+                      src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
+                      style={{ maxHeight: "400px" }}
+                      alt=""
+                    /></SwiperSlide>
+                  </Swiper>
                 </div>
                 {LIST_SHOW_BOOK.includes(category) && (
                   <div className="about-1-btn mb_30 mt-3 text-center">
