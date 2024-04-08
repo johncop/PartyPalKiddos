@@ -113,6 +113,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserServices, UserServices>();
         services.AddScoped<IEmailServices, EmailServices>();
         services.AddScoped(typeof(IBaseServices<>), typeof(BaseServices<>));
+        services.AddScoped(typeof(IExtensionServices<>), typeof(ExtensionServices<>));
         return services;
     }
 
@@ -159,12 +160,13 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddContextPool(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString(Assembly.GetExecutingAssembly().GetName().Name);
-        services.AddDbContext<DbContext, PartyKidDbContext>(options =>
+        services.AddDbContextPool<DbContext, PartyKidDbContext>(options =>
                     options.UseSqlServer(connectionString,
                     sqlServerOptionsAction: sqlOptions =>
                     {
                         sqlOptions.CommandTimeout((int)TimeSpan.FromMinutes(2).TotalSeconds);
                         sqlOptions.EnableRetryOnFailure();
+                        sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                     }));
         services
         .AddIdentity<ApplicationUser, IdentityRole<int>>(config =>

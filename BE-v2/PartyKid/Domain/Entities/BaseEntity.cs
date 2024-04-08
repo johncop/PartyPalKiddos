@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace PartyKid;
 
+[Index(nameof(Id))]
 public class BaseEntity<TKey> where TKey : IEquatable<TKey>
 {
     [Key]
@@ -15,6 +17,7 @@ public class BaseEntity<TKey> where TKey : IEquatable<TKey>
     public bool IsDeleted { get; set; } = false;
 }
 
+[Index(nameof(Name))]
 public class BaseEntity : BaseEntity<int>
 {
     [MaxLength(100)]

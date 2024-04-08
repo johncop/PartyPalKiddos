@@ -35,10 +35,9 @@ public class UserServices : IUserServices
         return await _userManager.FindByIdAsync(id);
     }
 
-    public async Task<UserDTO> GetCurrentUser()
+    public async Task<ApplicationUser> GetCurrentUser()
     {
-        ApplicationUser currUser = await _userManager.FindByIdAsync(_httpContextAccessor.HttpContext.Items["User"].ToString());
-        return _mapper.Map<UserDTO>(currUser);
+        return await _userManager.FindByIdAsync(_httpContextAccessor.HttpContext.Items["User"].ToString());
     }
 
     #endregion
@@ -47,7 +46,7 @@ public class UserServices : IUserServices
 
     public async Task<UserDTO> Update(string userId, UpdateUserBindingModel model)
     {
-        ApplicationUser user = await _userManager.FindByIdAsync(userId);
+        ApplicationUser user = string.IsNullOrEmpty(userId) ? await GetCurrentUser() : await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
             throw new DomainException(Constants.AuthHandling.Messages.NotFoundUser);

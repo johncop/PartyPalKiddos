@@ -11,4 +11,5 @@ public class Food : BaseEntity
     public FoodCategory FoodCategory { get; set; }
 
     public ICollection<VenueFood> VenueFoods { get; set; }
+    public ICollection<BookingDetail> BookingDetails { get; set; }
 }

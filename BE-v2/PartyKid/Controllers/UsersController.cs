@@ -9,10 +9,12 @@ namespace PartyKid;
 public class UsersController : BaseApi
 {
     private readonly IUserServices _userServices;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public UsersController(IUserServices userServices, IMapper mapper) : base(mapper)
+    public UsersController(IUserServices userServices, IMapper mapper, UserManager<ApplicationUser> userManager) : base(mapper)
     {
         _userServices = userServices;
+        _userManager = userManager;
     }
 
     #region Query
@@ -36,11 +38,20 @@ public class UsersController : BaseApi
     [Route("current")]
     public async Task<IResponse> GetCurrentUser()
     {
-        return Success<UserDTO>(data: _mapper.Map<UserDTO>(await _userServices.GetCurrentUser()));
+        ApplicationUser currUser = await _userServices.GetCurrentUser();
+        IList<string> userRoles = await _userManager.GetRolesAsync(currUser);
+        return Success<UserResponseDTO>(data: new UserResponseDTO(_mapper.Map<UserDTO>(currUser), userRoles));
     }
     #endregion
 
     #region Command
+
+    [HttpPost]
+    [Route("change-password")]
+    public async Task<IResponse> ChangePassword([FromBody] ChangePasswordBindingModel request)
+    {
+        return Success(message: await _userServices.ChangePassword(request));
+    }
 
     [HttpPost]
     [Route("forgot-password")]
@@ -55,10 +66,10 @@ public class UsersController : BaseApi
 
     [Authorize]
     [HttpPut]
-    public async Task<IResponse> Update([FromBody] UpdateUserBindingModel request)
+    [Route("{Id}")]
+    public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateUserBindingModel request)
     {
-        UserDTO currUser = await _userServices.GetCurrentUser();
-        UserDTO user = await _userServices.Update(currUser.Id.ToString(), request);
+        UserDTO user = await _userServices.Update(id.ToString(), request);
         return Success<UserDTO>(data: user);
     }
     #endregion

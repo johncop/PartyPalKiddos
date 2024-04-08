@@ -36,17 +36,19 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
             })
             { StatusCode = StatusCodes.Status401Unauthorized };
         }
-
-        var userRole = context.HttpContext.Items["Role"];
-        if (_roles.Count > 0 && !_roles.Contains(userRole.ToString()))
+        else
         {
-            context.Result = new JsonResult(new
+            var userRole = context.HttpContext.Items["Role"];
+            if (_roles.Any() && !_roles.Contains(userRole.ToString()))
             {
-                Status = HttpStatusCode.Forbidden,
-                Title = "Forbidden",
-                Detail = Constants.AuthHandling.Messages.Forbidden
-            })
-            { StatusCode = StatusCodes.Status403Forbidden };
+                context.Result = new JsonResult(new
+                {
+                    Status = HttpStatusCode.Forbidden,
+                    Title = "Forbidden",
+                    Detail = Constants.AuthHandling.Messages.Forbidden
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
         }
     }
 }

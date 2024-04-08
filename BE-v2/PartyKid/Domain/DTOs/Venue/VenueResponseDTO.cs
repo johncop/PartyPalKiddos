@@ -12,4 +12,8 @@ public class VenueResponseDTO
     public TimeSpan CloseHour { get; set; }
     public DistrictDTO District { get; set; }
     public IList<VenueImageDTO> VenueImages { get; set; }
+    public IList<ComboDTO>? Combos { get; set; }
+    public IList<FoodResponseDTO>? Foods { get; set; }
+    public IList<ServiceResponseDTO> Services { get; set; }
+    public IList<ServicePackageDTO> ServicePackages { get; set; }
 }

@@ -43,16 +43,15 @@ public class ServicesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServiceBindingModel request)
     {
-
-        Service service = await _serviceService.Find(id);
-        if (service is null)
+        request.Id = id;
+        Service existingService = await _serviceService.Find(id);
+        if (existingService is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
-        service = _mapper.Map<Service>(request);
-        ServiceResponseDTO result = _mapper.Map<ServiceResponseDTO>(await _serviceService.Update(service));
-        return Success<ServiceResponseDTO>(data: result);
+        Service service = _mapper.Map(request, existingService);
+        return Success<ServiceResponseDTO>(data: _mapper.Map<ServiceResponseDTO>(await _serviceService.Update(service)));
     }
 
     [Authorize(nameof(RoleCollection.Admin))]

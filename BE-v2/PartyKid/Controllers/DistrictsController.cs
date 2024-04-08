@@ -50,7 +50,7 @@ public class DistrictsController : BaseApi
         }
 
         district = _mapper.Map<District>(request);
-        return Success<DistrictResponseDTO>(data: _mapper.Map<DistrictResponseDTO>(_districtService.Update(district)));
+        return Success<DistrictResponseDTO>(data: _mapper.Map<DistrictResponseDTO>(await _districtService.Update(district)));
     }
 
     [Authorize(nameof(RoleCollection.Admin))]

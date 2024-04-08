@@ -9,4 +9,6 @@ public class Service : BaseEntity
     public ServiceCategory ServiceCategory { get; set; }
 
     public ICollection<VenueService> VenueServices { get; set; }
+    public ICollection<BookingDetail> BookingDetails { get; set; }
+    public ICollection<ServicePackageDetail> ServicePackages { get; set; }
 }

@@ -7,6 +7,6 @@ public class BookingTimeSlotConfiguration : IEntityTypeConfiguration<BookingTime
 {
     public void Configure(EntityTypeBuilder<BookingTimeSlot> builder)
     {
-        builder.HasKey(x => new { x.BookingId, x.AvailableTimeSlotId });
+        builder.HasKey(x => new { x.BookingId, x.TimeSlotId });
     }
 }

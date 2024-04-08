@@ -12,4 +12,5 @@ public interface IBaseServices<TEntity> where TEntity : class
     Task<string> Create(TEntity entity);
     Task<TEntity> Update(TEntity entity);
     Task<string> Delete(int id);
+    Task<string> DeleteAsync(TEntity entity);
 }

@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace PartyKid;
 
@@ -19,7 +21,8 @@ public class ServicePackagesController : BaseApi
     [HttpGet]
     public async Task<IResponse> GetAll()
     {
-        return Success<IList<ServicePackageResponseDTO>>(data: await _servicePackageService.GetAllAsync<ServicePackageResponseDTO>());
+        return Success<IList<ServicePackageResponseDTO>>(data:
+                await _servicePackageService.GetAllAsync<ServicePackageResponseDTO>(filter: x => !x.IsDeleted, includeEntities: x => x.Services));
     }
 
     [HttpGet]
@@ -41,10 +44,14 @@ public class ServicePackagesController : BaseApi
     }
 
     [HttpGet]
-    [Route("{Id:int}")]
+    [Route("{Id}")]
     public async Task<IResponse> Get([FromRoute(Name = "Id")] int id)
     {
-        return Success<ServicePackageResponseDTO>(data: _mapper.Map<ServicePackageResponseDTO>(await _servicePackageService.Find(id)));
+        ServicePackageResponseDTO servicePackage = await _servicePackageService.Query(filter: x => x.Id == id,
+                                                                                      includeEntities: x => x.Images)
+                                                                                 .ProjectTo<ServicePackageResponseDTO>(_mapper.ConfigurationProvider)
+                                                                                 .FirstOrDefaultAsync();
+        return Success<ServicePackageResponseDTO>(data: servicePackage);
     }
 
     #endregion
@@ -68,6 +75,18 @@ public class ServicePackagesController : BaseApi
             }
         }
 
+        if (request.Services.Count > 0)
+        {
+            servicePackage.Services = new List<ServicePackageDetail>();
+            foreach (var service in request.Services)
+            {
+                servicePackage.Services.Add(new ServicePackageDetail()
+                {
+                    ServiceId = service,
+                });
+            }
+        }
+
         return Success(message: await _servicePackageService.Create(servicePackage));
     }
 
@@ -76,14 +95,17 @@ public class ServicePackagesController : BaseApi
     [Route("{Id:int}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServicePackageBindingModel request)
     {
-        ServicePackage servicePackage = await _servicePackageService.Find(id);
+        ServicePackage servicePackage = await _servicePackageService.Query(filter: x => x.Id == id)
+                                                                    .Include(x => x.Images)
+                                                                    .FirstOrDefaultAsync();
         if (servicePackage is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
-        servicePackage = _mapper.Map<ServicePackage>(request);
-        if (request.Images.Count > 0)
+        request.Id = id;
+        servicePackage = _mapper.Map(request, servicePackage);
+        if (request.Images != null && request.Images.Count > 0)
         {
             servicePackage.Images = new List<ServicePackageImage>();
             foreach (string imageUrl in request.Images)
@@ -91,6 +113,18 @@ public class ServicePackagesController : BaseApi
                 servicePackage.Images.Add(new ServicePackageImage()
                 {
                     ImageUrl = imageUrl
+                });
+            }
+        }
+
+        if (request.Services.Count > 0)
+        {
+            servicePackage.Services = new List<ServicePackageDetail>();
+            foreach (var serviceId in request.Services)
+            {
+                servicePackage.Services.Add(new ServicePackageDetail()
+                {
+                    ServiceId = serviceId
                 });
             }
         }

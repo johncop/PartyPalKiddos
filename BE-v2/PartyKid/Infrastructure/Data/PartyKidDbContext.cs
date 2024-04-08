@@ -30,7 +30,6 @@ public class PartyKidDbContext : IdentityDbContext<ApplicationUser, IdentityRole
 
     #region Entities
     //Booking
-    public DbSet<AvailableTimeSlot> AvailableTimeSlots { get; set; }
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<BookingDetail> BookingDetails { get; set; }
     public DbSet<TimeSlot> TimeSlots { get; set; }

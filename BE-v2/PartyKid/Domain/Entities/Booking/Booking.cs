@@ -11,4 +11,6 @@ public class Booking : BaseEntity<int>
     public ApplicationUser User { get; set; }
     public int? CouponId { get; set; }
     public Coupon Coupon { get; set; }
+
+    public ICollection<BookingDetail> BookingDetails { get; set; }
 }

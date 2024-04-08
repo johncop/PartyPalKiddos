@@ -8,4 +8,5 @@ public class Combo : BaseEntity
 
     public ICollection<ComboFood> ComboFoods { get; set; }
     public ICollection<VenueCombo> VenueCombos { get; set; }
+    public ICollection<BookingDetail> BookingDetails { get; set; }
 }

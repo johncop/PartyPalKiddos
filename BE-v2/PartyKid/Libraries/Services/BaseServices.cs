@@ -1,7 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PartyKid;
 
@@ -32,7 +30,7 @@ public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : Base
 
     public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>>? filter = null, Expression<Func<TEntity, object>>? includeEntities = null, bool disableChangeTracker = true)
     {
-        return _queryRepository.InitQuery();
+        return _queryRepository.InitQuery(filter, includeEntities, disableChangeTracker);
     }
     public async Task<string> Create(TEntity entity)
     {
@@ -75,6 +73,25 @@ public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : Base
         {
             entity.IsDeleted = true;
             _commandRepository.Update(entities: entity);
+            await _unitOfWork.SaveChangesAsync();
+            return Constants.Transactions.Messages.DeleteComplete;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<string> DeleteAsync(TEntity entity)
+    {
+        if (entity == null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
+        try
+        {
+            _commandRepository.Delete(entities: entity);
             await _unitOfWork.SaveChangesAsync();
             return Constants.Transactions.Messages.DeleteComplete;
         }

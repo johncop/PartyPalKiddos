@@ -22,7 +22,7 @@ public class Venue : BaseEntity
     public ICollection<VenueService> VenueServices { get; set; }
     public ICollection<VenueServicePackage> VenueServicePackages { get; set; }
     public ICollection<VenueFood> VenueFoods { get; set; }
-    public ICollection<AvailableTimeSlot> AvailableTimeSlots { get; set; }
+    public ICollection<TimeSlot> TimeSlots { get; set; }
     public ICollection<VenueCombo> VenueCombos { get; set; }
     #endregion
 }

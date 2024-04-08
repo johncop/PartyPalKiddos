@@ -254,41 +254,6 @@ namespace PartyKid.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("PartyKid.AvailableTimeSlot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimeSlotId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("VenueId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TimeSlotId");
-
-                    b.HasIndex("VenueId");
-
-                    b.ToTable("AvailableTimeSlots");
-                });
-
             modelBuilder.Entity("PartyKid.Booking", b =>
                 {
                     b.Property<int>("Id")
@@ -328,6 +293,8 @@ namespace PartyKid.Infrastructure.Migrations
 
                     b.HasIndex("CouponId");
 
+                    b.HasIndex("Id");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
@@ -335,25 +302,37 @@ namespace PartyKid.Infrastructure.Migrations
 
             modelBuilder.Entity("PartyKid.BookingDetail", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FoodId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ComboId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicePackageId")
+                    b.Property<int?>("ComboId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ComboQuantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("FoodQuantity")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FoodQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServicePackageId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ServicePackageQuantity")
@@ -362,11 +341,18 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Property<int?>("ServiceQuantity")
                         .HasColumnType("int");
 
-                    b.HasKey("BookingId", "FoodId", "ComboId", "ServiceId", "ServicePackageId");
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
 
                     b.HasIndex("ComboId");
 
                     b.HasIndex("FoodId");
+
+                    b.HasIndex("Id");
 
                     b.HasIndex("ServiceId");
 
@@ -380,12 +366,12 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AvailableTimeSlotId")
+                    b.Property<int>("TimeSlotId")
                         .HasColumnType("int");
 
-                    b.HasKey("BookingId", "AvailableTimeSlotId");
+                    b.HasKey("BookingId", "TimeSlotId");
 
-                    b.HasIndex("AvailableTimeSlotId");
+                    b.HasIndex("TimeSlotId");
 
                     b.ToTable("BookingTimeSlot");
                 });
@@ -428,6 +414,10 @@ namespace PartyKid.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Combos");
                 });
@@ -499,6 +489,10 @@ namespace PartyKid.Infrastructure.Migrations
 
                     b.HasIndex("CouponTypeId");
 
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
+
                     b.ToTable("Coupons");
                 });
 
@@ -531,6 +525,10 @@ namespace PartyKid.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
+
                     b.ToTable("CouponTypes");
                 });
 
@@ -557,6 +555,8 @@ namespace PartyKid.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("Districts");
                 });
@@ -601,6 +601,10 @@ namespace PartyKid.Infrastructure.Migrations
 
                     b.HasIndex("FoodCategoryId");
 
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
+
                     b.ToTable("Foods");
                 });
 
@@ -632,6 +636,10 @@ namespace PartyKid.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("FoodCategories");
                 });
@@ -675,6 +683,10 @@ namespace PartyKid.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
+
                     b.HasIndex("ServiceCategoryId");
 
                     b.ToTable("Services");
@@ -708,6 +720,10 @@ namespace PartyKid.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("ServiceCategories");
                 });
@@ -746,6 +762,10 @@ namespace PartyKid.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("ServicePackages");
                 });
@@ -791,6 +811,8 @@ namespace PartyKid.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id");
+
                     b.HasIndex("ServicePackageId");
 
                     b.ToTable("ServicePackageImages");
@@ -807,11 +829,14 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan?>("Hours")
+                    b.Property<TimeSpan?>("EndTime")
                         .HasColumnType("time");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<TimeSpan?>("StartTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -819,10 +844,17 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("VenueId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Weekday")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("VenueId");
 
                     b.ToTable("TimeSlots");
                 });
@@ -876,6 +908,10 @@ namespace PartyKid.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DistrictId");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Venues");
                 });
@@ -935,6 +971,8 @@ namespace PartyKid.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.HasIndex("VenueId");
 
@@ -1022,25 +1060,6 @@ namespace PartyKid.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PartyKid.AvailableTimeSlot", b =>
-                {
-                    b.HasOne("PartyKid.TimeSlot", "TimeSlot")
-                        .WithMany("AvailableTimeSlots")
-                        .HasForeignKey("TimeSlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PartyKid.Venue", "Venue")
-                        .WithMany("AvailableTimeSlots")
-                        .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TimeSlot");
-
-                    b.Navigation("Venue");
-                });
-
             modelBuilder.Entity("PartyKid.Booking", b =>
                 {
                     b.HasOne("PartyKid.Coupon", "Coupon")
@@ -1061,34 +1080,26 @@ namespace PartyKid.Infrastructure.Migrations
             modelBuilder.Entity("PartyKid.BookingDetail", b =>
                 {
                     b.HasOne("PartyKid.Booking", "Booking")
-                        .WithMany()
+                        .WithMany("BookingDetails")
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PartyKid.Combo", "Combo")
-                        .WithMany()
-                        .HasForeignKey("ComboId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("BookingDetails")
+                        .HasForeignKey("ComboId");
 
                     b.HasOne("PartyKid.Food", "Food")
-                        .WithMany()
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("BookingDetails")
+                        .HasForeignKey("FoodId");
 
                     b.HasOne("PartyKid.Service", "Service")
-                        .WithMany()
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("BookingDetails")
+                        .HasForeignKey("ServiceId");
 
                     b.HasOne("PartyKid.ServicePackage", "ServicePackage")
-                        .WithMany()
-                        .HasForeignKey("ServicePackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("BookingDetails")
+                        .HasForeignKey("ServicePackageId");
 
                     b.Navigation("Booking");
 
@@ -1103,21 +1114,21 @@ namespace PartyKid.Infrastructure.Migrations
 
             modelBuilder.Entity("PartyKid.BookingTimeSlot", b =>
                 {
-                    b.HasOne("PartyKid.AvailableTimeSlot", "AvailableTimeSlot")
-                        .WithMany()
-                        .HasForeignKey("AvailableTimeSlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PartyKid.Booking", "Booking")
                         .WithMany()
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AvailableTimeSlot");
+                    b.HasOne("PartyKid.TimeSlot", "TimeSlot")
+                        .WithMany("BookingTimeSlots")
+                        .HasForeignKey("TimeSlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Booking");
+
+                    b.Navigation("TimeSlot");
                 });
 
             modelBuilder.Entity("PartyKid.ComboFood", b =>
@@ -1175,13 +1186,13 @@ namespace PartyKid.Infrastructure.Migrations
             modelBuilder.Entity("PartyKid.ServicePackageDetail", b =>
                 {
                     b.HasOne("PartyKid.Service", "Service")
-                        .WithMany()
+                        .WithMany("ServicePackages")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PartyKid.ServicePackage", "ServicePackage")
-                        .WithMany()
+                        .WithMany("Services")
                         .HasForeignKey("ServicePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1200,6 +1211,17 @@ namespace PartyKid.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ServicePackage");
+                });
+
+            modelBuilder.Entity("PartyKid.TimeSlot", b =>
+                {
+                    b.HasOne("PartyKid.Venue", "Venue")
+                        .WithMany("TimeSlots")
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Venue");
                 });
 
             modelBuilder.Entity("PartyKid.Venue", b =>
@@ -1300,8 +1322,15 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Navigation("Venue");
                 });
 
+            modelBuilder.Entity("PartyKid.Booking", b =>
+                {
+                    b.Navigation("BookingDetails");
+                });
+
             modelBuilder.Entity("PartyKid.Combo", b =>
                 {
+                    b.Navigation("BookingDetails");
+
                     b.Navigation("ComboFoods");
 
                     b.Navigation("VenueCombos");
@@ -1319,6 +1348,8 @@ namespace PartyKid.Infrastructure.Migrations
 
             modelBuilder.Entity("PartyKid.Food", b =>
                 {
+                    b.Navigation("BookingDetails");
+
                     b.Navigation("VenueFoods");
                 });
 
@@ -1329,6 +1360,10 @@ namespace PartyKid.Infrastructure.Migrations
 
             modelBuilder.Entity("PartyKid.Service", b =>
                 {
+                    b.Navigation("BookingDetails");
+
+                    b.Navigation("ServicePackages");
+
                     b.Navigation("VenueServices");
                 });
 
@@ -1339,19 +1374,23 @@ namespace PartyKid.Infrastructure.Migrations
 
             modelBuilder.Entity("PartyKid.ServicePackage", b =>
                 {
+                    b.Navigation("BookingDetails");
+
                     b.Navigation("Images");
+
+                    b.Navigation("Services");
 
                     b.Navigation("VenueServicePackages");
                 });
 
             modelBuilder.Entity("PartyKid.TimeSlot", b =>
                 {
-                    b.Navigation("AvailableTimeSlots");
+                    b.Navigation("BookingTimeSlots");
                 });
 
             modelBuilder.Entity("PartyKid.Venue", b =>
                 {
-                    b.Navigation("AvailableTimeSlots");
+                    b.Navigation("TimeSlots");
 
                     b.Navigation("VenueCombos");
 

@@ -11,5 +11,7 @@ public class ServicePackage : BaseEntity
 
     #region Many To Many Relationships
     public ICollection<VenueServicePackage> VenueServicePackages { get; set; }
+    public ICollection<BookingDetail> BookingDetails { get; set; }
+    public ICollection<ServicePackageDetail> Services { get; set; }
     #endregion
 }
