@@ -12,6 +12,7 @@ export const TableAdmin = ({
   data,
   handleEdit,
   handleRemove,
+  addedField,
 }) => {
   const [showModal, setShowModal] = useState(null);
   if (!btnDataEdit) {
@@ -97,6 +98,8 @@ export const TableAdmin = ({
                 ></button>
               </div>
               <div className="modal-body">
+                {addedField}
+
                 {btnDataEdit.map((field, indexBtn) => (
                   <InputCommon
                     key={"edit-new-field" + indexBtn}

@@ -3,9 +3,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { handleUpload } from "../../../firebase";
+import { AddTimeSlotButton } from "../timeSlot";
 
 export const VenuePage = () => {
   const [data, setData] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([]);
   const [districts, setDictrics] = useState({
     title: "Districts",
     type: "text",
@@ -364,6 +366,16 @@ export const VenuePage = () => {
     },
   ];
 
+  function handleAddedField({ startTime, endTime, days, status }) {
+    timeSlots.push({
+      startTime,
+      endTime,
+      days: days.map((item) => item.value).join("-"),
+      status,
+    });
+    setTimeSlots(timeSlots);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     handleUpload("images/venue", e.target[9].files[0], (res) => {
@@ -396,7 +408,6 @@ export const VenuePage = () => {
         });
     });
   }
-
   function handleEdit(e, item) {
     e.preventDefault();
     handleUpload("images/venue", e.target[13].files[0], (res) => {
@@ -430,11 +441,24 @@ export const VenuePage = () => {
           imageUrls: [res || item.venueImages[0]?.imageUrl],
         })
         .then((response) => {
-          toast.info("Update Success", {
-            position: "bottom-center",
-            autoClose: 2000,
+          Promise.all(
+            timeSlots.map((tl) =>
+              axios.post(`${process.env.REACT_APP_API_BASE_URL}/time-slots`, {
+                startTime: tl.startTime,
+                endTime: tl.endTime,
+                weekday: tl.days,
+                status: tl.status ? "free" : "booked",
+                venueId: item.id,
+              })
+            )
+          ).then((res) => {
+            toast.info("Update Success", {
+              position: "bottom-center",
+              autoClose: 2000,
+            });
+            setRender(!render);
           });
-          setRender(!render);
+
           return response;
         })
         .catch((error) => {
@@ -482,6 +506,12 @@ export const VenuePage = () => {
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}
           handleRemove={handleDelete}
+          addedField={
+            <AddTimeSlotButton
+              defaultvalue={timeSlots}
+              handleSubmit={handleAddedField}
+            />
+          }
         />
       </div>
     </>

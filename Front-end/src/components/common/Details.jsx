@@ -85,7 +85,6 @@ export default function Details() {
   function handleSelectTimeZone(e) {}
 
   function handleDeleteProduct(item) {
-    console.log(item);
     setSubProducts(
       subProducts.filter(
         (product) => !(product.id === item.id && product.type === item.type)
