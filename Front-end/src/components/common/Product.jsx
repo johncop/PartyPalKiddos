@@ -4,7 +4,7 @@ export function Product(props) {
     <>
       <div className="product-container">
         <div className="img-product-container">
-          <img src={image} alt="img-product" />
+          <img src={image} alt="img-product"  style={{width: 200, height: 200, margin: "auto"}}/>
           <div className="product-price">{price.toLocaleString()}đ</div>
         </div>
         <div className="product-content p-2">

@@ -35,7 +35,7 @@ export default function Login(props) {
         return response;
       })
       .catch((error) => {
-        toast.error(error.message, {
+        toast.error("Username or Password invalid", {
           position: "bottom-center",
           autoClose: 2000,
         });

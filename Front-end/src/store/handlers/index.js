@@ -105,3 +105,27 @@ export function setVenues(state, value) {
     venues: value,
   };
 }
+
+/**
+ * set a new venues list into the state
+ * @param {*} state current state
+ * @returns new venues
+ */
+export function setPackageCategories(state, value) {
+  return {
+    ...state,
+    packageCategories: value,
+  };
+}
+
+/**
+ * set a new venues list into the state
+ * @param {*} state current state
+ * @returns new venues
+ */
+export function setServices(state, value) {
+  return {
+    ...state,
+    services: value,
+  };
+}

@@ -15,7 +15,8 @@ export default function Card(props) {
           </div>
           <div className="card-body">
             <div className="card-title text-black mb-0 not-wrap-text">
-              {data.district}, <b>{data.name}</b>{" "}
+              {data.district}
+              {data.district ? "," : ""} <b>{data.name}</b>{" "}
             </div>
             <div className="info-rating d-flex gap-2">
               <div className="rating-star">

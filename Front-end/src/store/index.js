@@ -11,6 +11,8 @@ export const defaultStore = {
     popular: [],
     reviewers: [],
     venues: [],
+    packageCategories: [],
+    services: [],
     birthdayBanner: {
       name: "",
       title: "",

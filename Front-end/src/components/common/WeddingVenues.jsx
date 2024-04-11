@@ -91,7 +91,10 @@ export default function WeddingVenues() {
             {venues.map((venue, index) => {
               if ((page - 1) * 12 <= index && index < page * 12) {
                 return (
-                  <div className="col-lg-3 col-md-6 mb-3 ps-2 pe-2">
+                  <div
+                    key={"venue-1-" + venue.id}
+                    className="col-lg-3 col-md-6 mb-3 ps-2 pe-2"
+                  >
                     <Card
                       data={{
                         ...venue,
@@ -127,7 +130,7 @@ export default function WeddingVenues() {
             {venues.map((venue, index) => {
               if ((pagePopular - 1) * 8 <= index && index < pagePopular * 8) {
                 return (
-                  <div className="col-lg-3 col-md-6 mb-3 ps-2 pe-2">
+                  <div key={"venue-2-" + venue.id} className="col-lg-3 col-md-6 mb-3 ps-2 pe-2">
                     <Card
                       data={{
                         ...venue,

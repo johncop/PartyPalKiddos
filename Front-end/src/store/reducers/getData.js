@@ -8,6 +8,8 @@ import {
   UPDATE_REVIEWERS_ACTION,
   UPDATE_LASTEST_PACKAGES_ACTION,
   UPDATE_VENUE_LIST,
+  UPDATE_PACKAGE_CATEGORY_ACTION,
+  UPDATE_SERVICES_ACTION,
 } from "../../constants";
 import {
   getPackagesFormApi,
@@ -19,6 +21,8 @@ import {
   setReviewers,
   setLastestPackages,
   setVenues,
+  setPackageCategories,
+  setServices,
 } from "../handlers";
 import { defaultStore } from "..";
 
@@ -48,6 +52,10 @@ const getDataReducer = (state = defaultStore, action) => {
       return setLastestPackages(state, action.lastestPackages);
     case UPDATE_VENUE_LIST:
       return setVenues(state, action.venues);
+    case UPDATE_PACKAGE_CATEGORY_ACTION:
+      return setPackageCategories(state, action.categories);
+    case UPDATE_SERVICES_ACTION:
+      return setServices(state, action.services);
     default:
       return state;
   }

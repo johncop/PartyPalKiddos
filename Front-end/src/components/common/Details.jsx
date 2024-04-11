@@ -55,6 +55,7 @@ export default function Details() {
             services: temp.services,
             servicePackages: temp.servicePackages,
             combos: temp.combos,
+            images: temp.venueImages,
           });
           setVenueId(id);
         })
@@ -103,6 +104,7 @@ export default function Details() {
       setFoods(foods.filter((product) => product.id !== item.id));
     }
   }
+
   function handleClick(e) {
     e.preventDefault();
     if (numberOfAdults < 0 || numberOfKids < 0) {
@@ -205,6 +207,7 @@ export default function Details() {
       });
     }
   }
+
   function handleAddSubProduct(
     type,
     id,
@@ -324,6 +327,7 @@ export default function Details() {
 
     setSubProducts(subProducts);
   }
+
   return (
     <>
       {isShowCount && (
@@ -374,69 +378,15 @@ export default function Details() {
                     modules={[EffectCreative, Pagination, Navigation]}
                     className="mySwiper"
                   >
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src="https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                        style={{ maxHeight: "400px" }}
-                        alt=""
-                      />
-                    </SwiperSlide>
+                    {data.images?.map((image, index) => (
+                      <SwiperSlide key={"img-pd" + index}>
+                        <img
+                          src={image.imageUrl}
+                          style={{ maxHeight: "400px" }}
+                          alt=""
+                        />
+                      </SwiperSlide>
+                    ))}
                   </Swiper>
                 </div>
                 {LIST_SHOW_BOOK.includes(category) && (
@@ -630,11 +580,7 @@ export default function Details() {
                             name={item.name}
                             price={item.price}
                             item={item}
-                            image={
-                              item.images
-                                ? item.images[0]?.imageUrl
-                                : "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                            }
+                            image={item.images[0]?.imageUrl}
                             type="packages"
                             handleClick={handleAddProduct}
                           />
@@ -653,10 +599,7 @@ export default function Details() {
                             name={item.name}
                             price={item.price}
                             item={item}
-                            image={
-                              item.image ||
-                              "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                            }
+                            image={item.image}
                             type="services"
                             handleClick={handleAddProduct}
                           />
@@ -675,10 +618,7 @@ export default function Details() {
                             name={item.name}
                             price={item.price}
                             item={item}
-                            image={
-                              item.image ||
-                              "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                            }
+                            image={item.image}
                             type="combos"
                             handleClick={handleAddProduct}
                           />
@@ -697,10 +637,7 @@ export default function Details() {
                             name={item.name}
                             price={item.price}
                             item={item}
-                            image={
-                              item.imageUrl ||
-                              "https://images-cdn.ubuy.co.id/634d262dda72487d39725676-happy-birthday-decorations-backdrop.jpg"
-                            }
+                            image={item.imageUrl}
                             type="foods"
                             handleClick={handleAddProduct}
                           />
@@ -824,7 +761,7 @@ export default function Details() {
                           <td colSpan={2} className="fw-bold text-danger">
                             {(
                               subProducts.reduce(
-                                (accum, item) => accum + item.price,
+                                (accum, item) => accum + (item.price * item.quantity),
                                 0
                               ) + (data.price ? data.price : 0)
                             )?.toLocaleString()}
