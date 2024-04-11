@@ -13,6 +13,7 @@ export const defaultStore = {
     venues: [],
     packageCategories: [],
     services: [],
+    carts: [],
     birthdayBanner: {
       name: "",
       title: "",

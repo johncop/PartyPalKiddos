@@ -1,13 +1,20 @@
 import { useEffect } from "react";
 import { TBCart } from "../common/table/TBCart";
 import axios from "axios";
+import { UPDATE_CART_ACTION } from "../../constants";
+import { useDispatch } from "react-redux";
 
 export function Cart() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}bookings`)
       .then((response) => {
-        console.log(response);
+        dispatch({
+          type: UPDATE_CART_ACTION,
+          carts: response.data.data,
+        });
         return response;
       })
       .catch((error) => {

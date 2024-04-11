@@ -38,7 +38,7 @@ export const AddTimeSlotButton = ({ handleSubmit, defaultvalue }) => {
       </div>
       {defaultvalue.map((timeSlot) => {
         return (
-          <div class="btn btn-secondary" disabled>
+          <div className="btn btn-secondary" disabled>
             {timeSlot.days}
           </div>
         );

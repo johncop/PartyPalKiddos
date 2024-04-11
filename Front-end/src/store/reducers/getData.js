@@ -10,6 +10,7 @@ import {
   UPDATE_VENUE_LIST,
   UPDATE_PACKAGE_CATEGORY_ACTION,
   UPDATE_SERVICES_ACTION,
+  UPDATE_CART_ACTION,
 } from "../../constants";
 import {
   getPackagesFormApi,
@@ -23,6 +24,7 @@ import {
   setVenues,
   setPackageCategories,
   setServices,
+  setCarts,
 } from "../handlers";
 import { defaultStore } from "..";
 
@@ -56,6 +58,8 @@ const getDataReducer = (state = defaultStore, action) => {
       return setPackageCategories(state, action.categories);
     case UPDATE_SERVICES_ACTION:
       return setServices(state, action.services);
+    case UPDATE_CART_ACTION:
+      return setCarts(state, action.carts);
     default:
       return state;
   }

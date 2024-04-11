@@ -9,11 +9,11 @@ export default function OptionProfile({ logout }) {
       .get(`${process.env.REACT_APP_API_BASE_URL}users/current`)
       .then((response) => {
         if (response.data.data.roles.includes("User")) {
-            setUserInfo(response.data.data);
+          setUserInfo(response.data.data);
         } else {
-            if (!window.location.pathname.includes("forbbiden")) {
-                window.location.href = "/forbbiden"
-            }
+          if (!window.location.pathname.includes("forbbiden")) {
+            window.location.href = "/forbbiden";
+          }
         }
         return response;
       })

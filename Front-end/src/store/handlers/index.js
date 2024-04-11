@@ -129,3 +129,15 @@ export function setServices(state, value) {
     services: value,
   };
 }
+
+/**
+ * set a new venues list into the state
+ * @param {*} state current state
+ * @returns new venues
+ */
+export function setCarts(state, value) {
+  return {
+    ...state,
+    carts: value,
+  };
+}
