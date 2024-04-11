@@ -3,30 +3,37 @@ import { InputCommon } from "../input";
 
 export const AddButton = ({ fields, handleSubmit }) => {
   const [image, setImage] = useState(null);
-
+  const [showModal, setShowModal] = useState(false);
   function changeImage(e) {
     setImage(e.target.files[0]);
   }
+  const handleOnSubmit = (e) => {
+    handleSubmit(e);
+    setShowModal(false);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
   return (
     <>
       <button
         className="btn btn-primary btn-sm ms-2"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
+        onClick={() => setShowModal(true)}
       >
         Add New
       </button>
 
       {/* Moadl add new */}
       <div
-        className="modal fade"
-        id="exampleModal"
+        className={`modal fade ${showModal ? "show" : ""}`}
+        style={{ display: showModal ? "block" : "none" }}
         tabIndex="-1"
+        role="dialog"
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+        aria-hidden={!showModal}
       >
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <form className="modal-content" onSubmit={(e) => handleSubmit(e)}>
+          <form className="modal-content" onSubmit={(e) => handleOnSubmit(e)}>
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
                 Add new
@@ -36,6 +43,7 @@ export const AddButton = ({ fields, handleSubmit }) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={handleCloseModal}
               ></button>
             </div>
             <div className="modal-body">
@@ -62,6 +70,7 @@ export const AddButton = ({ fields, handleSubmit }) => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                onClick={handleCloseModal}
               >
                 Close
               </button>
@@ -72,6 +81,7 @@ export const AddButton = ({ fields, handleSubmit }) => {
           </form>
         </div>
       </div>
+      {showModal && <div className="modal-backdrop fade show"></div>}
     </>
   );
 };

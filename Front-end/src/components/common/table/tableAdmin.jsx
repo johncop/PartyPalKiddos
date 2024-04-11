@@ -8,17 +8,33 @@ export const TableAdmin = ({
   btnDataEdit,
   handleSubmit,
   columns,
+  columnKeys,
   data,
   handleEdit,
   handleRemove,
 }) => {
+  const [showModal, setShowModal] = useState(null);
   if (!btnDataEdit) {
     btnDataEdit = btnDataAdd;
   }
+
+  if (!columnKeys) {
+    columnKeys = columns;
+  }
+
   const [image, setImage] = useState(null);
   useEffect(() => {
     if (data.length > 0) {
-      new DataTable("#datatablesSimple");
+      new DataTable("#datatablesSimple", { perPage: 15 });
+      const elementsArray = document.querySelectorAll(".button-edit-item");
+      elementsArray.forEach(function (elem) {
+        elem.addEventListener("click", function (e) {
+          const dataIndex = data.findIndex(
+            (item) => item.id === Number(elem.getAttribute("data-id"))
+          );
+          modalEdit(data[dataIndex], dataIndex);
+        });
+      });
     }
   }, [data]);
   function getValue(type, key, data, multiple) {
@@ -46,6 +62,91 @@ export const TableAdmin = ({
     setImage(e.target.files[0]);
   }
 
+  function modalEdit(item, index) {
+    setShowModal(
+      <>
+        <div
+          className={`modal fade show`}
+          style={{ display: "block" }}
+          tabIndex="-1"
+          role="dialog"
+          aria-labelledby="exampleEditModalLabel"
+          aria-hidden={!false}
+        >
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <form
+              className="modal-content"
+              onSubmit={(e) => {
+                handleEdit(e, item);
+                setShowModal(null);
+              }}
+            >
+              <div className="modal-header">
+                <h5 className="modal-title" id={"editModalLabel" + item.id}>
+                  Edit
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={() => {
+                    setImage(null);
+                    setShowModal(null);
+                  }}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {btnDataEdit.map((field, indexBtn) => (
+                  <InputCommon
+                    key={"edit-new-field" + indexBtn}
+                    type={field.type}
+                    title={field.title}
+                    changeImage={changeImage}
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    image={image}
+                    index={index}
+                    items={field.items}
+                    handleChange={field.onChange}
+                    id={"edit-field-item" + indexBtn}
+                    multiple={field.multiple}
+                    defaultValue={getValue(
+                      field.type,
+                      field.key,
+                      item,
+                      field.multiple
+                    )}
+                    defaultImage={
+                      field.type === "file" ? field.getImageUrls(item) : null
+                    }
+                  />
+                ))}
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  onClick={() => {
+                    setImage(null);
+                    setShowModal(null);
+                  }}
+                >
+                  Close
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div className="modal-backdrop fade show"></div>
+      </>
+    );
+  }
+
   return (
     <div className="card mb-4">
       <div className="card-header">
@@ -63,28 +164,33 @@ export const TableAdmin = ({
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
-              <tr key={"item-value-" + index}>
-                {columns.map((column, index) => (
-                  <td key={"colum-table-" + index}>{item[column]}</td>
-                ))}
-                <td className="text-center">
-                  {" "}
-                  <i
-                    className="fa fa-edit me-1"
-                    onClick={() => {}}
-                    data-bs-toggle="modal"
-                    data-bs-target={"#modalEditItem" + item.id}
-                  ></i>
-                  <i
-                    className="fa fa-trash"
-                    onClick={() => {}}
-                    data-bs-toggle="modal"
-                    data-bs-target={"#modalRemoveItem" + item.id}
-                  ></i>
-                </td>
-              </tr>
-            ))}
+            {data.map((item, index) => {
+              return (
+                <tr key={"item-value-" + index}>
+                  {columnKeys.map((column, i) => (
+                    <td key={"colum-table-" + index + "-" + i}>
+                      {getValue(null, column, item, false)}
+                    </td>
+                  ))}
+                  <td className="text-center">
+                    <button
+                      className="button-edit-item"
+                      id={`button-edit-item-${item.id}`}
+                      data-id={item.id}
+                      style={{ backgroundColor: "transparent" }}
+                    >
+                      <i className="fa fa-edit me-1"></i>
+                    </button>
+                    <i
+                      className="fa fa-trash"
+                      onClick={() => {}}
+                      data-bs-toggle="modal"
+                      data-bs-target={"#modalRemoveItem" + item.id}
+                    ></i>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -135,78 +241,9 @@ export const TableAdmin = ({
               </div>
             </div>
           </div>
-
-          {/* Moadl Edit */}
-          <div
-            className="modal fade"
-            id={"modalEditItem" + item.id}
-            tabIndex="-1"
-            aria-labelledby={"editModalLabel" + item.id}
-            aria-hidden="true"
-            style={{ textAlign: "left", fontSize: "16px" }}
-          >
-            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-              <form
-                className="modal-content"
-                onSubmit={(e) => handleEdit(e, item)}
-              >
-                <div className="modal-header">
-                  <h5 className="modal-title" id={"editModalLabel" + item.id}>
-                    Edit
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                    onClick={() => setImage(null)}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  {btnDataEdit.map((field, indexBtn) => (
-                    <InputCommon
-                      key={"edit-new-field" + indexBtn}
-                      type={field.type}
-                      title={field.title}
-                      changeImage={changeImage}
-                      placeholder={field.placeholder}
-                      required={field.required}
-                      image={image}
-                      index={index}
-                      items={field.items}
-                      handleChange={field.onChange}
-                      id={"edit-field-item" + indexBtn}
-                      multiple={field.multiple}
-                      defaultValue={getValue(
-                        field.type,
-                        field.key,
-                        item,
-                        field.multiple
-                      )}
-                      defaultImage={
-                        field.type === "file" ? field.getImageUrls(item) : null
-                      }
-                    />
-                  ))}
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                    onClick={() => setImage(null)}
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Save changes
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
         </div>
       ))}
+      {showModal}
     </div>
   );
 };

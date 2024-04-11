@@ -179,7 +179,14 @@ export const FoodPage = () => {
           <li className="breadcrumb-item active">Food</li>
         </ol>
         <TableAdmin
-          columns={["id", "name", "description", "price"]}
+          columns={["id", "category", "name", "description", "price"]}
+          columnKeys={[
+            "id",
+            "foodCategory.name",
+            "name",
+            "description",
+            "price",
+          ]}
           data={data}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
