@@ -1,8 +1,10 @@
 import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
 import { TableAdmin } from "../common/table/tableAdmin";
+import { useSelector } from "react-redux";
 
 export const HomePage = () => {
+  const state = useSelector((state) => state);
   const data = {
     labels: [
       "Mar 1",
@@ -136,7 +138,7 @@ export const HomePage = () => {
             </div>
           </div>
         </div>
-        <TableAdmin btnDataAdd={[]} data={[]} columns={[]}/>
+        <TableAdmin state={state} btnDataAdd={[]} data={[]} columns={[]}/>
       </div>
     </>
   );

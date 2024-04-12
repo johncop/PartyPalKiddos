@@ -3,8 +3,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { handleUpload } from "../../../firebase";
+import { useSelector } from "react-redux";
 
 export const FoodPage = () => {
+  const state = useSelector((state) => state);
   const [data, setData] = useState([]);
   const [render, setRender] = useState(false);
   const [foodCategory, setFoodCategory] = useState({
@@ -179,6 +181,7 @@ export const FoodPage = () => {
           <li className="breadcrumb-item active">Food</li>
         </ol>
         <TableAdmin
+          state={state}
           columns={["id", "category", "name", "description", "price"]}
           columnKeys={[
             "id",

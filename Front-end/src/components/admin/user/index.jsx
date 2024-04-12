@@ -2,8 +2,10 @@ import { TableAdmin } from "../../common/table/tableAdmin";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export const UserPage = () => {
+  const state = useSelector((state) => state);
   const [data, setData] = useState([]);
   const [updatedRoles, setUpdatedRoles] = useState([]);
   const [render, setRender] = useState(false);
@@ -179,6 +181,7 @@ export const UserPage = () => {
           columns={["id", "full name", "email"]}
           columnKeys={["id", "fullName", "email"]}
           data={data}
+          state={state}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}

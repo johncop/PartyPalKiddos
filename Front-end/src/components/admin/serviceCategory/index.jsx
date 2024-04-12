@@ -2,10 +2,12 @@ import { TableAdmin } from "../../common/table/tableAdmin";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export const ServiceCategoryPage = () => {
+  const state = useSelector((state) => state);
   const [data, setData] = useState([]);
-  const [ render, setRender] = useState(false);
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     axios
@@ -67,11 +69,14 @@ export const ServiceCategoryPage = () => {
   function handleEdit(e, item) {
     e.preventDefault();
     axios
-      .put(`${process.env.REACT_APP_API_BASE_URL}/service-categories/${item.id}`, {
-        id: item.id,
-        name: e.target[1].value,
-        description: e.target[2].value,
-      })
+      .put(
+        `${process.env.REACT_APP_API_BASE_URL}/service-categories/${item.id}`,
+        {
+          id: item.id,
+          name: e.target[1].value,
+          description: e.target[2].value,
+        }
+      )
       .then((response) => {
         toast.info("Update Success", {
           position: "bottom-center",
@@ -118,6 +123,7 @@ export const ServiceCategoryPage = () => {
         <TableAdmin
           columns={["id", "name", "description"]}
           data={data}
+          state={state}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}

@@ -2,10 +2,12 @@ import { TableAdmin } from "../../common/table/tableAdmin";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export const FoodCategoryPage = () => {
+  const state = useSelector((state) => state);
   const [data, setData] = useState([]);
-  const [ render, setRender] = useState(false);
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     axios
@@ -118,6 +120,7 @@ export const FoodCategoryPage = () => {
         <TableAdmin
           columns={["id", "name", "description"]}
           data={data}
+          state={state}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}

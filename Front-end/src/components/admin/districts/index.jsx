@@ -3,8 +3,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { handleUpload } from "../../../firebase";
+import { useSelector } from "react-redux";
 
 export const DistrictPage = () => {
+  const state = useSelector((state) => state);
   const [data, setData] = useState([]);
   const [render, setRender] = useState(false);
 
@@ -124,6 +126,7 @@ export const DistrictPage = () => {
         <TableAdmin
           columns={["id", "description"]}
           data={data}
+          state={state}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}

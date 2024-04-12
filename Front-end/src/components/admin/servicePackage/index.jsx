@@ -3,8 +3,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { handleUpload } from "../../../firebase";
+import { useSelector } from "react-redux";
 
 export const ServicePackagePage = () => {
+  const state = useSelector((state) => state);
   const [data, setData] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
   const [render, setRender] = useState(false);
@@ -204,6 +206,7 @@ export const ServicePackagePage = () => {
         <TableAdmin
           columns={["id", "name", "description", "price"]}
           data={data}
+          state={state}
           btnDataAdd={btnDataAdd}
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}
