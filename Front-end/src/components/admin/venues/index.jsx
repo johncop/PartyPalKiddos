@@ -7,7 +7,7 @@ import { AddTimeSlotButton } from "../timeSlot";
 
 export const VenuePage = () => {
   const [data, setData] = useState([]);
-  const [timeSlots, setTimeSlots] = useState([]);
+  let [timeSlots, setTimeSlots] = useState([]);
   const [districts, setDictrics] = useState({
     title: "Districts",
     type: "text",
@@ -282,7 +282,8 @@ export const VenuePage = () => {
       items: [],
       key: "imageUrls",
       disabled: false,
-      getImageUrls: (value) => value.venueImages[0]?.imageUrl,
+      getImageUrls: (value) =>
+        value.venueImages[value.venueImages.length - 1]?.imageUrl,
     },
   ];
   const btnDataEdit = [
@@ -370,7 +371,7 @@ export const VenuePage = () => {
     timeSlots.push({
       startTime,
       endTime,
-      days: days.map((item) => item.value).join("-"),
+      weekday: days.map((item) => item.value).join("-"),
       status,
     });
     setTimeSlots(timeSlots);
@@ -446,7 +447,7 @@ export const VenuePage = () => {
               axios.post(`${process.env.REACT_APP_API_BASE_URL}/time-slots`, {
                 startTime: tl.startTime,
                 endTime: tl.endTime,
-                weekday: tl.days,
+                weekday: tl.weekday,
                 status: tl.status ? "free" : "booked",
                 venueId: item.id,
               })
@@ -506,12 +507,25 @@ export const VenuePage = () => {
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}
           handleRemove={handleDelete}
-          addedField={
-            <AddTimeSlotButton
-              defaultvalue={timeSlots}
-              handleSubmit={handleAddedField}
-            />
-          }
+          addedField={(item, isClosed) => {
+            if (isClosed) {
+              timeSlots = []
+              setTimeSlots(timeSlots);
+              return null;
+            } else {
+              if (timeSlots.length === 0) {
+                timeSlots.push(...item.timeSlots);
+                setTimeSlots(timeSlots);
+              }
+            }
+
+            return (
+              <AddTimeSlotButton
+                defaultvalue={timeSlots}
+                handleSubmit={handleAddedField}
+              />
+            );
+          }}
         />
       </div>
     </>

@@ -43,6 +43,7 @@ import {
 } from "./constants";
 import axios from "./middleware/axios";
 import "./styles/css/style.css";
+import { UserPage } from "./components/admin/user";
 
 Chart.register(CategoryScale);
 
@@ -161,6 +162,14 @@ export const App = () => {
               element={
                 <AdminLayout>
                   <ServicePackagePage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/user"
+              element={
+                <AdminLayout>
+                  <UserPage />
                 </AdminLayout>
               }
             />

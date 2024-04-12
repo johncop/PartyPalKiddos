@@ -39,7 +39,7 @@ export const AddTimeSlotButton = ({ handleSubmit, defaultvalue }) => {
       {defaultvalue.map((timeSlot) => {
         return (
           <div className="btn btn-secondary" disabled style={{ padding: 0 }}>
-            {timeSlot.days}
+            {timeSlot.weekday}
           </div>
         );
       })}

@@ -7,6 +7,7 @@ export const InputCommon = ({
   changeImage,
   placeholder,
   required,
+  disabled,
   image,
   items,
   id,
@@ -21,6 +22,7 @@ export const InputCommon = ({
         <input
           className="form-check-input"
           type="checkbox"
+          disabled={disabled}
           id={"flexSwitchCheckChecked" + id + index}
         />
         <label
@@ -46,6 +48,7 @@ export const InputCommon = ({
           onChange={handleChange}
           options={options}
           isMulti={multiple}
+          isDisabled={disabled}
         />
       </div>
     );
@@ -69,6 +72,7 @@ export const InputCommon = ({
         style={{ width: "100%" }}
         onChange={type === "file" ? changeImage : null}
         defaultValue={defaultValue}
+        disabled={disabled}
       ></input>
       {type === "file" && (
         <img

@@ -63,7 +63,7 @@ export const TableAdmin = ({
     setImage(e.target.files[0]);
   }
 
-  function modalEdit(item, index) {
+  const modalEdit = (item, index) => {
     setShowModal(
       <>
         <div
@@ -94,11 +94,12 @@ export const TableAdmin = ({
                   onClick={() => {
                     setImage(null);
                     setShowModal(null);
+                    addedField(item, true);
                   }}
                 ></button>
               </div>
               <div className="modal-body">
-                {addedField}
+                {addedField(item)}
 
                 {btnDataEdit.map((field, indexBtn) => (
                   <InputCommon
@@ -108,6 +109,7 @@ export const TableAdmin = ({
                     changeImage={changeImage}
                     placeholder={field.placeholder}
                     required={field.required}
+                    disabled={field.disabled}
                     image={image}
                     index={index}
                     items={field.items}
@@ -134,6 +136,7 @@ export const TableAdmin = ({
                   onClick={() => {
                     setImage(null);
                     setShowModal(null);
+                    addedField(item, true);
                   }}
                 >
                   Close
@@ -148,7 +151,7 @@ export const TableAdmin = ({
         <div className="modal-backdrop fade show"></div>
       </>
     );
-  }
+  };
 
   return (
     <div className="card mb-4">

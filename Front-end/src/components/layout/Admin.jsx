@@ -136,6 +136,9 @@ export const AdminLayout = ({ children }) => {
                     <a className="nav-link" href="/admin/service">
                       Service
                     </a>
+                    <a className="nav-link" href="/admin/user">
+                      User
+                    </a>
                   </nav>
                 </div>
 
