@@ -64,7 +64,7 @@ export const TableAdmin = ({
   }
 
   function changeImage(e) {
-    setImage(e.target.files[0]);
+    setImage(e.target.files);
   }
   useEffect(() => {
     if (state.uiState.popup.index !== -1) {

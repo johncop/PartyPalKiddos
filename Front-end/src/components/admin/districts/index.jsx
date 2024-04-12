@@ -46,11 +46,11 @@ export const DistrictPage = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/district", e.target[2].files[0], (res) => {
+    handleUpload("images/district", e.target[2].files, (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/districts`, {
           description: e.target[1].value,
-          imageUrl: res,
+          imageUrl: res[0],
         })
         .then((response) => {
           toast.info("Create Success", {
@@ -72,11 +72,11 @@ export const DistrictPage = () => {
 
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/district", e.target[2].files[0], (res) => {
+    handleUpload("images/district", e.target[2].files, (res) => {
       axios
         .put(`${process.env.REACT_APP_API_BASE_URL}/districts/${item.id}`, {
           description: e.target[1].value,
-          imageUrl: res || item.imageUrl,
+          imageUrl: res[0] || item.imageUrl,
           id: item.id,
         })
         .then((response) => {

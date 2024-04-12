@@ -96,14 +96,14 @@ export const ServicesPage = () => {
   ];
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/service", e.target[5].files[0], (res) => {
+    handleUpload("images/service", e.target[5].files, (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/services`, {
           name: e.target[1].value,
           description: e.target[2].value,
           price: e.target[3].value,
           serviceCategoryId: e.target[4].value,
-          image: res,
+          image: res[0],
         })
         .then((response) => {
           toast.info("Create Success", {
@@ -125,7 +125,7 @@ export const ServicesPage = () => {
 
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/service", e.target[5].files[0], (res) => {
+    handleUpload("images/service", e.target[5].files, (res) => {
       axios
         .put(`${process.env.REACT_APP_API_BASE_URL}/services/${item.id}`, {
           id: item.id,
@@ -133,7 +133,7 @@ export const ServicesPage = () => {
           description: e.target[2].value,
           price: e.target[3].value,
           serviceCategoryId: e.target[4].value,
-          image: res || item.image,
+          image: res[0] || item.image,
         })
         .then((response) => {
           toast.info("Update Success", {

@@ -106,20 +106,21 @@ export const ServicePackagePage = () => {
       items: [],
       key: "imageUrl",
       disabled: false,
-      getImageUrls: (value) => value?.images[0]?.imageUrl,
+      multiple: true,
+      getImageUrls: (value) => value?.images,
     },
   ];
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/service", e.target[6].files[0], (res) => {
+    handleUpload("images/service", e.target[6].files, (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/service-packages`, {
           name: e.target[1].value,
           description: e.target[2].value,
           price: e.target[3].value,
           status: e.target[4].checked ? 1 : 0,
-          images: [res],
+          images: res,
           services: selectedServices,
         })
         .then((response) => {
@@ -141,7 +142,7 @@ export const ServicePackagePage = () => {
   }
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/service", e.target[6].files[0], (res) => {
+    handleUpload("images/service", e.target[6].files, (res) => {
       axios
         .put(
           `${process.env.REACT_APP_API_BASE_URL}/service-packages/${item.id}`,
@@ -151,7 +152,7 @@ export const ServicePackagePage = () => {
             description: e.target[2].value,
             price: Number(e.target[3].value),
             status: e.target[4].checked ? 1 : 0,
-            images: [res || item.images[0]?.imageUrl],
+            images: res || item.images,
             services:
               selectedServices.length > 0
                 ? selectedServices

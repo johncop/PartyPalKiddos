@@ -22,22 +22,27 @@ const app = initializeApp(firebaseConfig);
 
 const storage = getStorage(app);
 
-export const handleUpload = (path, image, callback) => {
-  if (image) {
+export const handleUpload = (path, image, callback, i = 0, result = []) => {
+  if (image.length > 0) {
     const storageRef = ref(
       storage,
       `${path}/${new Date()
         .toISOString()
         .replace(/:/g, "_")
-        .replace(/\..+/, "")}_${image.name}`
+        .replace(/\..+/, "")}_${image[i].name}`
     );
 
     // 'file' comes from the Blob or File API
-    uploadBytes(storageRef, image)
+    uploadBytes(storageRef, image[i])
       .then((snapshot) => {
         getDownloadURL(snapshot.ref)
           .then((downloadURL) => {
-            callback(downloadURL);
+            result.push(downloadURL);
+            if (i === image.length - 1) {
+              callback(result);
+            } else {
+              handleUpload(path, image, callback, i + 1, result);
+            }
           })
           .catch((error) => {
             toast.error(error.message, {
@@ -53,6 +58,6 @@ export const handleUpload = (path, image, callback) => {
         });
       });
   } else {
-    callback(null);
+    callback([]);
   }
 };

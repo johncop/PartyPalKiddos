@@ -285,8 +285,10 @@ export const VenuePage = () => {
       items: [],
       key: "imageUrls",
       disabled: false,
-      getImageUrls: (value) =>
-        value.venueImages[value.venueImages.length - 1]?.imageUrl,
+      multiple: true,
+      getImageUrls: (value) => {
+        return value.venueImages
+      },
     },
   ];
   const btnDataEdit = [
@@ -366,7 +368,10 @@ export const VenuePage = () => {
       items: [],
       key: "imageUrls",
       disabled: false,
-      getImageUrls: (value) => value.venueImages[0]?.imageUrl,
+      multiple: true,
+      getImageUrls: (value) => {
+        return value.venueImages
+      },
     },
   ];
 
@@ -386,7 +391,7 @@ export const VenuePage = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/venue", e.target[9].files[0], (res) => {
+    handleUpload("images/venue", e.target[9].files, (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/venues`, {
           name: e.target[1].value,
@@ -397,7 +402,7 @@ export const VenuePage = () => {
           openHour: e.target[6].value,
           closeHour: e.target[7].value,
           disctrictId: e.target[8].value,
-          imageUrls: [res],
+          imageUrls: res,
         })
         .then((response) => {
           toast.info("Create Success", {
@@ -418,7 +423,7 @@ export const VenuePage = () => {
   }
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/venue", e.target[13].files[0], (res) => {
+    handleUpload("images/venue", e.target[13].files, (res) => {
       axios
         .put(`${process.env.REACT_APP_API_BASE_URL}/venues/${item.id}`, {
           id: item.id,
@@ -446,7 +451,7 @@ export const VenuePage = () => {
             selectCombos.length > 0
               ? selectCombos
               : item.combos.map((it) => it.id),
-          imageUrls: [res || item.venueImages[0]?.imageUrl],
+          imageUrls: res || item.venueImages,
         })
         .then((response) => {
           Promise.all(

@@ -5,7 +5,7 @@ export const AddButton = ({ fields, handleSubmit }) => {
   const [image, setImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   function changeImage(e) {
-    setImage(e.target.files[0]);
+    setImage(e.target.files);
   }
   const handleOnSubmit = (e) => {
     handleSubmit(e);

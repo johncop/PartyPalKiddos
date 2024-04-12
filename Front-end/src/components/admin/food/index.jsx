@@ -96,14 +96,14 @@ export const FoodPage = () => {
   ];
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/food", e.target[5].files[0], (res) => {
+    handleUpload("images/food", e.target[5].files, (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/foods`, {
           name: e.target[1].value,
           description: e.target[2].value,
           price: e.target[3].value,
           foodCategoryId: e.target[4].value,
-          imageUrl: res,
+          imageUrl: res[0],
         })
         .then((response) => {
           toast.info("Create Success", {
@@ -125,7 +125,7 @@ export const FoodPage = () => {
 
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/food", e.target[5].files[0], (res) => {
+    handleUpload("images/food", e.target[5].files, (res) => {
       axios
         .put(`${process.env.REACT_APP_API_BASE_URL}/foods/${item.id}`, {
           id: item.id,
@@ -133,7 +133,7 @@ export const FoodPage = () => {
           description: e.target[2].value,
           price: e.target[3].value,
           foodCategoryId: e.target[4].value,
-          imageUrl: res || item.imageUrl,
+          imageUrl: res[0] || item.imageUrl,
         })
         .then((response) => {
           toast.info("Update Success", {

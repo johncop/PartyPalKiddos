@@ -51,7 +51,6 @@ export const ComboPage = () => {
         return error;
       });
   }, [render]);
-
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/combos`)
@@ -118,7 +117,7 @@ export const ComboPage = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/food", e.target[6].files[0], (res) => {
+    handleUpload("images/food", e.target[6].files, (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/combos`, {
           name: e.target[1].value,
@@ -126,7 +125,7 @@ export const ComboPage = () => {
           price: e.target[3].value,
           comboFoods: selectValues,
           status: e.target[5].checked ? 1 : 0,
-          imageUrl: res,
+          imageUrl: res[0],
         })
         .then((response) => {
           toast.info("Create Success", {
@@ -148,7 +147,7 @@ export const ComboPage = () => {
 
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/food", e.target[6].files[0], (res) => {
+    handleUpload("images/food", e.target[6].files, (res) => {
       axios
         .put(`${process.env.REACT_APP_API_BASE_URL}/combos/${item.id}`, {
           id: item.id,
@@ -165,7 +164,7 @@ export const ComboPage = () => {
                 })
               : selectValues,
           status: e.target[5].checked ? 1 : 0,
-          imageUrl: res || item.image,
+          imageUrl: res[0] || item.image,
         })
         .then((response) => {
           toast.info("Update Success", {
