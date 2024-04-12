@@ -9,7 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Layout({
   children,
   wrapperCls,
-  handlePopup
+  handlePopup,
+  showUserInfo = true,
 }) {
   const [scroll, setScroll] = useState(0);
   // Mobile Menu
@@ -49,6 +50,7 @@ export default function Layout({
           handlePopup={handlePopup}
           isSidebar={isSidebar}
           handleSidebar={handleSidebar}
+          showUserInfo={showUserInfo}
         />
 
         <SearchPopup isPopup={false} handlePopup={handlePopup} />

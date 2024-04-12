@@ -11,7 +11,11 @@ export default function OptionProfile({ logout }) {
         if (response.data.data.roles.includes("User")) {
           setUserInfo(response.data.data);
         } else {
-          if (!window.location.pathname.includes("forbbiden")) {
+          if (
+            !window.location.pathname.includes("forbbiden") &&
+            !window.location.pathname.includes("login") &&
+            !window.location.pathname.includes("sign-up")
+          ) {
             window.location.href = "/forbbiden";
           }
         }

@@ -12,6 +12,7 @@ export default function Header({
   isSidebar,
   handlePopup,
   handleSidebar,
+  showUserInfo = true,
 }) {
   const [isLogin, setIsLogin] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -30,43 +31,45 @@ export default function Header({
 
   return (
     <>
-      <div className="header-top-1">
-        <div className="auto-container">
-          <div className="header-top-1-row d-flex align-items-center justify-content-between">
-            <div className="header-top-1-left-column">
-              <ul className="header-top-1-contact-info d-flex align-items-center">
-                <li>
-                  <a href="mailto:info@example.com">info@example.com</a>
-                </li>
-                <li>
-                  <a href="tel:+91-213-666-0027">+12-345-678-9999</a>
-                </li>
-              </ul>
-            </div>
-            <div className="header-top-1-right-column d-flex align-items-center gap-3 header-top-1-user">
-              {isLoginDone ? (
-                <OptionProfile logout={logout} />
-              ) : (
-                <>
-                  {" "}
-                  <a
-                    className="bg-transparent text-white btn-login"
-                    href="/login"
-                  >
-                    LOGIN
-                  </a>
-                  <a
-                    className="bg-danger px-2 b_radius_2 text-white btn-sign-up"
-                    href="/sign-up"
-                  >
-                    SIGN UP
-                  </a>
-                </>
-              )}
+      {showUserInfo && (
+        <div className="header-top-1">
+          <div className="auto-container">
+            <div className="header-top-1-row d-flex align-items-center justify-content-between">
+              <div className="header-top-1-left-column">
+                <ul className="header-top-1-contact-info d-flex align-items-center">
+                  <li>
+                    <a href="mailto:info@example.com">info@example.com</a>
+                  </li>
+                  <li>
+                    <a href="tel:+91-213-666-0027">+12-345-678-9999</a>
+                  </li>
+                </ul>
+              </div>
+              <div className="header-top-1-right-column d-flex align-items-center gap-3 header-top-1-user">
+                {isLoginDone ? (
+                  <OptionProfile logout={logout} />
+                ) : (
+                  <>
+                    {" "}
+                    <a
+                      className="bg-transparent text-white btn-login"
+                      href="/login"
+                    >
+                      LOGIN
+                    </a>
+                    <a
+                      className="bg-danger px-2 b_radius_2 text-white btn-sign-up"
+                      href="/sign-up"
+                    >
+                      SIGN UP
+                    </a>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <header
         className={`main-header header-style-one ${
           scroll ? "fixed-header" : ""

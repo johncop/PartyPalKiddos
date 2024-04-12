@@ -92,6 +92,22 @@ export const App = () => {
     <>
       <BrowserRouter basename="/">
         <Routes>
+          <Route
+            path="/login"
+            element={
+              <Layout handlePopup={handlePopup} showUserInfo={false}>
+                <Login />
+              </Layout>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <Layout handlePopup={handlePopup} showUserInfo={false}>
+                <SignUp />
+              </Layout>
+            }
+          />
           <Route element={<ProtectedRoute redirectPath="/forbbiden" />}>
             <Route
               path="/admin/charts"
@@ -216,22 +232,7 @@ export const App = () => {
               </Layout>
             }
           />
-          <Route
-            path="/login"
-            element={
-              <Layout handlePopup={handlePopup}>
-                <Login />
-              </Layout>
-            }
-          />
-          <Route
-            path="/sign-up"
-            element={
-              <Layout handlePopup={handlePopup}>
-                <SignUp />
-              </Layout>
-            }
-          />
+
           <Route
             path="/cart"
             element={
