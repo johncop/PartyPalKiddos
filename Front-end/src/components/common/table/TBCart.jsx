@@ -6,9 +6,19 @@ export function TBCart() {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [carts, setCarts] = useState([]);
   useEffect(() => {
-    setCarts(state.uiState.carts);
+    setCarts(
+      state.uiState.carts.map((item) => {
+        return { ...item, isCheck: false };
+      })
+    );
   }, [state.uiState.carts]);
-  useEffect(() => {}, [isCheckAll]);
+  useEffect(() => {
+    setCarts(
+      state.uiState.carts.map((item) => {
+        return { ...item, isCheck: isCheckAll };
+      })
+    );
+  }, [isCheckAll]);
 
   return (
     <>
@@ -40,7 +50,24 @@ export function TBCart() {
                   {index}
                 </th>
                 <td className="text-danger fw-bold text-center">
-                  <input type="checkbox" checked={item.isCheck} />
+                  <input
+                    type="checkbox"
+                    checked={item.isCheck}
+                    onChange={(e) => {
+                      setCarts(
+                        carts.map((cart) => {
+                          if (cart.id === item.id) {
+                            return {
+                              ...cart,
+                              isCheck: e.target.checked,
+                            };
+                          } else {
+                            return cart;
+                          }
+                        })
+                      );
+                    }}
+                  />
                 </td>
                 <td>
                   <div className="name-product d-flex align-items-center gap-3">
@@ -51,7 +78,9 @@ export function TBCart() {
                         alt=""
                       />
                     </div>
-                    <span className="fw-bold">{item.venue.name}</span>
+                    <a href={`cart/${item.id}`} className="fw-bold mouse-event">
+                      {item.venue.name}
+                    </a>
                   </div>
                 </td>
                 <td className="text-danger fw-bold">

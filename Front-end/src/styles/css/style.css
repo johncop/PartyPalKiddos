@@ -5492,3 +5492,7 @@ ul.category-widget-list li.active i {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.mouse-event {
+	cursor: pointer;
+}

@@ -75,16 +75,65 @@ export default function Details({ defaultValue }) {
             name: temp.name,
             description: temp.description,
           });
-          setServicePackages({
-            id,
-            quantity: 1,
-          });
+          setServicePackages([
+            {
+              id,
+              quantity: 1,
+            },
+          ]);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else if (category === LIST_CATE.CART) {
+      axios
+        .get(`${process.env.REACT_APP_API_BASE_URL}bookings`)
+        .then((response) => {
+          const temp = response.data.data.find(
+            (item) => item.id === Number(id)
+          );
+          setDate(new Date(temp.bookingDate));
+          setCombos(temp.bookingDetail.combos);
+          setFoods(temp.bookingDetail.foods);
+          setServices(temp.bookingDetail.services);
+          setServicePackages(temp.bookingDetail.servicePackages);
+          setSubProducts([
+            ...temp.bookingDetail.combos,
+            ...temp.bookingDetail.foods,
+            ...temp.bookingDetail.services,
+            ...temp.bookingDetail.servicePackages,
+          ]);
+          setNumberOfAdults(temp.numberOfAdults);
+          setNumberOfKids(temp.numberOfKids);
+          setVenueId(temp.venue.id);
         })
         .catch((error) => {
           console.log(error.message);
         });
     }
   }, [category, id]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}venues/${venueId}`)
+      .then((response) => {
+        const temp = response.data.data;
+        setData({
+          address: temp.address,
+          name: temp.name,
+          description: temp.description,
+          foods: temp.foods,
+          services: temp.services,
+          servicePackages: temp.servicePackages,
+          combos: temp.combos,
+          images: temp.venueImages,
+        });
+        setVenueId(id);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, [venueId]);
 
   useEffect(() => {
     axios
@@ -135,30 +184,66 @@ export default function Details({ defaultValue }) {
 
       return;
     }
-    axios
-      .post(`${process.env.REACT_APP_API_BASE_URL}bookings`, {
-        bookingDate: date.toISOString(),
-        numberOfKids: numberOfKids,
-        numberOfAdults: numberOfAdults,
-        bookingStatus: "string",
-        venueId: venueId,
-        combos: combos,
-        foods: foods,
-        services: services,
-        servicePackages: servicePackages,
-        bookingTimeSlots: [selectedTimeSlot],
-      })
-      .then((response) => {
-        window.location.href = "/cart";
-        return response;
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: "bottom-center",
-          autoClose: 2000,
+    if (category === LIST_CATE.VENUE) {
+      axios
+        .post(`${process.env.REACT_APP_API_BASE_URL}bookings`, {
+          bookingDate: date.toISOString(),
+          numberOfKids: numberOfKids,
+          numberOfAdults: numberOfAdults,
+          bookingStatus: "string",
+          venueId: venueId,
+          combos: combos,
+          foods: foods,
+          services: services,
+          servicePackages: servicePackages,
+          bookingTimeSlots: [selectedTimeSlot],
+        })
+        .then((response) => {
+          window.location.href = "/cart";
+          return response;
+        })
+        .catch((error) => {
+          toast.error(error.message, {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          return error;
         });
-        return error;
-      });
+    } else if (category === LIST_CATE.CART) {
+      axios
+        .put(`${process.env.REACT_APP_API_BASE_URL}bookings/${id}`, {
+          id: id,
+          bookingDate: date.toISOString(),
+          numberOfKids: numberOfKids,
+          numberOfAdults: numberOfAdults,
+          bookingStatus: "string",
+          venueId: venueId,
+          combos: combos.map((item) => {
+            return { id: item.id, quantity: item.quantity };
+          }),
+          foods: foods.map((item) => {
+            return { id: item.id, quantity: item.quantity };
+          }),
+          services: services.map((item) => {
+            return { id: item.id, quantity: item.quantity };
+          }),
+          servicePackages: servicePackages.map((item) => {
+            return { id: item.id, quantity: item.quantity };
+          }),
+          bookingTimeSlots: [selectedTimeSlot],
+        })
+        .then((response) => {
+          window.location.href = "/cart";
+          return response;
+        })
+        .catch((error) => {
+          toast.error(error.message, {
+            position: "bottom-center",
+            autoClose: 2000,
+          });
+          return error;
+        });
+    }
   }
 
   function closeModal() {
@@ -437,6 +522,7 @@ export default function Details({ defaultValue }) {
                 <p className="mb-0">Select Event Date:</p>
                 <input
                   type="date"
+                  defaultValue={date.toISOString().substr(0, 10)}
                   style={{ width: 150 }}
                   className="form-control"
                   min="<?php echo date('2024-m-d'); ?>"
@@ -453,6 +539,7 @@ export default function Details({ defaultValue }) {
                 onChange={(e) => {
                   setSelectedTimeSlot(e.target.defaultValue);
                 }}
+                defaultValue={selectedTimeSlot}
               >
                 {timeSlots.map((tl) => (
                   <div key={"time-slot-" + tl.id}>
@@ -535,7 +622,7 @@ export default function Details({ defaultValue }) {
                   </TabList>
                   <TabPanel>
                     <div className="row">
-                      {data?.servicePackages.map((item, index) => (
+                      {data?.servicePackages?.map((item, index) => (
                         <div
                           className="p-2 col-md-3 col-sm-4"
                           key={"detail-service-package-item" + index}
@@ -554,7 +641,7 @@ export default function Details({ defaultValue }) {
                   </TabPanel>
                   <TabPanel>
                     <div className="row">
-                      {data?.services.map((item, index) => (
+                      {data?.services?.map((item, index) => (
                         <div
                           className="p-2 col-md-3 col-sm-4"
                           key={"detail-services-item" + index}
@@ -573,7 +660,7 @@ export default function Details({ defaultValue }) {
                   </TabPanel>
                   <TabPanel>
                     <div className="row">
-                      {data?.combos.map((item, index) => (
+                      {data?.combos?.map((item, index) => (
                         <div
                           className="p-2 col-md-3 col-sm-4"
                           key={"detail-combos-item" + index}
@@ -592,7 +679,7 @@ export default function Details({ defaultValue }) {
                   </TabPanel>
                   <TabPanel>
                     <div className="row">
-                      {data?.foods.map((item, index) => (
+                      {data?.foods?.map((item, index) => (
                         <div
                           className="p-2 col-md-3 col-sm-4"
                           key={"detail-food-item" + index}
@@ -631,7 +718,7 @@ export default function Details({ defaultValue }) {
                   </div>
                   <div>
                     <b>Packages:</b>
-                    {servicePackages.map((item, index) => {
+                    {servicePackages?.map((item, index) => {
                       <p
                         className="mb-1"
                         key={"added-service-packages" + index}
@@ -642,7 +729,7 @@ export default function Details({ defaultValue }) {
                   </div>
                   <div>
                     <b>Services:</b>
-                    {services.map((item, index) => {
+                    {services?.map((item, index) => {
                       <p className="mb-1" key={"added-service" + index}>
                         {item.name}
                       </p>;
@@ -697,7 +784,7 @@ export default function Details({ defaultValue }) {
                             <i className="fa fa-trash" disabled></i>
                           </td>
                         </tr>
-                        {subProducts.map((item, index) => (
+                        {subProducts?.map((item, index) => (
                           <tr key={"sub-product" + index}>
                             <th scope="row">{index + 2}</th>
                             <td>{item.name}</td>
@@ -724,7 +811,7 @@ export default function Details({ defaultValue }) {
                           </th>
                           <td colSpan={2} className="fw-bold text-danger">
                             {(
-                              subProducts.reduce(
+                              subProducts?.reduce(
                                 (accum, item) =>
                                   accum + item.price * item.quantity,
                                 0
