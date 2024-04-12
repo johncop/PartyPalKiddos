@@ -16,12 +16,12 @@ export default function Login(props) {
       .then((response) => {
         if (response.status === 200) {
           if (e.target[2].checked) {
-            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("token", response.data.data.token);
           } else {
-            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("token", response.data.data.token);
           }
 
-          if (response.data.roles.includes("Admin")) {
+          if (response.data.data.roles.includes("Admin")) {
             window.location.href = "/admin";
           } else {
             window.location.href = "/";
@@ -29,7 +29,7 @@ export default function Login(props) {
         } else {
           toast.error("Username or Password invalid", {
             position: "bottom-center",
-            autoClose: 3000,
+            autoClose: 2000,
           });
         }
         return response;
