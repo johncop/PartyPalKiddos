@@ -141,3 +141,15 @@ export function setCarts(state, value) {
     carts: value,
   };
 }
+
+/**
+ * set a new venues list into the state
+ * @param {*} state current state
+ * @returns new venues
+ */
+export function setPopup(state, value) {
+  return {
+    ...state,
+    popup: value,
+  };
+}

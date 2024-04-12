@@ -14,6 +14,7 @@ export const UPDATE_BIRTHDAY_ACTION = "update-birthday-action";
 export const UPDATE_REVIEWERS_ACTION = "update-reviewer-action";
 export const UPDATE_SERVICES_ACTION = "update-services-action";
 export const UPDATE_CART_ACTION = "update-cart-action";
+export const SET_STATUS_POPUP = "update-popup-data";
 export const UPDATE_POPULAR_ACTION = "update-popular-action";
 export const UPDATE_LASTEST_PACKAGES_ACTION = "update-lastest-packages-action";
 export const UPDATE_VENUE_LIST = "update-venue-action";

@@ -18,7 +18,11 @@ export const defaultStore = {
       name: "",
       title: "",
       image: "",
-      description: ""
+      description: "",
+    },
+    popup: {
+      item: {},
+      index: -1,
     },
   },
 };

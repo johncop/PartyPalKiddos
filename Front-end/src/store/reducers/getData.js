@@ -11,6 +11,7 @@ import {
   UPDATE_PACKAGE_CATEGORY_ACTION,
   UPDATE_SERVICES_ACTION,
   UPDATE_CART_ACTION,
+  SET_STATUS_POPUP,
 } from "../../constants";
 import {
   getPackagesFormApi,
@@ -25,6 +26,7 @@ import {
   setPackageCategories,
   setServices,
   setCarts,
+  setPopup,
 } from "../handlers";
 import { defaultStore } from "..";
 
@@ -60,6 +62,8 @@ const getDataReducer = (state = defaultStore, action) => {
       return setServices(state, action.services);
     case UPDATE_CART_ACTION:
       return setCarts(state, action.carts);
+    case SET_STATUS_POPUP:
+      return setPopup(state, action.popup);
     default:
       return state;
   }

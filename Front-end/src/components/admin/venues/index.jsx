@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { handleUpload } from "../../../firebase";
 import { AddTimeSlotButton } from "../timeSlot";
+import { useSelector } from "react-redux";
 
 export const VenuePage = () => {
+  const state = useSelector((state) => state);
   const [data, setData] = useState([]);
   let [timeSlots, setTimeSlots] = useState([]);
   let [addedTimeSlots, setAddedTimeSlots] = useState([]);
@@ -523,6 +525,7 @@ export const VenuePage = () => {
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}
           handleRemove={handleDelete}
+          state={state}
           addedField={(item, isClosed) => {
             if (isClosed) {
               timeSlots = [];
