@@ -15,10 +15,13 @@ import "swiper/css/navigation";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
-export default function Details() {
+export default function Details({ defaultValue }) {
   let { category, id } = useParams();
   const [data, setData] = useState({});
   const [numberOfKids, setNumberOfKids] = useState(0);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(0);
+  const [date, setDate] = useState(new Date());
+  const [timeSlots, setTimeSlots] = useState([]);
   const [numberOfAdults, setNumberOfAdults] = useState(0);
   const [venueId, setVenueId] = useState(0);
   const [subProducts, setSubProducts] = useState([]);
@@ -82,7 +85,25 @@ export default function Details() {
         });
     }
   }, [category, id]);
-  function handleSelectTimeZone(e) {}
+
+  useEffect(() => {
+    axios
+      .get(
+        `${
+          process.env.REACT_APP_API_BASE_URL
+        }time-slots/${id}/${date.toISOString()}`
+      )
+      .then((response) => {
+        setTimeSlots(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, [date]);
+
+  function handleSelectTimeZone(e) {
+    setDate(new Date(e.timeStamp));
+  }
 
   function handleDeleteProduct(item) {
     setSubProducts(
@@ -116,7 +137,7 @@ export default function Details() {
     }
     axios
       .post(`${process.env.REACT_APP_API_BASE_URL}bookings`, {
-        bookingDate: new Date().toISOString(),
+        bookingDate: date.toISOString(),
         numberOfKids: numberOfKids,
         numberOfAdults: numberOfAdults,
         bookingStatus: "string",
@@ -125,6 +146,7 @@ export default function Details() {
         foods: foods,
         services: services,
         servicePackages: servicePackages,
+        bookingTimeSlots: [selectedTimeSlot],
       })
       .then((response) => {
         window.location.href = "/cart";
@@ -418,6 +440,7 @@ export default function Details() {
                   style={{ width: 150 }}
                   className="form-control"
                   min="<?php echo date('2024-m-d'); ?>"
+                  onChange={handleSelectTimeZone}
                 ></input>
               </div>
               <p>
@@ -427,87 +450,29 @@ export default function Details() {
                 className="btn-group mb-4 d-flex gap-2 flex-wrap"
                 role="group"
                 aria-label="Basic radio toggle button group"
+                onChange={(e) => {
+                  setSelectedTimeSlot(e.target.defaultValue);
+                }}
               >
-                <div>
-                  <input
-                    type="radio"
-                    className="btn-check"
-                    name="btnradio"
-                    id="btnradio1"
-                    autoComplete="off"
-                  ></input>
-                  <label
-                    className="btn btn-outline-primary"
-                    style={{ width: 100 }}
-                    htmlFor="btnradio1"
-                  >
-                    11:10pm
-                  </label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    className="btn-check"
-                    name="btnradio"
-                    id="btnradio2"
-                    autoComplete="off"
-                  ></input>
-                  <label
-                    className="btn btn-outline-primary"
-                    style={{ width: 100 }}
-                    htmlFor="btnradio2"
-                  >
-                    12:10pm
-                  </label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    className="btn-check"
-                    name="btnradio"
-                    id="btnradio3"
-                    autoComplete="off"
-                  ></input>
-                  <label
-                    className="btn btn-outline-primary"
-                    style={{ width: 100 }}
-                    htmlFor="btnradio3"
-                  >
-                    00:00am
-                  </label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    className="btn-check"
-                    name="btnradio"
-                    id="btnradio4"
-                    autoComplete="off"
-                  ></input>
-                  <label
-                    className="btn btn-outline-primary"
-                    style={{ width: 100 }}
-                    htmlFor="btnradio4"
-                  >
-                    01:00am
-                  </label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    className="btn-check"
-                    name="btnradio"
-                    id="btnradio5"
-                    autoComplete="off"
-                  ></input>
-                  <label
-                    className="btn btn-outline-primary"
-                    style={{ width: 100 }}
-                    htmlFor="btnradio5"
-                  >
-                    03:00am
-                  </label>
-                </div>
+                {timeSlots.map((tl) => (
+                  <div key={"time-slot-" + tl.id}>
+                    <input
+                      type="radio"
+                      className="btn-check"
+                      name="btnradio"
+                      id={"btnradio" + tl.id}
+                      autoComplete="off"
+                      value={tl.id}
+                    ></input>
+                    <label
+                      className="btn btn-outline-primary"
+                      style={{ width: 100 }}
+                      htmlFor={"btnradio" + tl.id}
+                    >
+                      {tl.startTime}
+                    </label>
+                  </div>
+                ))}
               </div>
 
               <div className="row mb-4">
@@ -760,7 +725,8 @@ export default function Details() {
                           <td colSpan={2} className="fw-bold text-danger">
                             {(
                               subProducts.reduce(
-                                (accum, item) => accum + (item.price * item.quantity),
+                                (accum, item) =>
+                                  accum + item.price * item.quantity,
                                 0
                               ) + (data.price ? data.price : 0)
                             )?.toLocaleString()}
