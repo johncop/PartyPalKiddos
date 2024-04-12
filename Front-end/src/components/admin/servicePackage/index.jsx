@@ -6,8 +6,46 @@ import { handleUpload } from "../../../firebase";
 
 export const ServicePackagePage = () => {
   const [data, setData] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
   const [render, setRender] = useState(false);
-
+  const [services, setServices] = useState({
+    title: "Services",
+    type: "text",
+    placeholder: "Type to select",
+    requried: "true",
+    multiple: true,
+    onChange: (evt) => {
+      setSelectedServices(
+        evt.map((service) => {
+          return service.value;
+        })
+      );
+    },
+    items: [],
+    key: "services",
+    disabled: false,
+  });
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/services`)
+      .then((response) => {
+        setServices({
+          ...services,
+          items: [
+            ...response.data.data.map((item) => {
+              return {
+                value: item.name,
+                id: item.id,
+              };
+            }),
+          ],
+        });
+        return response;
+      })
+      .catch((error) => {
+        return error;
+      });
+  }, []);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/service-packages`)
@@ -57,6 +95,7 @@ export const ServicePackagePage = () => {
       key: "status",
       disabled: false,
     },
+    services,
     {
       title: "Image URL",
       type: "file",
@@ -71,7 +110,7 @@ export const ServicePackagePage = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpload("images/service", e.target[5].files[0], (res) => {
+    handleUpload("images/service", e.target[6].files[0], (res) => {
       axios
         .post(`${process.env.REACT_APP_API_BASE_URL}/service-packages`, {
           name: e.target[1].value,
@@ -79,6 +118,7 @@ export const ServicePackagePage = () => {
           price: e.target[3].value,
           status: e.target[4].checked ? 1 : 0,
           images: [res],
+          services: selectedServices,
         })
         .then((response) => {
           toast.info("Create Success", {
@@ -97,10 +137,9 @@ export const ServicePackagePage = () => {
         });
     });
   }
-
   function handleEdit(e, item) {
     e.preventDefault();
-    handleUpload("images/service", e.target[5].files[0], (res) => {
+    handleUpload("images/service", e.target[6].files[0], (res) => {
       axios
         .put(
           `${process.env.REACT_APP_API_BASE_URL}/service-packages/${item.id}`,
@@ -108,9 +147,13 @@ export const ServicePackagePage = () => {
             id: item.id,
             name: e.target[1].value,
             description: e.target[2].value,
-            price: e.target[3].value,
+            price: Number(e.target[3].value),
             status: e.target[4].checked ? 1 : 0,
             images: [res || item.images[0]?.imageUrl],
+            services:
+              selectedServices.length > 0
+                ? selectedServices
+                : item.services.map((it) => it.id),
           }
         )
         .then((response) => {

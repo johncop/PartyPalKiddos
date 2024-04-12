@@ -8,6 +8,7 @@ import { AddTimeSlotButton } from "../timeSlot";
 export const VenuePage = () => {
   const [data, setData] = useState([]);
   let [timeSlots, setTimeSlots] = useState([]);
+  let [addedTimeSlots, setAddedTimeSlots] = useState([]);
   const [districts, setDictrics] = useState({
     title: "Districts",
     type: "text",
@@ -368,13 +369,17 @@ export const VenuePage = () => {
   ];
 
   function handleAddedField({ startTime, endTime, days, status }) {
-    timeSlots.push({
+    const temp = {
       startTime,
       endTime,
       weekday: days.map((item) => item.value).join("-"),
       status,
-    });
+    };
+    timeSlots.push(temp);
     setTimeSlots(timeSlots);
+
+    addedTimeSlots.push(temp);
+    setAddedTimeSlots(addedTimeSlots);
   }
 
   function handleSubmit(e) {
@@ -443,7 +448,7 @@ export const VenuePage = () => {
         })
         .then((response) => {
           Promise.all(
-            timeSlots.map((tl) =>
+            addedTimeSlots.map((tl) =>
               axios.post(`${process.env.REACT_APP_API_BASE_URL}/time-slots`, {
                 startTime: tl.startTime,
                 endTime: tl.endTime,
@@ -452,13 +457,24 @@ export const VenuePage = () => {
                 venueId: item.id,
               })
             )
-          ).then((res) => {
-            toast.info("Update Success", {
-              position: "bottom-center",
-              autoClose: 2000,
+          )
+            .then((res) => {
+              toast.info("Update Success", {
+                position: "bottom-center",
+                autoClose: 2000,
+              });
+              setRender(!render);
+              timeSlots = [];
+              setTimeSlots(timeSlots);
+              addedTimeSlots = [];
+              setAddedTimeSlots([]);
+            })
+            .catch((err) => {
+              timeSlots = [];
+              setTimeSlots(timeSlots);
+              addedTimeSlots = [];
+              setAddedTimeSlots([]);
             });
-            setRender(!render);
-          });
 
           return response;
         })
@@ -509,8 +525,10 @@ export const VenuePage = () => {
           handleRemove={handleDelete}
           addedField={(item, isClosed) => {
             if (isClosed) {
-              timeSlots = []
+              timeSlots = [];
               setTimeSlots(timeSlots);
+              addedTimeSlots = [];
+              setAddedTimeSlots([]);
               return null;
             } else {
               if (timeSlots.length === 0) {
