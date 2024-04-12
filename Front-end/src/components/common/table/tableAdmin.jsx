@@ -94,12 +94,14 @@ export const TableAdmin = ({
                   onClick={() => {
                     setImage(null);
                     setShowModal(null);
-                    addedField(item, true);
+                    if (addedField) {
+                      addedField(item, true);
+                    }
                   }}
                 ></button>
               </div>
               <div className="modal-body">
-                {addedField(item)}
+                {addedField && addedField(item)}
 
                 {btnDataEdit.map((field, indexBtn) => (
                   <InputCommon
@@ -136,7 +138,9 @@ export const TableAdmin = ({
                   onClick={() => {
                     setImage(null);
                     setShowModal(null);
-                    addedField(item, true);
+                    if (addedField) {
+                      addedField(item, true);
+                    }
                   }}
                 >
                   Close
