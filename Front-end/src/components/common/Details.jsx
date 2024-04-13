@@ -53,6 +53,7 @@ export default function Details({ defaultValue }) {
           setData({
             address: temp.address,
             name: temp.name,
+            price: temp.price,
             description: temp.description,
             foods: temp.foods,
             services: temp.services,
@@ -121,6 +122,7 @@ export default function Details({ defaultValue }) {
         setData({
           address: temp.address,
           name: temp.name,
+          price: temp.price,
           description: temp.description,
           foods: temp.foods,
           services: temp.services,
@@ -128,7 +130,6 @@ export default function Details({ defaultValue }) {
           combos: temp.combos,
           images: temp.venueImages,
         });
-        setVenueId(id);
       })
       .catch((error) => {
         console.log(error.message);
@@ -196,10 +197,10 @@ export default function Details({ defaultValue }) {
           foods: foods,
           services: services,
           servicePackages: servicePackages,
-          bookingTimeSlots: [selectedTimeSlot],
+          bookingTimeSlots: [Number(selectedTimeSlot)],
         })
         .then((response) => {
-          window.location.href = "/cart";
+          // window.location.href = "/cart";
           return response;
         })
         .catch((error) => {
@@ -230,7 +231,7 @@ export default function Details({ defaultValue }) {
           servicePackages: servicePackages.map((item) => {
             return { id: item.id, quantity: item.quantity };
           }),
-          bookingTimeSlots: [selectedTimeSlot],
+          bookingTimeSlots: [Number(selectedTimeSlot)],
         })
         .then((response) => {
           window.location.href = "/cart";
@@ -433,7 +434,6 @@ export default function Details({ defaultValue }) {
 
     setSubProducts(subProducts);
   }
-
   return (
     <>
       {isShowCount && (
@@ -539,7 +539,6 @@ export default function Details({ defaultValue }) {
                 onChange={(e) => {
                   setSelectedTimeSlot(e.target.defaultValue);
                 }}
-                defaultValue={selectedTimeSlot}
               >
                 {timeSlots.map((tl) => (
                   <div key={"time-slot-" + tl.id}>
@@ -550,6 +549,7 @@ export default function Details({ defaultValue }) {
                       id={"btnradio" + tl.id}
                       autoComplete="off"
                       value={tl.id}
+                      defaultChecked={Number(selectedTimeSlot) === tl.id}
                     ></input>
                     <label
                       className="btn btn-outline-primary"
@@ -578,7 +578,7 @@ export default function Details({ defaultValue }) {
                     type="number"
                     className="form-control w-100"
                     aria-label="Sizing example input"
-                    defaultValue={numberOfAdults}
+                    value={numberOfAdults}
                     onChange={(event) => setNumberOfAdults(event.target.value)}
                     min={0}
                     aria-describedby="inputGroup-sizing-sm"
@@ -593,7 +593,7 @@ export default function Details({ defaultValue }) {
                     type="number"
                     className="form-control"
                     aria-label="Sizing example input"
-                    defaultValue={numberOfKids}
+                    value={numberOfKids}
                     onChange={(event) => setNumberOfKids(event.target.value)}
                     aria-describedby="inputGroup-sizing-sm"
                     min={0}
