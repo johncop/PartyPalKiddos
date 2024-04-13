@@ -287,7 +287,7 @@ export const VenuePage = () => {
       disabled: false,
       multiple: true,
       getImageUrls: (value) => {
-        return value.venueImages
+        return value.venueImages;
       },
     },
   ];
@@ -370,7 +370,7 @@ export const VenuePage = () => {
       disabled: false,
       multiple: true,
       getImageUrls: (value) => {
-        return value.venueImages
+        return value.venueImages;
       },
     },
   ];
@@ -425,7 +425,7 @@ export const VenuePage = () => {
     e.preventDefault();
     handleUpload("images/venue", e.target[13].files, (res) => {
       axios
-        .put(`${process.env.REACT_APP_API_BASE_URL}/venues/${item.id}`, {
+        .put(`${process.env.REACT_APP_API_BASE_URL}venues/${item.id}`, {
           id: item.id,
           name: e.target[1].value,
           description: e.target[2].value,
@@ -434,7 +434,7 @@ export const VenuePage = () => {
           price: Number(e.target[5].value),
           openHour: e.target[6].value,
           closeHour: e.target[7].value,
-          disctrictId: e.target[8].value,
+          disctrictId: Number(e.target[8].value),
           foods:
             selectFoods.length > 0
               ? selectFoods
@@ -451,7 +451,8 @@ export const VenuePage = () => {
             selectCombos.length > 0
               ? selectCombos
               : item.combos.map((it) => it.id),
-          imageUrls: res || item.venueImages,
+          imageUrls:
+            res.length > 0 ? res : item.venueImages.map((it) => it.imageUrl),
         })
         .then((response) => {
           Promise.all(

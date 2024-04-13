@@ -152,7 +152,7 @@ export const ServicePackagePage = () => {
             description: e.target[2].value,
             price: Number(e.target[3].value),
             status: e.target[4].checked ? 1 : 0,
-            images: res || item.images,
+            images: res.length > 0 ? res : item.images.map((it) => it.imageUrl),
             services:
               selectedServices.length > 0
                 ? selectedServices
