@@ -28,6 +28,10 @@ export const TableAdmin = ({
   }
 
   const [image, setImage] = useState(null);
+  const [editData, setEditData] = useState({
+    event: null,
+    item: null,
+  });
   useEffect(() => {
     if (data.length > 0) {
       new DataTable("#datatablesSimple", { perPage: 15 });
@@ -66,6 +70,16 @@ export const TableAdmin = ({
   function changeImage(e) {
     setImage(e.target.files);
   }
+
+  useEffect(() => {
+    if (editData.event && editData.item) {
+      handleEdit(editData.event, editData.item);
+      setEditData({
+        event: null,
+        item: null,
+      });
+    }
+  }, [editData]);
   useEffect(() => {
     if (state.uiState.popup.index !== -1) {
       setShowModal(
@@ -82,7 +96,10 @@ export const TableAdmin = ({
               <form
                 className="modal-content"
                 onSubmit={(e) => {
-                  handleEdit(e, state.uiState.popup.item);
+                  setEditData({
+                    event: e,
+                    item: state.uiState.popup.item,
+                  });
                   dispatch({
                     type: SET_STATUS_POPUP,
                     popup: {
@@ -122,34 +139,46 @@ export const TableAdmin = ({
                 <div className="modal-body">
                   {addedField && addedField(state.uiState.popup.item)}
 
-                  {btnDataEdit.map((field, indexBtn) => (
-                    <InputCommon
-                      key={"edit-new-field" + indexBtn}
-                      type={field.type}
-                      title={field.title}
-                      changeImage={changeImage}
-                      placeholder={field.placeholder}
-                      required={field.required}
-                      disabled={field.disabled}
-                      image={image}
-                      index={state.uiState.popup.index}
-                      items={field.items}
-                      handleChange={field.onChange}
-                      id={"edit-field-item" + indexBtn}
-                      multiple={field.multiple}
-                      defaultValue={getValue(
-                        field.type,
-                        field.key,
-                        state.uiState.popup.item,
-                        field.multiple
-                      )}
-                      defaultImage={
-                        field.type === "file"
-                          ? field.getImageUrls(state.uiState.popup.item)
-                          : null
-                      }
-                    />
-                  ))}
+                  {btnDataEdit.map((field, indexBtn) => {
+                    if (field.multiple && field.type !== "file") {
+                      field.onChange(
+                        getValue(
+                          field.type,
+                          field.key,
+                          state.uiState.popup.item,
+                          field.multiple
+                        )
+                      );
+                    }
+                    return (
+                      <InputCommon
+                        key={"edit-new-field" + indexBtn}
+                        type={field.type}
+                        title={field.title}
+                        changeImage={changeImage}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                        disabled={field.disabled}
+                        image={image}
+                        index={state.uiState.popup.index}
+                        items={field.items}
+                        handleChange={field.onChange}
+                        id={"edit-field-item" + indexBtn}
+                        multiple={field.multiple}
+                        defaultValue={getValue(
+                          field.type,
+                          field.key,
+                          state.uiState.popup.item,
+                          field.multiple
+                        )}
+                        defaultImage={
+                          field.type === "file"
+                            ? field.getImageUrls(state.uiState.popup.item)
+                            : null
+                        }
+                      />
+                    );
+                  })}
                 </div>
                 <div className="modal-footer">
                   <button
@@ -185,7 +214,7 @@ export const TableAdmin = ({
     } else {
       setShowModal(null);
     }
-  }, [state.uiState.popup, addedField, btnDataEdit, handleEdit, image]);
+  }, [state.uiState.popup]);
 
   const modalEdit = (item, index) => {
     dispatch({

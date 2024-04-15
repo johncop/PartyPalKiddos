@@ -435,22 +435,10 @@ export const VenuePage = () => {
           openHour: e.target[6].value,
           closeHour: e.target[7].value,
           disctrictId: Number(e.target[8].value),
-          foods:
-            selectFoods.length > 0
-              ? selectFoods
-              : item.foods.map((it) => it.id),
-          services:
-            selectServices.length > 0
-              ? selectServices
-              : item.services.map((it) => it.id),
-          servicePackages:
-            selectServicePackages.length > 0
-              ? selectServicePackages
-              : item.servicePackages.map((it) => it.id),
-          combos:
-            selectCombos.length > 0
-              ? selectCombos
-              : item.combos.map((it) => it.id),
+          foods: selectFoods,
+          services: selectServices,
+          servicePackages: selectServicePackages,
+          combos: selectCombos,
           imageUrls:
             res.length > 0 ? res : item.venueImages.map((it) => it.imageUrl),
         })
