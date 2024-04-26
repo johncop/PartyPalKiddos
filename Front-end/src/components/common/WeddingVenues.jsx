@@ -98,7 +98,7 @@ export default function WeddingVenues() {
                     <Card
                       data={{
                         ...venue,
-                        image: venue.venueImages[0].imageUrl,
+                        image: venue.venueImages[0]?.imageUrl,
                         district: venue.district.description,
                       }}
                       category={LIST_CATE.VENUE}
@@ -134,7 +134,7 @@ export default function WeddingVenues() {
                     <Card
                       data={{
                         ...venue,
-                        image: venue.venueImages[0].imageUrl,
+                        image: venue.venueImages[0]?.imageUrl,
                         district: venue.district.description,
                       }}
                       category={LIST_CATE.VENUE}
