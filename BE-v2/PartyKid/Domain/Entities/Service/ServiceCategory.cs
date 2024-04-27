@@ -2,5 +2,5 @@
 
 public class ServiceCategory : BaseEntity
 {
-    public ICollection<Service> Services { get; set; }
+    public virtual ICollection<Service> Services { get; set; }
 }

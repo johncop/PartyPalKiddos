@@ -12,6 +12,7 @@ public class ApplicationUser : IdentityUser<int>
     public string LastName { get; set; }
 
     public string Address { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public UserStateCollection State { get; set; }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PartyKid;
 
@@ -11,9 +12,11 @@ using PartyKid;
 namespace PartyKid.Infrastructure.Migrations
 {
     [DbContext(typeof(PartyKidDbContext))]
-    partial class PartyKidDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240410170144_UpdateBookingTable")]
+    partial class UpdateBookingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,9 +202,6 @@ namespace PartyKid.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()

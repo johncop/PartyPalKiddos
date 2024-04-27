@@ -1,6 +1,7 @@
 ﻿namespace PartyKid;
 
-public class UpdateDistrictBindingModel : AddDistrictBindingModel
+public class UpdateDistrictBindingModel
 {
     public int Id { get; set; }
+    public string? Description { get; set; }
 }

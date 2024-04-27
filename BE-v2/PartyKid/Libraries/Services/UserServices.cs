@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace PartyKid;
 
 public class UserServices : IUserServices
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole<int>> _roleManager;
     private readonly IEmailServices _emailServiecs;
     private readonly IMapper _mapper;
     private readonly IQueryRepository<ApplicationUser> _queryUserRepository;
@@ -15,19 +19,21 @@ public class UserServices : IUserServices
                         IEmailServices emailServices,
                         IMapper mapper,
                         IQueryRepository<ApplicationUser> queryUserRepository,
-                        IHttpContextAccessor httpContextAccessor)
+                        IHttpContextAccessor httpContextAccessor,
+                        RoleManager<IdentityRole<int>> roleManager)
     {
         _userManager = userManager;
         _emailServiecs = emailServices;
         _mapper = mapper;
         _queryUserRepository = queryUserRepository;
         _httpContextAccessor = httpContextAccessor;
+        _roleManager = roleManager;
     }
 
     #region Queries
-    public async Task<IList<UserDTO>> GetAll()
+    public async Task<IQueryable<ApplicationUser>> GetAll()
     {
-        return await _queryUserRepository.GetAllAsync<UserDTO>();
+        return _userManager.Users;
     }
 
     public async Task<ApplicationUser> GetById(string id)
@@ -38,6 +44,11 @@ public class UserServices : IUserServices
     public async Task<ApplicationUser> GetCurrentUser()
     {
         return await _userManager.FindByIdAsync(_httpContextAccessor.HttpContext.Items["User"].ToString());
+    }
+
+    public async Task<IList<RolesResponseDTO>> GetRoles()
+    {
+        return await _roleManager.Roles.ProjectTo<RolesResponseDTO>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
     #endregion
@@ -100,5 +111,53 @@ public class UserServices : IUserServices
         return Constants.UserHandling.Messages.ChangePassworSuccess;
     }
 
+    public async Task<UserDTO> AddRoleAsync(string userId, string role)
+    {
+        ApplicationUser user = await _userManager.FindByIdAsync(userId);
+        if (user is null)
+        {
+            throw new DomainException(Constants.AuthHandling.Messages.NotFoundUser);
+        }
+
+        IdentityRole<int> isRoleExisted = await _roleManager.FindByNameAsync(role);
+        if (isRoleExisted is null)
+        {
+            throw new DomainException(Constants.UserHandling.Messages.RoleNotExisted);
+        }
+
+        IdentityResult addRoleResult = await _userManager.AddToRoleAsync(user, role);
+        if (!addRoleResult.Succeeded)
+        {
+            throw new DomainException(Constants.UserHandling.Messages.AddRoleError);
+        }
+
+        return _mapper.Map<UserDTO>(user);
+    }
+
+    public async Task<string> Delete(string userId)
+    {
+        ApplicationUser user = await _userManager.FindByIdAsync(userId);
+        if (user is null)
+        {
+            throw new DomainException(Constants.AuthHandling.Messages.NotFoundUser);
+        }
+
+        user.IsDeleted = true;
+        IdentityResult updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            throw new DomainException(Constants.UserHandling.Messages.DeleteUserFailure);
+        }
+
+        return Constants.UserHandling.Messages.DeleteUserSuccess;
+    }
+
+    #endregion
+
+    #region SUPPORT FUNC
+    private async Task<IList<string>> GetUserRoles(ApplicationUser user)
+    {
+        return new List<string>(await _userManager.GetRolesAsync(user));
+    }
     #endregion
 }

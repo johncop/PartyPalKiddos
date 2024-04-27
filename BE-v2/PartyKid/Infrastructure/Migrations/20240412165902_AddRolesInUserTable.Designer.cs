@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PartyKid;
 
@@ -11,9 +12,11 @@ using PartyKid;
 namespace PartyKid.Infrastructure.Migrations
 {
     [DbContext(typeof(PartyKidDbContext))]
-    partial class PartyKidDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240412165902_AddRolesInUserTable")]
+    partial class AddRolesInUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +33,9 @@ namespace PartyKid.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ApplicationUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -43,6 +49,8 @@ namespace PartyKid.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -1014,6 +1022,13 @@ namespace PartyKid.Infrastructure.Migrations
                     b.ToTable("VenueServicePackages");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
+                {
+                    b.HasOne("PartyKid.ApplicationUser", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -1325,6 +1340,11 @@ namespace PartyKid.Infrastructure.Migrations
                     b.Navigation("ServicePackage");
 
                     b.Navigation("Venue");
+                });
+
+            modelBuilder.Entity("PartyKid.ApplicationUser", b =>
+                {
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("PartyKid.Booking", b =>

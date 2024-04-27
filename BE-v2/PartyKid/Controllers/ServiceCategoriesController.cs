@@ -53,13 +53,14 @@ public class ServiceCategoriesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServiceCategoryBindingModel request)
     {
-        ServiceCategory serviceCategory = await _serviceCategoryService.Find(id);
+        ServiceCategory serviceCategory = await _serviceCategoryService.Find(filter: x => x.Id == id);
         if (serviceCategory is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
-        serviceCategory = _mapper.Map<ServiceCategory>(request);
+        request.Id = serviceCategory.Id;
+        serviceCategory = _mapper.Map(request, serviceCategory);
         ServiceCategoryResponseDTO response = _mapper.Map<ServiceCategoryResponseDTO>(await _serviceCategoryService.Update(serviceCategory));
         return Success<ServiceCategoryResponseDTO>(data: response);
     }
@@ -69,12 +70,8 @@ public class ServiceCategoriesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        ServiceCategory serviceCategory = await _serviceCategoryService.Find(id);
-        if (serviceCategory is null)
-        {
-            throw new DomainException(Constants.Transactions.Messages.NotFound);
-        }
-        return Success(message: await _serviceCategoryService.Delete(id));
+        ServiceCategory serviceCategory = await _serviceCategoryService.Find(filter: x => x.Id == id);
+        return Success(message: await _serviceCategoryService.Delete(serviceCategory));
     }
     #endregion
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PartyKid;
 
-public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : BaseEntity<int>
+public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : class
 {
     protected readonly IQueryRepository<TEntity> _queryRepository;
     protected readonly ICommandRepository<TEntity> _commandRepository;
@@ -21,7 +21,16 @@ public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : Base
 
     public IList<TEntity> GetAll() => _queryRepository.InitQuery().ToList();
 
-    public async Task<TEntity> Find(int id) => await _queryRepository.Find(x => x.Id == id).FirstOrDefaultAsync();
+    public async Task<TEntity> Find(Expression<Func<TEntity, bool>> filter)
+    {
+        TEntity entity = await _queryRepository.Find(filter).FirstOrDefaultAsync();
+        if (entity is null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
+        return entity!;
+    }
 
     public async Task<IList<TResponse>> Search<TResponse>(Expression<Func<TEntity, bool>>? filter = null, Expression<Func<TEntity, object>>? includeEntities = null, bool disableChangeTracker = true)
     {
@@ -61,9 +70,8 @@ public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : Base
         }
     }
 
-    public async Task<string> Delete(int id)
+    public async Task<string> Delete(TEntity entity)
     {
-        var entity = _queryRepository.Find(x => x.Id == id).FirstOrDefault();
         if (entity == null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
@@ -71,8 +79,7 @@ public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : Base
 
         try
         {
-            entity.IsDeleted = true;
-            _commandRepository.Update(entities: entity);
+            _commandRepository.Delete(entities: entity);
             await _unitOfWork.SaveChangesAsync();
             return Constants.Transactions.Messages.DeleteComplete;
         }

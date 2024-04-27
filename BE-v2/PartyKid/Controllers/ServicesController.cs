@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace PartyKid;
 
@@ -7,22 +8,25 @@ namespace PartyKid;
 public class ServicesController : BaseApi
 {
     private readonly IBaseServices<Service> _serviceService;
-    public ServicesController(IBaseServices<Service> serviceService, IMapper mapper) : base(mapper)
+    private readonly DbContext _dbContext;
+    public ServicesController(IBaseServices<Service> serviceService, IMapper mapper, DbContext dbContext) : base(mapper)
     {
         _serviceService = serviceService;
+        _dbContext = dbContext;
     }
 
     #region Query
 
     [HttpGet]
     public async Task<IResponse> GetAll() =>
-                Success<IList<ServiceResponseDTO>>(data: await _serviceService.GetAllAsync<ServiceResponseDTO>());
+                Success<IList<ServiceResponseDTO>>(data: await _serviceService.GetAllAsync<ServiceResponseDTO>(filter: x => !x.IsDeleted));
 
     [HttpGet]
     [Route("{Id}")]
     public async Task<IResponse> Get([FromRoute(Name = "Id")] int id)
     {
-        Service service = await _serviceService.Find(id);
+        Service service = await _serviceService.Find(filter: x => x.Id == id);
+
         return Success<ServiceResponseDTO>(data: _mapper.Map<ServiceResponseDTO>(service));
     }
 
@@ -44,11 +48,7 @@ public class ServicesController : BaseApi
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServiceBindingModel request)
     {
         request.Id = id;
-        Service existingService = await _serviceService.Find(id);
-        if (existingService is null)
-        {
-            throw new DomainException(Constants.Transactions.Messages.NotFound);
-        }
+        Service existingService = await _serviceService.Find(filter: x => x.Id == id);
 
         Service service = _mapper.Map(request, existingService);
         return Success<ServiceResponseDTO>(data: _mapper.Map<ServiceResponseDTO>(await _serviceService.Update(service)));
@@ -59,8 +59,15 @@ public class ServicesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        string result = await _serviceService.Delete(id);
-        return Success(message: result);
+        Service service = await _serviceService.Find(filter: x => x.Id == id);
+
+        await _dbContext.Entry(service).Collection(x => x.BookingDetails).LoadAsync();
+        if (service.BookingDetails.Count > 0)
+        {
+            throw new DomainException(Constants.Transactions.Messages.DeleteFailure);
+        }
+
+        return Success(message: await _serviceService.Delete(service));
     }
     #endregion
 }

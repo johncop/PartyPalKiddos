@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PartyKid;
@@ -19,14 +20,14 @@ public class CommandRepository<TEntity> : ICommandRepository<TEntity> where TEnt
         PerformDbOperation(_dbSet.Add, entities);
     }
 
-    public void Delete(params TEntity[] entities)
-    {
-        PerformDbOperation(_dbSet.Remove, entities);
-    }
-
     public void Update(params TEntity[] entities)
     {
         PerformDbOperation(_dbSet.Update, entities);
+    }
+
+    public void Delete(params TEntity[] entities)
+    {
+        PerformDbOperation(_dbSet.Remove, entities);
     }
 
     private void PerformDbOperation(Func<TEntity, EntityEntry<TEntity>> dbOperation, params TEntity[] entities)

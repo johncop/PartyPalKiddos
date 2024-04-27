@@ -1,4 +1,6 @@
-﻿namespace PartyKid;
+﻿using System.Linq.Expressions;
+
+namespace PartyKid;
 
 public interface ICommandRepository<TEntity> where TEntity : class
 {
@@ -7,5 +9,4 @@ public interface ICommandRepository<TEntity> where TEntity : class
     void Update(params TEntity[] entities);
 
     void Delete(params TEntity[] entities);
-
 }

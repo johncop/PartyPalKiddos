@@ -1,7 +1,10 @@
 ﻿using System.Net.Sockets;
+using System.Reflection.Metadata;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace PartyKid;
 
@@ -10,9 +13,11 @@ namespace PartyKid;
 public class CombosController : BaseApi
 {
     private readonly IBaseServices<Combo> _comboServices;
-    public CombosController(IMapper mapper, IBaseServices<Combo> comboServices) : base(mapper)
+    private readonly PartyKidDbContext _dbContext;
+    public CombosController(IMapper mapper, IBaseServices<Combo> comboServices, PartyKidDbContext dbContext) : base(mapper)
     {
         _comboServices = comboServices;
+        _dbContext = dbContext;
     }
 
     #region Queries
@@ -20,7 +25,10 @@ public class CombosController : BaseApi
     [HttpGet]
     public async Task<IResponse> GetAll()
     {
-        IList<ComboResponseDTO> combos = await _comboServices.GetAllAsync<ComboResponseDTO>(filter: x => !x.IsDeleted, includeEntities: x => x.ComboFoods);
+        var combos = await _comboServices.Query(x => !x.IsDeleted)
+                                            .Include(x => x.ComboFoods)
+                                            .ProjectTo<ComboResponseDTO>(_mapper.ConfigurationProvider)
+                                            .ToListAsync();
         return Success<IList<ComboResponseDTO>>(data: combos);
     }
 
@@ -28,19 +36,17 @@ public class CombosController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Get([FromRoute(Name = "Id")] int id)
     {
-        Combo combo = await _comboServices.Query(filter: x => x.Id == id && !x.IsDeleted, includeEntities: x => x.ComboFoods).FirstOrDefaultAsync();
+        Combo combo = await _comboServices.Query(filter: x => x.Id == id && !x.IsDeleted)
+                                        .Include(x => x.ComboFoods)
+                                        .AsTracking()
+                                        .FirstOrDefaultAsync();
         if (combo is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
-        return Success<ComboResponseDTO>(data: _mapper.Map<ComboResponseDTO>(combo));
-    }
 
-    [HttpGet]
-    [Route("search")]
-    public async Task<IResponse> Search()
-    {
-        return Success();
+        await _dbContext.Entry(combo).Collection(x => x.ComboFoods).Query().Include(x => x.Food).ThenInclude(x => x.FoodCategory).LoadAsync();
+        return Success<ComboResponseDTO>(data: _mapper.Map<ComboResponseDTO>(combo));
     }
 
     #endregion
@@ -71,45 +77,48 @@ public class CombosController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateComboBindingModel request)
     {
-        Combo combo = await _comboServices.Query(filter: x => x.Id == id)
-                                            .Include(x => x.ComboFoods)
-                                            .ThenInclude(x => x.Food)
-                                            .FirstOrDefaultAsync();
+        Combo combo = await _comboServices.Query(filter: x => x.Id == id).AsTracking().FirstOrDefaultAsync();
         if (combo is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
-        request.Id = id;
-        combo = _mapper.Map(request, combo);
+        await _dbContext.Entry(combo).Collection(x => x.ComboFoods).Query().Include(x => x.Food).ThenInclude(x => x.FoodCategory).LoadAsync();
 
-        if (request.ComboFoods is not null && request.ComboFoods.Count > 0)
+        request.Id = id;
+
+        if (request.Foods is not null && request.Foods.Count > 0)
         {
             combo.ComboFoods = combo.ComboFoods.Count <= 0 ? new List<ComboFood>() : combo.ComboFoods;
-            foreach (var comboFood in request.ComboFoods)
+            foreach (var foodId in request.Foods)
             {
-                combo.ComboFoods.Add(new ComboFood()
+                ComboFood comboFoodExisted = combo.ComboFoods.FirstOrDefault(x => x.FoodId == foodId);
+                if (comboFoodExisted is null)
                 {
-                    FoodId = comboFood.FoodId
-                });
+                    combo.ComboFoods.Add(new ComboFood()
+                    {
+                        FoodId = foodId
+                    });
+                }
             }
         }
 
-        ComboResponseDTO comboUpdated = _mapper.Map<ComboResponseDTO>(await _comboServices.Update(combo));
-        return Success<ComboResponseDTO>(data: comboUpdated);
+        combo = _mapper.Map(request, combo);
+        await _comboServices.Update(combo);
+        return Success(message: Constants.Transactions.Messages.UpdateComplete);
     }
 
     [HttpDelete]
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        Combo combo = await _comboServices.Find(id);
+        Combo combo = await _comboServices.Find(filter: x => x.Id == id);
         if (combo is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
-        return Success(message: await _comboServices.Delete(id));
+        return Success(message: await _comboServices.DeleteAsync(combo));
     }
     #endregion
 }

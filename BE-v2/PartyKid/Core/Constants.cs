@@ -10,8 +10,8 @@ public static class Constants
             public const string ServiceAssembliesPattern = "AllowedAssemblyPattern";
             public const string UserId = "36d92587-988b-4e5c-8d9c-0e8aef7a9f0e";
 
-            public const string EmailBaseUrl = "https://api.mailgun.net/v3";
-            public const string FromEmail = "Party Kid Booking System<phamhoangdung4@gmail.com>";
+            public const string EmailBaseUrl = "https://send.api.mailtrap.io/api/send";
+            public const string FromEmail = "";
 
             public const string ConfirmEmailUrl = "";
 
@@ -94,7 +94,9 @@ public static class Constants
             public const string TransactionCompletedWithoutAffectedRow = "Transaction has been completed with 0 row(s) affected.";
             public const string AddComplete = "Create success";
             public const string DeleteComplete = "Delete success";
+            public const string DeleteFailure = "Cannot delete this record.";
             public const string NotFound = "Not found record. Please try againt";
+            public const string UpdateComplete = "Update success";
         }
     }
 
@@ -140,6 +142,10 @@ public static class Constants
             public const string UpdateUserSucceed = "Update Succeed.";
             public const string ForgotPassword = "New password was sent your email. Please check and login again.";
             public const string EmailEmpty = "Please enter your email.";
+            public const string RoleNotExisted = "Role does not existed. Please choose another role and try again.";
+            public const string AddRoleError = "Error when add role to user. Please try again.";
+            public const string DeleteUserFailure = "Can't delete user. Please check information and try again.";
+            public const string DeleteUserSuccess = "Delete Succeed.";
         }
     }
 

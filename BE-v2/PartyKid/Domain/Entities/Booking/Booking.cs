@@ -13,4 +13,5 @@ public class Booking : BaseEntity<int>
     public Coupon Coupon { get; set; }
 
     public ICollection<BookingDetail> BookingDetails { get; set; }
+    public ICollection<BookingTimeSlot> BookingTimeSlots { get; set; }
 }

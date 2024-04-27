@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PartyKid;
@@ -19,14 +17,14 @@ public class CouponsController : BaseApi
     [HttpGet]
     public async Task<IResponse> GetAll()
     {
-        return Success<IList<CouponResponseDTO>>(data: await _couponServices.GetAllAsync<CouponResponseDTO>());
+        return Success<IList<CouponResponseDTO>>(data: await _couponServices.GetAllAsync<CouponResponseDTO>(filter: x => !x.IsDeleted));
     }
 
     [HttpGet]
     [Route("{Id}")]
     public async Task<IResponse> GetById([FromRoute(Name = "Id")] int id)
     {
-        CouponResponseDTO coupon = _mapper.Map<CouponResponseDTO>(await _couponServices.Find(id));
+        CouponResponseDTO coupon = _mapper.Map<CouponResponseDTO>(await _couponServices.Find(filter: x => x.Id == id));
         return Success<CouponResponseDTO>(data: coupon);
     }
     #endregion
@@ -46,13 +44,13 @@ public class CouponsController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateCouponBindingModel request)
     {
-        Coupon coupon = await _couponServices.Find(id);
+        Coupon coupon = await _couponServices.Find(filter: x => x.Id == id);
         if (coupon is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
-        coupon = _mapper.Map<Coupon>(request);
+        coupon = _mapper.Map(request, coupon);
         CouponResponseDTO result = _mapper.Map<CouponResponseDTO>(await _couponServices.Update(coupon));
         return Success<CouponResponseDTO>(data: result);
 
@@ -63,7 +61,13 @@ public class CouponsController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        return Success(message: await _couponServices.Delete(id));
+        Coupon coupon = await _couponServices.Find(filter: x => x.Id == id);
+        if (coupon is null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
+        return Success(message: await _couponServices.Delete(coupon));
     }
     #endregion
 }

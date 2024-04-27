@@ -16,4 +16,5 @@ public class VenueResponseDTO
     public IList<FoodResponseDTO>? Foods { get; set; }
     public IList<ServiceResponseDTO> Services { get; set; }
     public IList<ServicePackageDTO> ServicePackages { get; set; }
+    public IList<TimeSlotsResponseDTO> TimeSlots { get; set; }
 }

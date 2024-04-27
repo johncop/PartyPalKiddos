@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks.Dataflow;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -12,12 +13,17 @@ namespace PartyKid;
 public class VenuesController : BaseApi
 {
     private readonly IBaseServices<Venue> _venueService;
+    private readonly IBaseServices<Service> _serviceServices;
     private readonly PartyKidDbContext _dbContext;
 
-    public VenuesController(IBaseServices<Venue> venueService, IMapper mapper, PartyKidDbContext dbContext) : base(mapper)
+    public VenuesController(IBaseServices<Venue> venueService,
+                            IMapper mapper,
+                            PartyKidDbContext dbContext,
+                            IBaseServices<Service> serviceServices) : base(mapper)
     {
         _venueService = venueService;
         _dbContext = dbContext;
+        _serviceServices = serviceServices;
     }
 
     #region Query
@@ -29,6 +35,7 @@ public class VenuesController : BaseApi
                                                             .Include(x => x.VenueFoods)
                                                             .Include(x => x.VenueImages)
                                                             .Include(x => x.VenueServices)
+                                                            .Include(x => x.TimeSlots)
                                                             .ProjectTo<VenueResponseDTO>(_mapper.ConfigurationProvider)
                                                             .ToListAsync();
         return Success<IList<VenueResponseDTO>>(data: venues);
@@ -38,16 +45,18 @@ public class VenuesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Get([FromRoute(Name = "Id")] int id)
     {
-        Venue venue = await _venueService.Query(x => x.Id == id && !x.IsDeleted, disableChangeTracker: true).AsTracking().FirstOrDefaultAsync();
+        Venue venue = await _venueService.Query(x => x.Id == id && !x.IsDeleted).AsTracking().FirstOrDefaultAsync();
         if (venue is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
-
-        await _dbContext.Entry(venue).Collection(x => x.VenueCombos).LoadAsync();
-        await _dbContext.Entry(venue).Collection(x => x.VenueFoods).LoadAsync();
-        await _dbContext.Entry(venue).Collection(x => x.VenueServices).LoadAsync();
-        await _dbContext.Entry(venue).Collection(x => x.VenueServicePackages).LoadAsync();
+        await _dbContext.Entry(venue).Reference(x => x.District).LoadAsync();
+        await _dbContext.Entry(venue).Collection(x => x.VenueImages).LoadAsync();
+        await _dbContext.Entry(venue).Collection(x => x.VenueCombos).Query().Include(x => x.Combo).LoadAsync();
+        await _dbContext.Entry(venue).Collection(x => x.VenueFoods).Query().Include(x => x.Food).ThenInclude(x => x.FoodCategory).LoadAsync();
+        await _dbContext.Entry(venue).Collection(x => x.VenueServices).Query().Include(x => x.Service).LoadAsync();
+        await _dbContext.Entry(venue).Collection(x => x.VenueServicePackages).Query().Include(x => x.ServicePackage).LoadAsync();
+        await _dbContext.Entry(venue).Collection(x => x.TimeSlots).LoadAsync();
 
         VenueResponseDTO venueRes = _mapper.Map<VenueResponseDTO>(venue);
         return Success<VenueResponseDTO>(data: venueRes);
@@ -57,25 +66,22 @@ public class VenuesController : BaseApi
     [Route("search")]
     public async Task<IResponse> Search([FromQuery] SearchVenueBindingModel request)
     {
-        var venue = _venueService.Query();
-        if (request.Id.HasValue)
+        var searchResult = new VenueSearchResponseDTO();
+        if (request.DistrictId.HasValue)
         {
-            venue.Where(x => x.Id == request.Id);
+            searchResult.Venues = await _venueService.Query(filter: x => x.DistrictId == request.DistrictId.Value)
+                                                    .ProjectTo<SearchItemResponseDTO>(_mapper.ConfigurationProvider)
+                                                    .ToListAsync();
         }
 
-        if (request.DisctrictId.HasValue)
+        if (request.ServiceCategoryId.HasValue)
         {
-            venue.Where(x => x.DistrictId == request.DisctrictId);
+            searchResult.Services = await _serviceServices.Query(filter: x => x.ServiceCategoryId == request.ServiceCategoryId.Value)
+                                                            .ProjectTo<SearchItemResponseDTO>(_mapper.ConfigurationProvider)
+                                                            .ToListAsync();
         }
 
-        if (!request.Address.IsNullOrEmpty())
-        {
-            venue.Where(x => x.Address.ToLower().Contains(request.Address.ToLower()));
-        }
-
-        return Success<IList<VenueResponseDTO>>(data: await venue.Include(x => x.VenueImages)
-                                                                .ProjectTo<VenueResponseDTO>(_mapper.ConfigurationProvider)
-                                                                .ToListAsync());
+        return Success<VenueSearchResponseDTO>(data: searchResult);
     }
     #endregion
 
@@ -102,34 +108,39 @@ public class VenuesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateVenueBindingModel request)
     {
-        Venue venue = await _venueService.Query(filter: x => x.Id == id)
-                                        .Include(x => x.VenueCombos)
-                                        .Include(x => x.VenueFoods)
-                                        .Include(x => x.VenueServices)
-                                        .Include(x => x.VenueServicePackages)
-                                        .FirstOrDefaultAsync();
+        Venue venue = await _venueService.Query(filter: x => x.Id == id).AsTracking().FirstOrDefaultAsync();
         if (venue is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
+        //Load related data using Explicit Loading
+        await _dbContext.Entry(venue).Reference(x => x.District).LoadAsync();
+        await _dbContext.Entry(venue).Collection(x => x.TimeSlots).LoadAsync();
+
         request.Id = id;
-        if (request.ImageUrls is not null && request.ImageUrls.Count > 0)
+        if (request.ImageUrls is not null)
         {
-            venue.VenueImages = new List<VenueImage>();
-            foreach (string imageUrl in request.ImageUrls)
+            await _dbContext.Entry(venue).Collection(x => x.VenueImages).Query().ExecuteDeleteAsync();
+            if (request.ImageUrls.Count > 0)
             {
-                venue.VenueImages.Add(new VenueImage() { ImageUrl = imageUrl });
+                venue.VenueImages = new List<VenueImage>();
+                foreach (string imageUrl in request.ImageUrls)
+                {
+                    venue.VenueImages.Add(new VenueImage() { ImageUrl = imageUrl });
+                }
             }
+
         }
 
-        if (request.Combos is not null && request.Combos.Count > 0)
+        if (request.Combos is not null)
         {
-            venue.VenueCombos = venue.VenueCombos.Count < 0 ? new List<VenueCombo>() : venue.VenueCombos;
-            foreach (int comboId in request.Combos)
+            await _dbContext.Entry(venue).Collection(x => x.VenueCombos).Query().ExecuteDeleteAsync();
+            if (request.Combos.Count > 0)
             {
-                VenueCombo comboExisted = venue.VenueCombos.FirstOrDefault(x => x.ComboId == comboId);
-                if (comboExisted is null)
+                venue.VenueCombos = new List<VenueCombo>();
+
+                foreach (int comboId in request.Combos)
                 {
                     venue.VenueCombos.Add(new VenueCombo()
                     {
@@ -139,13 +150,13 @@ public class VenuesController : BaseApi
             }
         }
 
-        if (request.Foods is not null && request.Foods.Count > 0)
+        if (request.Foods is not null)
         {
-            venue.VenueFoods = venue.VenueFoods.Count < 0 ? new List<VenueFood>() : venue.VenueFoods;
-            foreach (int foodId in request.Foods)
+            await _dbContext.Entry(venue).Collection(x => x.VenueFoods).Query().ExecuteDeleteAsync();
+            if (request.Foods.Count > 0)
             {
-                VenueFood venueFoodExisted = venue.VenueFoods.FirstOrDefault(x => x.FoodId == foodId && x.VenueId == venue.Id);
-                if (venueFoodExisted is null)
+                venue.VenueFoods = new List<VenueFood>();
+                foreach (int foodId in request.Foods)
                 {
                     venue.VenueFoods.Add(new VenueFood()
                     {
@@ -155,13 +166,13 @@ public class VenuesController : BaseApi
             }
         }
 
-        if (request.Services is not null && request.Services.Count > 0)
+        if (request.Services is not null)
         {
-            venue.VenueServices = venue.VenueServices.Count < 0 ? new List<VenueService>() : venue.VenueServices;
-            foreach (int serviceId in request.Services)
+            await _dbContext.Entry(venue).Collection(x => x.VenueServices).Query().ExecuteDeleteAsync();
+            if (request.Services.Count > 0)
             {
-                VenueService venueServiceExisted = venue.VenueServices.FirstOrDefault(x => x.ServiceId == serviceId);
-                if (venueServiceExisted is null)
+                venue.VenueServices = new List<VenueService>();
+                foreach (int serviceId in request.Services)
                 {
                     venue.VenueServices.Add(new VenueService()
                     {
@@ -171,13 +182,13 @@ public class VenuesController : BaseApi
             }
         }
 
-        if (request.ServicePackages is not null && request.ServicePackages.Count > 0)
+        if (request.ServicePackages is not null)
         {
-            venue.VenueServicePackages = venue.VenueServicePackages.Count < 0 ? new List<VenueServicePackage>() : venue.VenueServicePackages;
-            foreach (int servicePackageId in request.ServicePackages)
+            await _dbContext.Entry(venue).Collection(x => x.VenueServicePackages).Query().ExecuteDeleteAsync();
+            if (request.ServicePackages.Count > 0)
             {
-                VenueServicePackage venueServicePackageExisted = venue.VenueServicePackages.FirstOrDefault(x => x.ServicePackageId == servicePackageId);
-                if (venueServicePackageExisted is null)
+                venue.VenueServicePackages = new List<VenueServicePackage>();
+                foreach (int servicePackageId in request.ServicePackages)
                 {
                     venue.VenueServicePackages.Add(new VenueServicePackage()
                     {
@@ -185,10 +196,13 @@ public class VenuesController : BaseApi
                     });
                 }
             }
+
         }
 
         venue = _mapper.Map(request, venue);
-        return Success<VenueResponseDTO>(data: _mapper.Map<VenueResponseDTO>(await _venueService.Update(venue)));
+        await _venueService.Update(venue);
+
+        return Success(message: Constants.Transactions.Messages.UpdateComplete);
     }
 
     [Authorize(nameof(RoleCollection.Admin))]
@@ -196,7 +210,14 @@ public class VenuesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        return Success(message: await _venueService.Delete(id));
+        Venue venue = await _venueService.Find(filter: x => x.Id == id);
+
+        venue.VenueCombos.Clear();
+        venue.VenueFoods.Clear();
+        venue.VenueImages.Clear();
+        venue.VenueServicePackages.Clear();
+        venue.VenueServices.Clear();
+        return Success(message: await _venueService.Delete(venue));
     }
     #endregion
 }

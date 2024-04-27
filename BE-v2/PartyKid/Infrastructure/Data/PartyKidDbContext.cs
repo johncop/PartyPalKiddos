@@ -33,6 +33,7 @@ public class PartyKidDbContext : IdentityDbContext<ApplicationUser, IdentityRole
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<BookingDetail> BookingDetails { get; set; }
     public DbSet<TimeSlot> TimeSlots { get; set; }
+    public DbSet<BookingTimeSlot> BookingTimeSlots { get; set; }
 
     //Combo
     public DbSet<Combo> Combos { get; set; }

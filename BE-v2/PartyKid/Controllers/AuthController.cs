@@ -21,7 +21,7 @@ public class AuthController : BaseApi
 
     [HttpPost]
     [Route("register")]
-    public async Task<string> Register([FromBody] RegisterRequestDTO request)
+    public async Task<IResponse> Register([FromBody] RegisterRequestDTO request)
     {
         ApplicationUser user = _mapper.Map<ApplicationUser>(request);
         IdentityResult registerResult = await _userManager.CreateAsync(user, request.Password);
@@ -30,12 +30,12 @@ public class AuthController : BaseApi
             throw new Exception("Register Error");
         }
         await _userManager.AddToRoleAsync(user, nameof(RoleCollection.User));
-        return Constants.Transactions.Messages.AddComplete;
+        return Success(message: Constants.Transactions.Messages.AddComplete);
     }
 
     [HttpPost]
     [Route("register-admin")]
-    public async Task<string> RegisterAdmin([FromBody] RegisterRequestDTO request)
+    public async Task<IResponse> RegisterAdmin([FromBody] RegisterRequestDTO request)
     {
         ApplicationUser user = _mapper.Map<ApplicationUser>(request);
         IdentityResult registerResult = await _userManager.CreateAsync(user, request.Password);
@@ -44,17 +44,22 @@ public class AuthController : BaseApi
             throw new Exception("Register Error");
         }
         await _userManager.AddToRoleAsync(user, nameof(RoleCollection.Admin));
-        return Constants.Transactions.Messages.AddComplete;
+        return Success(message: Constants.Transactions.Messages.AddComplete);
     }
 
     [HttpPost]
     [Route("login")]
-    public async Task<LoginResponseDTO> Login([FromBody] LoginRequestDTO request)
+    public async Task<IResponse> Login([FromBody] LoginRequestDTO request)
     {
         ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null)
         {
             throw new Exception(Constants.AuthHandling.Messages.NotFoundUser);
+        }
+
+        if (user.IsDeleted)
+        {
+            throw new DomainException(Constants.AuthHandling.Messages.NotFoundUser);
         }
 
         Microsoft.AspNetCore.Identity.SignInResult signInResult = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
@@ -70,6 +75,6 @@ public class AuthController : BaseApi
 
         IList<string> userRoles = await _userManager.GetRolesAsync(user);
         string token = TokenHelper.GenerateToken(user, userRoles, _appSettings.Secret);
-        return new LoginResponseDTO(_mapper.Map<UserDTO>(user), userRoles, token);
+        return Success<LoginResponseDTO>(data: new LoginResponseDTO(_mapper.Map<UserDTO>(user), userRoles, token));
     }
 }

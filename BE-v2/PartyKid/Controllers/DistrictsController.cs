@@ -21,10 +21,16 @@ public class DistrictsController : BaseApi
     }
 
     [HttpGet]
-    [Route("search/{Id:int}")]
-    public async Task<IResponse> Search([FromRoute(Name = "Id")] int id)
+    [Route("{Id:int}")]
+    public async Task<IResponse> Get([FromRoute(Name = "Id")] int id)
     {
-        return Success<DistrictResponseDTO>(data: _mapper.Map<DistrictResponseDTO>(await _districtService.Find(id)));
+        District district = await _districtService.Find(filter: x => x.Id == id);
+        if (district is null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
+        return Success<DistrictResponseDTO>(data: _mapper.Map<DistrictResponseDTO>(district));
     }
     #endregion
 
@@ -43,13 +49,13 @@ public class DistrictsController : BaseApi
     [Route("{Id:int}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateDistrictBindingModel request)
     {
-        District district = await _districtService.Find(id);
+        District district = await _districtService.Find(filter: x => x.Id == id);
         if (district is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
-        district = _mapper.Map<District>(request);
+        district = _mapper.Map(request, district);
         return Success<DistrictResponseDTO>(data: _mapper.Map<DistrictResponseDTO>(await _districtService.Update(district)));
     }
 
@@ -58,7 +64,12 @@ public class DistrictsController : BaseApi
     [Route("{Id:int}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        return Success(message: await _districtService.Delete(id));
+        District district = await _districtService.Find(filter: x => x.Id == id);
+        if (district is null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+        return Success(message: await _districtService.Delete(district));
     }
     #endregion
 }

@@ -16,13 +16,14 @@ public class FoodCategoriesController : BaseApi
     #region Queries
     [HttpGet]
     public async Task<IResponse> GetAll() => Success<IList<FoodCategoryResponseDTO>>(data:
-                                                                    await _foodCategoryServices.GetAllAsync<FoodCategoryResponseDTO>());
+                                                                    await _foodCategoryServices.GetAllAsync<FoodCategoryResponseDTO>(filter: x => !x.IsDeleted));
 
     [HttpGet]
     [Route("{Id}")]
     public async Task<IResponse> Get([FromRoute(Name = "Id")] int id)
     {
-        return Success<FoodCategoryResponseDTO>(data: _mapper.Map<FoodCategoryResponseDTO>(await _foodCategoryServices.Find(id)));
+        FoodCategory foodCategory = await _foodCategoryServices.Find(filter: x => x.Id == id);
+        return Success<FoodCategoryResponseDTO>(data: _mapper.Map<FoodCategoryResponseDTO>(foodCategory));
     }
 
     [HttpGet]
@@ -48,13 +49,9 @@ public class FoodCategoriesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateFoodCategoryBindingModel request)
     {
-        FoodCategory foodCategory = await _foodCategoryServices.Find(id);
-        if (foodCategory is null)
-        {
-            throw new DomainException(Constants.Transactions.Messages.NotFound);
-        }
+        FoodCategory foodCategory = await _foodCategoryServices.Find(filter: x => x.Id == id);
 
-        foodCategory = _mapper.Map<FoodCategory>(request);
+        foodCategory = _mapper.Map(request, foodCategory);
         return Success<FoodCategory>(data: await _foodCategoryServices.Update(foodCategory));
     }
 
@@ -63,13 +60,10 @@ public class FoodCategoriesController : BaseApi
     [Route("{Id}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        FoodCategory foodCategory = await _foodCategoryServices.Find(id);
-        if (foodCategory is null)
-        {
-            throw new DomainException(Constants.Transactions.Messages.NotFound);
-        }
+        FoodCategory foodCategory = await _foodCategoryServices.Find(filter: x => x.Id == id);
 
-        return Success(message: await _foodCategoryServices.Delete(id));
+        foodCategory.Foods.Clear();
+        return Success(message: await _foodCategoryServices.Delete(foodCategory));
     }
     #endregion
 }

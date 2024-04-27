@@ -19,10 +19,10 @@ public class Venue : BaseEntity
     #endregion
 
     #region Many to Many Relationships
-    public ICollection<VenueService> VenueServices { get; set; }
-    public ICollection<VenueServicePackage> VenueServicePackages { get; set; }
-    public ICollection<VenueFood> VenueFoods { get; set; }
-    public ICollection<TimeSlot> TimeSlots { get; set; }
-    public ICollection<VenueCombo> VenueCombos { get; set; }
+    public virtual ICollection<VenueService> VenueServices { get; set; }
+    public virtual ICollection<VenueServicePackage> VenueServicePackages { get; set; }
+    public virtual ICollection<VenueFood> VenueFoods { get; set; }
+    public virtual ICollection<TimeSlot> TimeSlots { get; set; }
+    public virtual ICollection<VenueCombo> VenueCombos { get; set; }
     #endregion
 }

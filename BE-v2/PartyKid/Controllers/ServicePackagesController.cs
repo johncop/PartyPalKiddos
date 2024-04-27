@@ -10,9 +10,11 @@ namespace PartyKid;
 public class ServicePackagesController : BaseApi
 {
     private readonly IBaseServices<ServicePackage> _servicePackageService;
-    public ServicePackagesController(IMapper mapper, IBaseServices<ServicePackage> servicePackageService) : base(mapper)
+    private readonly DbContext _dbContext;
+    public ServicePackagesController(IMapper mapper, IBaseServices<ServicePackage> servicePackageService, DbContext dbContext) : base(mapper)
     {
         _servicePackageService = servicePackageService;
+        _dbContext = dbContext;
     }
 
 
@@ -51,6 +53,11 @@ public class ServicePackagesController : BaseApi
                                                                                       includeEntities: x => x.Images)
                                                                                  .ProjectTo<ServicePackageResponseDTO>(_mapper.ConfigurationProvider)
                                                                                  .FirstOrDefaultAsync();
+        if (servicePackage is not null)
+        {
+            throw new DomainException(Constants.Transactions.Messages.NotFound);
+        }
+
         return Success<ServicePackageResponseDTO>(data: servicePackage);
     }
 
@@ -95,42 +102,49 @@ public class ServicePackagesController : BaseApi
     [Route("{Id:int}")]
     public async Task<IResponse> Update([FromRoute(Name = "Id")] int id, [FromBody] UpdateServicePackageBindingModel request)
     {
-        ServicePackage servicePackage = await _servicePackageService.Query(filter: x => x.Id == id)
-                                                                    .Include(x => x.Images)
-                                                                    .FirstOrDefaultAsync();
+        ServicePackage servicePackage = await _servicePackageService.Query(filter: x => x.Id == id && !x.IsDeleted).FirstOrDefaultAsync();
         if (servicePackage is null)
         {
             throw new DomainException(Constants.Transactions.Messages.NotFound);
         }
 
         request.Id = id;
+        if (request.Images is not null)
+        {
+            await _dbContext.Entry(servicePackage).Collection(x => x.Images).Query().ExecuteDeleteAsync();
+            if (request.Images.Count > 0)
+            {
+                servicePackage.Images = new List<ServicePackageImage>();
+                foreach (string imageUrl in request.Images)
+                {
+                    servicePackage.Images.Add(new ServicePackageImage()
+                    {
+                        ImageUrl = imageUrl
+                    });
+                }
+            }
+        }
+
+        if (request.Services is not null)
+        {
+            await _dbContext.Entry(servicePackage).Collection(x => x.Services).Query().ExecuteDeleteAsync();
+            if (request.Services.Count > 0)
+            {
+                servicePackage.Services = new List<ServicePackageDetail>();
+                foreach (var serviceId in request.Services)
+                {
+                    servicePackage.Services.Add(new ServicePackageDetail()
+                    {
+                        ServiceId = serviceId
+                    });
+                }
+            }
+        }
+
         servicePackage = _mapper.Map(request, servicePackage);
-        if (request.Images != null && request.Images.Count > 0)
-        {
-            servicePackage.Images = new List<ServicePackageImage>();
-            foreach (string imageUrl in request.Images)
-            {
-                servicePackage.Images.Add(new ServicePackageImage()
-                {
-                    ImageUrl = imageUrl
-                });
-            }
-        }
+        await _servicePackageService.Update(servicePackage);
 
-        if (request.Services.Count > 0)
-        {
-            servicePackage.Services = new List<ServicePackageDetail>();
-            foreach (var serviceId in request.Services)
-            {
-                servicePackage.Services.Add(new ServicePackageDetail()
-                {
-                    ServiceId = serviceId
-                });
-            }
-        }
-
-        ServicePackageResponseDTO response = _mapper.Map<ServicePackageResponseDTO>(await _servicePackageService.Update(servicePackage));
-        return Success<ServicePackageResponseDTO>(data: response);
+        return Success(message: Constants.Transactions.Messages.UpdateComplete);
     }
 
     [Authorize(nameof(RoleCollection.Admin))]
@@ -138,12 +152,16 @@ public class ServicePackagesController : BaseApi
     [Route("{Id:int}")]
     public async Task<IResponse> Delete([FromRoute(Name = "Id")] int id)
     {
-        ServicePackage servicePackage = await _servicePackageService.Find(id);
-        if (servicePackage is null)
+        ServicePackage servicePackage = await _servicePackageService.Find(filter: x => x.Id == id);
+
+        await _dbContext.Entry(servicePackage).Collection(x => x.BookingDetails).LoadAsync();
+        if (servicePackage.BookingDetails.Count > 0)
         {
-            throw new DomainException(Constants.Transactions.Messages.NotFound);
+            throw new DomainException(Constants.Transactions.Messages.DeleteFailure);
         }
-        return Success(await _servicePackageService.Delete(id));
+
+        servicePackage.Services.Clear();
+        return Success(await _servicePackageService.Delete(servicePackage));
     }
     #endregion
 }
