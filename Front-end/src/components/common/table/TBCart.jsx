@@ -68,7 +68,7 @@ export function TBCart() {
             {carts.map((item, index) => (
               <tr className="align-middle">
                 <th scope="row" className="text-center">
-                  {index}
+                  {index + 1}
                 </th>
                 <td className="text-danger fw-bold text-center">
                   <input
