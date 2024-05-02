@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export function TBCart() {
   const state = useSelector((state) => state);
 
@@ -19,6 +23,23 @@ export function TBCart() {
       })
     );
   }, [isCheckAll]);
+
+  function handleDelete(id) {
+    axios
+    .delete(`${process.env.REACT_APP_API_BASE_URL}bookings/${id}`)
+    .then((response) => {
+      toast.info("Successful deletion", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
+    })
+    .catch((error) => {
+      toast.error("Delete failed due to some exception", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
+    });
+  }
 
   return (
     <>
@@ -105,7 +126,7 @@ export function TBCart() {
                   ).toLocaleString()}
                 </td>
                 <td className="text-center">
-                  <i className="fa fa-trash" onClick={() => {}}></i>
+                  <i className="fa fa-trash" onClick={() => handleDelete(item.id)}></i>
                 </td>
               </tr>
             ))}
@@ -144,6 +165,7 @@ export function TBCart() {
           </tbody>
         </table>
       </div>
+      <ToastContainer />
     </>
   );
 }
