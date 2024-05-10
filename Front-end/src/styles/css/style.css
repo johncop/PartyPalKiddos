@@ -5496,3 +5496,7 @@ ul.category-widget-list li.active i {
 .mouse-event {
 	cursor: pointer;
 }
+
+div:has(> .rdt_Table)  {
+	display: block;
+}
