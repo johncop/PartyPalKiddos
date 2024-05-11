@@ -34,7 +34,10 @@ export default function Details({ defaultValue }) {
   const [expand, setExpand] = useState(false);
   const [titleModal, setTitleModal] = useState("Add Product");
   const [dataModal, setDataModal] = useState({});
-
+  const [step, setStep] = useState(1);
+  const [percent, setPercent] = useState(0);
+  const maxStep = 2;
+  console.log("expand", expand);
   useEffect(() => {
     if (category === LIST_CATE.PARTY_SERVICES && !data.id) {
       axios
@@ -139,8 +142,7 @@ export default function Details({ defaultValue }) {
   useEffect(() => {
     axios
       .get(
-        `${
-          process.env.REACT_APP_API_BASE_URL
+        `${process.env.REACT_APP_API_BASE_URL
         }time-slots/${id}/${date.toISOString()}`
       )
       .then((response) => {
@@ -150,6 +152,10 @@ export default function Details({ defaultValue }) {
         console.log(error.message);
       });
   }, [date]);
+
+  useEffect(() => {
+    setPercent(step / maxStep * 100);
+  }, [step])
 
   function handleSelectTimeZone(e) {
     setDate(new Date(e.timeStamp));
@@ -434,6 +440,7 @@ export default function Details({ defaultValue }) {
 
     setSubProducts(subProducts);
   }
+
   return (
     <>
       {isShowCount && (
@@ -454,163 +461,171 @@ export default function Details({ defaultValue }) {
       <section className="section-padding gray-bg">
         <div className="auto-container">
           <div className="row">
-            <div className="col-lg-5">
-              <div className="about-1-image-wrap mb_30 p_relative">
-                <div
-                  className="about-1-shape-1"
-                  data-parallax='{"y": -50}'
-                ></div>
-                <div className="about-1-image-1 hvr-img-zoom-1">
-                  <Swiper
-                    effect={"creative"}
-                    pagination={{
-                      type: "progressbar",
-                    }}
-                    loop={true}
-                    creativeEffect={{
-                      prev: {
-                        shadow: true,
-                        origin: "left center",
-                        translate: ["-5%", 0, -200],
-                        rotate: [0, 100, 0],
-                      },
-                      next: {
-                        origin: "right center",
-                        translate: ["5%", 0, -200],
-                        rotate: [0, -100, 0],
-                      },
-                    }}
-                    navigation={true}
-                    modules={[EffectCreative, Pagination, Navigation]}
-                    className="mySwiper"
-                  >
-                    {data.images?.map((image, index) => (
-                      <SwiperSlide key={"img-pd" + index}>
-                        <img
-                          src={image.imageUrl}
-                          style={{ maxHeight: "400px" }}
-                          alt=""
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+            <div className="col-md-8 m-auto">
+              <div className="row">
+                <div className="progress-container z-index-99 mb-2">
+                  <span> <strong>Step:</strong> {step} of {maxStep}</span>
+                  <div className="progress">
+                    <div className={`progress-bar progress-bar-striped bg-warning w-${percent} z-index-99`} role="progressbar" aria-valuenow={percent} aria-valuemin="0" aria-valuemax="100">{percent}%</div>
+                  </div>
                 </div>
-                {LIST_SHOW_BOOK.includes(category) && (
-                  <div className="about-1-btn mb_30 mt-3 text-center">
-                    <a href="#" onClick={handleClick} className="btn-1">
-                      Book<span></span>
-                    </a>
+                <div className="col-lg-12 m-auto">
+                  <div className="about-1-image-wrap mb_30 p_relative">
+                    <div
+                      className="about-1-shape-1"
+                      data-parallax='{"y": -50}'
+                    ></div>
+                    <div className="about-1-image-1 hvr-img-zoom-1">
+                      <Swiper
+                        effect={"creative"}
+                        pagination={{
+                          type: "progressbar",
+                        }}
+                        loop={true}
+                        creativeEffect={{
+                          prev: {
+                            shadow: true,
+                            origin: "left center",
+                            translate: ["-5%", 0, -200],
+                            rotate: [0, 100, 0],
+                          },
+                          next: {
+                            origin: "right center",
+                            translate: ["5%", 0, -200],
+                            rotate: [0, -100, 0],
+                          },
+                        }}
+                        navigation={true}
+                        modules={[EffectCreative, Pagination, Navigation]}
+                        className="mySwiper"
+                      >
+                        {data.images?.map((image, index) => (
+                          <SwiperSlide key={"img-pd" + index}>
+                            <img
+                              src={image.imageUrl}
+                              style={{ maxHeight: "400px" }}
+                              alt=""
+                            />
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
+                    </div>
+                    {LIST_SHOW_BOOK.includes(category) && (
+                      <div className="about-1-btn mb_30 mt-3 text-center">
+                        <a href="#" onClick={handleClick} className="btn-1">
+                          Book<span></span>
+                        </a>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-            <div className="col-lg-7 ps-lg-5">
-              <div className="section_heading mb_20">
-                <span className="section_heading_title_small">
-                  {data.address}
-                </span>
-                <h3 className="section_heading_title_big">
-                  {data.name}
-                  {data.serviceName}
-                </h3>
-              </div>
-              <p className="aboout-1-desc mb_30 position-relative z-index-99">
-                {data.description}
-              </p>
-              <hr />
-              <div className="d-flex p-0 align-items-center gap-3 mb-1">
-                <p className="mb-0">Select Event Date:</p>
-                <input
-                  type="date"
-                  defaultValue={date.toISOString().substr(0, 10)}
-                  style={{ width: 150 }}
-                  className="form-control"
-                  min="<?php echo date('2024-m-d'); ?>"
-                  onChange={handleSelectTimeZone}
-                ></input>
-              </div>
-              <p>
-                Time Zone: <b>MST</b>
-              </p>
-              <div
-                className="btn-group mb-4 d-flex gap-2 flex-wrap"
-                role="group"
-                aria-label="Basic radio toggle button group"
-                onChange={(e) => {
-                  setSelectedTimeSlot(e.target.defaultValue);
-                }}
-              >
-                {timeSlots.map((tl) => (
-                  <div key={"time-slot-" + tl.id}>
-                    <input
-                      type="radio"
-                      className="btn-check"
-                      name="btnradio"
-                      id={"btnradio" + tl.id}
-                      autoComplete="off"
-                      value={tl.id}
-                      defaultChecked={Number(selectedTimeSlot) === tl.id}
-                    ></input>
-                    <label
-                      className="btn btn-outline-primary"
-                      style={{ width: 100 }}
-                      htmlFor={"btnradio" + tl.id}
-                    >
-                      {tl.startTime}
-                    </label>
+                </div>
+                <div className="col-lg-12 m-auto">
+                  <div className="section_heading mb_20">
+                    <span className="section_heading_title_small">
+                      {data.address}
+                    </span>
+                    <h3 className="section_heading_title_big">
+                      {data.name}
+                      {data.serviceName}
+                    </h3>
                   </div>
-                ))}
-              </div>
+                  <p className="aboout-1-desc mb_30 position-relative z-index-99">
+                    {data.description}
+                  </p>
+                  <hr />
+                  {
+                    step === 1 && <div>
+                      <div className="d-flex p-0 align-items-center gap-3 mb-1">
+                        <p className="mb-0">Select Event Date:</p>
+                        <input
+                          type="date"
+                          defaultValue={date.toISOString().substr(0, 10)}
+                          style={{ width: 150 }}
+                          className="form-control"
+                          min="<?php echo date('2024-m-d'); ?>"
+                          onChange={handleSelectTimeZone}
+                        ></input>
+                      </div>
+                      <p>
+                        Time Zone: <b>MST</b>
+                      </p>
+                      <div
+                        className="btn-group mb-4 d-flex gap-2 flex-wrap"
+                        role="group"
+                        aria-label="Basic radio toggle button group"
+                        onChange={(e) => {
+                          setSelectedTimeSlot(e.target.defaultValue);
+                        }}
+                      >
+                        {timeSlots.map((tl) => (
+                          <div key={"time-slot-" + tl.id}>
+                            <input
+                              type="radio"
+                              className="btn-check"
+                              name="btnradio"
+                              id={"btnradio" + tl.id}
+                              autoComplete="off"
+                              value={tl.id}
+                              defaultChecked={Number(selectedTimeSlot) === tl.id}
+                            ></input>
+                            <label
+                              className="btn btn-outline-primary"
+                              style={{ width: 100 }}
+                              htmlFor={"btnradio" + tl.id}
+                            >
+                              {tl.startTime}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
 
-              <div className="row mb-4">
-                <div
-                  className="fw-600 fs-5"
-                  style={{ color: "var(--theme-color)" }}
-                >
-                  Select Tickets:
-                </div>
-                <span># of adults (Max. Room Seating = 16)</span>
-                <div
-                  className="input-group input-group-sm"
-                  style={{ width: 200 }}
-                >
-                  <input
-                    type="number"
-                    className="form-control w-100"
-                    aria-label="Sizing example input"
-                    value={numberOfAdults}
-                    onChange={(event) => setNumberOfAdults(event.target.value)}
-                    min={0}
-                    aria-describedby="inputGroup-sizing-sm"
-                  ></input>
-                </div>
-                <span>How many kids will be attending?</span>
-                <div
-                  className="input-group input-group-sm"
-                  style={{ width: 200 }}
-                >
-                  <input
-                    type="number"
-                    className="form-control"
-                    aria-label="Sizing example input"
-                    value={numberOfKids}
-                    onChange={(event) => setNumberOfKids(event.target.value)}
-                    aria-describedby="inputGroup-sizing-sm"
-                    min={0}
-                  ></input>
+                      <div className="row mb-4">
+                        <div
+                          className="fw-600 fs-5"
+                          style={{ color: "var(--theme-color)" }}
+                        >
+                          Select Tickets:
+                        </div>
+                        <span># of adults (Max. Room Seating = 16)</span>
+                        <div
+                          className="input-group input-group-sm"
+                          style={{ width: 200 }}
+                        >
+                          <input
+                            type="number"
+                            className="form-control w-100"
+                            aria-label="Sizing example input"
+                            value={numberOfAdults}
+                            onChange={(event) => setNumberOfAdults(event.target.value)}
+                            min={0}
+                            aria-describedby="inputGroup-sizing-sm"
+                          ></input>
+                        </div>
+                        <span>How many kids will be attending?</span>
+                        <div
+                          className="input-group input-group-sm"
+                          style={{ width: 200 }}
+                        >
+                          <input
+                            type="number"
+                            className="form-control"
+                            aria-label="Sizing example input"
+                            value={numberOfKids}
+                            onChange={(event) => setNumberOfKids(event.target.value)}
+                            aria-describedby="inputGroup-sizing-sm"
+                            min={0}
+                          ></input>
+                        </div>
+                      </div>
+                    </div>
+                  }
                 </div>
               </div>
-              <button
-                className="btn btn-primary form-control"
-                onClick={() => setIsAddProducts(!isAddProducts)}
-              >
-                {isAddProducts ? "Hide Products" : "Add Products"}
-              </button>
             </div>
           </div>
-          {isAddProducts && (
-            <div className="row mt-5 bg-white border-5 p-2">
-              <div className={expand ? "col-lg-0" : "col-lg-8"}>
+          {step === 2 && (
+            <div className="row bg-white border-5 p-2">
+              <div className={expand ? "col-lg-12" : "col-lg-8"}>
                 <Tabs>
                   <TabList>
                     <div style={{ fontSize: "24px", fontWeight: "bold" }}>
@@ -700,16 +715,17 @@ export default function Details({ defaultValue }) {
               </div>
               <div
                 className={
-                  (expand ? "col-lg-12" : "col-lg-4") +
+                  (expand ? "col-lg-12 mt-4" : "col-lg-4") +
                   " info-payment-container px-0"
                 }
               >
                 <div className="pb-3 pt-2 fs-2 d-flex justify-content-between">
                   <span>Summary</span>{" "}
-                  <i
-                    className="fa fa-expand cursor-pointer"
-                    onClick={() => setExpand(!expand)}
-                  ></i>
+                  <span onClick={() => setExpand(!expand)}>
+                    <i
+                      className="fa fa-expand cursor-pointer"
+                    ></i>
+                  </span>
                 </div>
                 <div className="info-payment-content p-3">
                   <div>
@@ -835,6 +851,16 @@ export default function Details({ defaultValue }) {
               </div>
             </div>
           )}
+          <hr />
+          <div className="prev-next-container mt-2 d-flex gap-4 d-flex justify-content-center">
+            {
+              (step > 1) &&
+              <div className="btn btn-outline-secondary py-1" style={{ width: "120px" }}> <i class="fas fa-long-arrow-alt-left" style={{ height: "0.9em" }}></i> <span onClick={() => setStep(step - 1)}>Prev Step</span> </div>
+            }
+            {
+              (step < maxStep) && <div className="btn btn-primary py-1" style={{ width: "120px" }}> <span onClick={() => setStep(step + 1)}>Next Step</span> <i class="fas fa-long-arrow-alt-right" style={{ height: "0.9em" }}></i></div>
+            }
+          </div>
         </div>
       </section>
     </>

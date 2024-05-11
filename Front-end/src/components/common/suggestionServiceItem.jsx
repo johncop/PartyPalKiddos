@@ -14,9 +14,9 @@ export default function SuggestionServiceItem(props) {
           <h5 className="room-1-title pt-2 not-wrap-text">
             <a href={`/${category}/${id}`}>{title}</a>
           </h5>
-          <p className="room-1-text not-wrap-text">{description}</p>
-          <div className="card-text">{price.toLocaleString()} VND</div>
-          <div className="link-btn">
+          <p className="room-1-text not-wrap-text mb-1">{description}</p>
+          <div className="card-text fw-bold text-danger">{price.toLocaleString()}đ</div>
+          <div className="link-btn mt-3">
             <a href={`/${category}/${id}`} className="btn-1 btn-alt px-4 py-2">
               Read more<span></span>
             </a>
