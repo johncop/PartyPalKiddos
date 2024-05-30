@@ -4835,7 +4835,7 @@ ul.category-widget-list li.active i {
 
 /* Banner search */
 .banner-filter-container {
-	background-color: #ccc;
+	background-color: rgba(0, 0, 0, 0.5);
 	height: 600px;
 	position: relative;
 }
@@ -5512,3 +5512,31 @@ div:has(> .rdt_Table)  {
 .react-tabs__tab--selected{
 	color: #c77a63 !important;
 }
+
+.video-background {
+	position: relative;
+	width: 100%;
+	height: 600px;
+	overflow: hidden;
+  }
+  
+  .video-background video {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -1;
+	transform: translate(-50%, -50%);
+  }
+  
+  .video-background .content {
+	position: relative;
+	z-index: 1;
+	color: white;
+	text-align: center;
+	top: 50%;
+	transform: translateY(-50%);
+  }

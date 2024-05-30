@@ -73,11 +73,6 @@ export default function BannerHomePage(props) {
       {showText ? (
         <div className="container-fluid banner-container banner-filter-container d-flex justify-content-center align-items-end p-3">
           <div className="position-absolute start-0 bottom-0 top-0 end-0">
-            <img
-              src={"/assets/images/banner1.jpg"}
-              alt=""
-              className="w-100 h-100 d-block"
-            />
           </div>
           <div className="banner-content d-flex flex-column gap-3 justify-content-center align-items-center position-absolute z-index-99">
             <h2 className="fw-bold mb-sm-3 text-center text-white animation-type-text">
@@ -89,11 +84,6 @@ export default function BannerHomePage(props) {
       ) : (
         <div className="container-fluid banner-container banner-filter-container d-flex justify-content-center align-items-end p-3">
           <div className="position-absolute start-0 bottom-0 top-0 end-0">
-            <img
-              src={"/assets/images/banner1.jpg"}
-              alt=""
-              className="w-100 h-100 d-block"
-            />
           </div>
           <div className="banner-content d-flex flex-column gap-3 justify-content-center align-items-center position-absolute z-index-99">
             {formSearch()}

@@ -36,7 +36,15 @@ export default function Search() {
 
   return (
     <>
-      <BannerHomePage showText={false}/>
+      <div className="video-background">
+        <video autoPlay loop muted>
+          <source src="/assets/background-video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="content">
+          <BannerHomePage showText={false} />
+        </div>
+      </div>
     </>
   );
 }
