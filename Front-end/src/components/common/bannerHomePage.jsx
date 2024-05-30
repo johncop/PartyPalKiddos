@@ -6,6 +6,8 @@ export default function BannerHomePage(props) {
   const state = useSelector((state) => state);
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [selectedCate, setSelectedCate] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => {
     setCategories(state.uiState.categories);
@@ -14,44 +16,62 @@ export default function BannerHomePage(props) {
     setLocations(state.uiState.locations);
   }, [state.uiState.locations]);
 
+  function handleSearch() {
+    window.location.href = `./search?service=${selectedCate || ""}&location=${
+      selectedLocation || ""
+    }`;
+  }
+
   function formSearch() {
-    return <div className="form-search row w-100">
-      <div className="col-md-4 pe-1 ps-1 my-1">
-        <select
-          defaultValue="0"
-          className="form-select"
-          aria-label="Default select example"
-        >
-          <option value="0">Select Category</option>
-          {categories.map((item) => (
-            <option key={"category-selection" + item.value} value={item.value}>{item.name}</option>
-          ))}
-        </select>
+    return (
+      <div className="form-search row w-100">
+        <div className="col-md-4 pe-1 ps-1 my-1">
+          <select
+            defaultValue="0"
+            className="form-select"
+            aria-label="Default select example"
+            onChange={(e) => setSelectedCate(e.target.value)}
+          >
+            <option value="0">Select Category</option>
+            {categories.map((item) => (
+              <option key={"category-selection" + item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-md-4 pe-1 ps-1 my-1">
+          <select
+            defaultValue="0"
+            className="form-select"
+            aria-label="Default select example"
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            <option value="0">Select Location</option>
+            {locations.map((item) => (
+              <option key={"location-selection" + item.id} value={item.id}>
+                {item.description}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-md-4 pe-1 ps-1 my-1">
+          <button
+            type="button"
+            className="btn btn-info w-100"
+            onClick={handleSearch}
+          >
+            Search
+          </button>
+        </div>
       </div>
-      <div className="col-md-4 pe-1 ps-1 my-1">
-        <select
-          defaultValue="0"
-          className="form-select"
-          aria-label="Default select example"
-        >
-          <option value="0">Select Location</option>
-          {locations.map((item) => (
-            <option key={"location-selection" + item.value} value={item.value}>{item.name}</option>
-          ))}
-        </select>
-      </div>
-      <div className="col-md-4 pe-1 ps-1 my-1">
-        <button type="button" className="btn btn-info w-100">
-          Search
-        </button>
-      </div>
-    </div>
+    );
   }
 
   return (
     <>
-      {
-        showText ? <div className="container-fluid banner-container banner-filter-container d-flex justify-content-center align-items-end p-3">
+      {showText ? (
+        <div className="container-fluid banner-container banner-filter-container d-flex justify-content-center align-items-end p-3">
           <div className="position-absolute start-0 bottom-0 top-0 end-0">
             <img
               src={"/assets/images/banner1.jpg"}
@@ -65,7 +85,9 @@ export default function BannerHomePage(props) {
             </h2>
             {formSearch()}
           </div>
-        </div> : <div className="container-fluid banner-container banner-filter-container d-flex justify-content-center align-items-end p-3">
+        </div>
+      ) : (
+        <div className="container-fluid banner-container banner-filter-container d-flex justify-content-center align-items-end p-3">
           <div className="position-absolute start-0 bottom-0 top-0 end-0">
             <img
               src={"/assets/images/banner1.jpg"}
@@ -82,8 +104,7 @@ export default function BannerHomePage(props) {
             </a>
           </div>
         </div>
-      }
-
+      )}
     </>
   );
 }

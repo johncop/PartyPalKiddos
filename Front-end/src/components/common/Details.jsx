@@ -510,13 +510,13 @@ export default function Details({ defaultValue }) {
                         ))}
                       </Swiper>
                     </div>
-                    {LIST_SHOW_BOOK.includes(category) && (
+                    {/* {LIST_SHOW_BOOK.includes(category) && (
                       <div className="about-1-btn mb_30 mt-3 text-center">
                         <a href="#" onClick={handleClick} className="btn-1">
                           Book<span></span>
                         </a>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div className="col-lg-12 m-auto">

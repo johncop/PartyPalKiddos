@@ -14,6 +14,10 @@ export const defaultStore = {
     packageCategories: [],
     services: [],
     carts: [],
+    searchResults: {
+      venues: [],
+      services: [],
+    },
     birthdayBanner: {
       name: "",
       title: "",

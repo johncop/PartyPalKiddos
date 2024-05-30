@@ -18,6 +18,7 @@ export const SET_STATUS_POPUP = "update-popup-data";
 export const UPDATE_POPULAR_ACTION = "update-popular-action";
 export const UPDATE_LASTEST_PACKAGES_ACTION = "update-lastest-packages-action";
 export const UPDATE_VENUE_LIST = "update-venue-action";
+export const UPDATE_SEARCH_LIST = "update-search-action";
 
 //#region Sample Data
 export const CATEGORY_LIST = [

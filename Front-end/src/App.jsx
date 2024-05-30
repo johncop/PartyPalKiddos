@@ -21,6 +21,7 @@ import { ServicesPage } from "./components/admin/services";
 import { VenuePage } from "./components/admin/venues";
 import Details from "./components/common/Details";
 import Profile from "./components/common/Profile";
+import SearchResults from "./components/common/searchResults";
 import { ForgotPassword } from "./components/common/modal/ForgotPassword";
 import Login from "./components/common/modal/Login";
 import SignUp from "./components/common/modal/SignUp";
@@ -54,8 +55,8 @@ export const App = () => {
 
   //#region This is just a sample data set, so when calling from the api, it must be moved to the main page
   const dispatch = useDispatch();
-  dispatch({ type: UPDATE_CATEGORY_ACTION, categories: CATEGORY_LIST });
-  dispatch({ type: UPDATE_LOCATION_ACTION, locations: LOCATION_LIST });
+  // dispatch({ type: UPDATE_CATEGORY_ACTION, categories: CATEGORY_LIST });
+  // dispatch({ type: UPDATE_LOCATION_ACTION, locations: LOCATION_LIST });
   dispatch({ type: UPDATE_POPULAR_ACTION, popular: CATEGORY_LIST });
   dispatch({
     type: UPDATE_BIRTHDAY_ACTION,
@@ -213,6 +214,14 @@ export const App = () => {
             element={
               <Layout handlePopup={handlePopup}>
                 <Profile />
+              </Layout>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <Layout handlePopup={handlePopup}>
+                <SearchResults />
               </Layout>
             }
           />

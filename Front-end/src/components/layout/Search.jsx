@@ -1,24 +1,38 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
-  UPDATE_PACKAGE_ACTION,
-  UPDATE_POPULAR_ACTION,
+  UPDATE_CATEGORY_ACTION,
+  UPDATE_LOCATION_ACTION,
 } from "../../constants";
 import BannerHomePage from "../common/bannerHomePage";
+import { useEffect } from "react";
 
 export default function Search() {
   const dispatch = useDispatch();
-
-  axios
-    .get("https://658bc0b1859b3491d3f4adb4.mockapi.io/Data")
-    .then(function (response) {
-      dispatch({ type: UPDATE_PACKAGE_ACTION, packages: response.data });
-    });
-  axios
-    .get("https://658bc0b1859b3491d3f4adb4.mockapi.io/Data")
-    .then(function (response) {
-      dispatch({ type: UPDATE_POPULAR_ACTION, popular: response.data });
-    });
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}service-categories`)
+      .then((response) => {
+        dispatch({
+          type: UPDATE_CATEGORY_ACTION,
+          categories: response.data.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}districts`)
+      .then((response) => {
+        dispatch({
+          type: UPDATE_LOCATION_ACTION,
+          locations: response.data.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, []);
 
   return (
     <>
